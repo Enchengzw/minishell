@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/26 17:57:04 by ezhou            ###   ########.fr       */
+/*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
+/*   Updated: 2024/03/26 17:17:51 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ft_execute(t_data *data)
-{	
-	int	code;
-	
-	code = ft_check_data(data);
-	if (code != INT_MIN)
-		return (code);
-	if (ft_create_pipes(data))
+int	ft_check_fds(t_fds *io)
+{
+	if (!io || !io->infile || !io->outfile)
 		return (ERROR);
-	ft_link_io(data);
-	return (1);
+	return (SUCCESS);
+}
+ 
+int	ft_check_data(t_data *data)
+{
+	t_cmd *temp;
+	
+	if (!data || !data->cmd)
+		return (SUCCESS);
+	temp = data->cmd;
+	while(temp)
+	{
+		if (!ft_check_fds(temp->fds))
+			return (ERROR);
+		temp = temp->next;
+	}
+	return (INT_MIN);
 }

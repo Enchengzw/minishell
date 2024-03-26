@@ -6,14 +6,14 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/03/22 12:26:41 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/03/26 17:11:02 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./libft/libft.h"
+# include "libft/libft.h"
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -21,6 +21,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
+# include <fcntl.h>
 
 # define GREEN_TEXT "\x1b[32m"
 # define RESET_TEXT "\x1b[0m"
@@ -31,6 +33,15 @@
 
 int					g_exit_code;
 
+typedef struct s_fds
+{
+	int	infile;
+	int	outfile;
+	int	pipe[2];
+	int	*stdin;
+	int	*stdout;
+}	t_fds;
+
 typedef struct s_env
 {
 	char			**env;
@@ -40,7 +51,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
-	// t_fds           pipes;
+	t_fds           *fds;
 	char			*cmd_path;
 	char			**arg;
 	t_env			*env;
@@ -53,6 +64,8 @@ typedef struct s_data
 	char			*user_input;
 	char			**env;
 	t_cmd			*cmd;
+	int				stdin;
+	int				stdout;
 }					t_data;
 
 // BUILTINS
