@@ -1,0 +1,36 @@
+typedef struct s_cmd
+{
+	struct s_cmd	*next;
+	// t_fds           pipes;
+	char			*cmd_path;
+	char			**arg;
+	t_env			**env;
+	int				num_arg;
+}					t_cmd;
+
+int main(int argc, char **argv, char **env)
+{
+	t_cmd *cmd;
+	int	i = 0;
+
+	cmd = (t_cmd *)malloc(sizeof(t_cmd) * 1);
+	cmd->cmd_path = "/bin/ls";
+	cmd->arg = (char **)malloc(sizeof(char *) * 4);
+	cmd->arg[0] = "export";
+	cmd->arg[1] = "a=aisjdhdai";
+	cmd->arg[2] = "b=ahuifhada";
+	cmd->arg[3] = 0;
+	cmd->env = (t_env *)malloc(sizeof(t_env) * 1);
+	cmd->env->env_size = ft_size(env);
+	cmd->env->env = (char **)malloc(sizeof(char *) * cmd->env->env_size + 1);
+	while (env[i])
+	{
+		cmd->env->env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	env[i] = 0;
+	cmd->num_arg = 1;
+	ft_export(&cmd);
+	ft_env(&cmd);
+	return (0);
+}
