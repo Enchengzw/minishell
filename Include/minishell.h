@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/03/26 17:11:02 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/03/28 12:27:27 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_fds
 {
 	int	infile;
 	int	outfile;
+	int	here_document;
 	int	pipe[2];
 	int	*stdin;
 	int	*stdout;
@@ -51,6 +52,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
+	struct s_cmd	*previous;
 	t_fds           *fds;
 	char			*cmd_path;
 	char			**arg;

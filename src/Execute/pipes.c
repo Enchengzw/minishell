@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/26 18:15:17 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/03/28 12:35:14 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,19 @@ int	ft_create_pipes(t_data *data)
 void	ft_prep_io(t_data *data)
 {
 	t_cmd 	*temp;
-	t_cmd	*next;
 	
 	temp = data->cmd;
 	while(temp)
 	{
-		next = temp->next;
-		if (next)
+		if (!temp->fds->infile)
 		{
-			if (!temp->fds->infile)
-				temp->fds->infile = temp->fds->pipe[0];
-			if (!temp->fds->outfile)
-				temp->fds->outfile = temp->fds->pipe[1];
-			
+			if (temp->fds->here_document)
+				temp->fds->infile = temp->fds->here_document;
+			else if (temp->previous)
+				temp->fds->infile = temp->previous->fds->pipe[0];
 		}
+		if (!temp->fds->outfile)
+			temp->fds->outfile = temp->fds->pipe[1];
 		temp = temp->next;
 	}
 	return (SUCCESS)
