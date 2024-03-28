@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/28 12:35:14 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/03/28 12:46:38 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_create_pipes(t_data *data)
 	return (SUCCESS)
 }
 
-void	ft_prep_io(t_data *data)
+void	ft_link_io(t_data *data)
 {
 	t_cmd 	*temp;
 	

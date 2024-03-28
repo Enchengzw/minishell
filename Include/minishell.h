@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/03/28 12:27:27 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/03/28 17:27:06 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef struct s_fds
 	int	outfile;
 	int	here_document;
 	int	pipe[2];
-	int	*stdin;
-	int	*stdout;
+	int	*std_in;
+	int	*std_out;
 }	t_fds;
 
 typedef struct s_env
@@ -66,8 +66,8 @@ typedef struct s_data
 	char			*user_input;
 	char			**env;
 	t_cmd			*cmd;
-	int				stdin;
-	int				stdout;
+	int				std_in;
+	int				std_out;
 }					t_data;
 
 // BUILTINS
