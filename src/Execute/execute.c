@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/28 17:32:34 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:27:30 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 {
 	if (pid == 0)
 	{
+		//close(cmd->fds->pipe[0]);
 		if (execve(cmd->cmd_path, cmd->arg, cmd->env->env) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
 	}
 	else
 	{
+		//close(cmd->fds->pipe[1])
 		if (ft_restore_io(cmd))
 			return (ft_putstr_fd("Out of resources", STDERR), ERROR);
 	}
-	return (SUCCESS)
+	return (SUCCESS);
 }
 
 int	ft_create_processes(t_data *data)
@@ -87,6 +89,5 @@ int	ft_execute(t_data *data)
 		return (ft_putstr_fd("Not enough resources to create pipe", STDERR),
 			(ERROR));
 	ft_link_io(data);
-	ft_create_processes(data);
-	return (1);
+	return (ft_create_processes(data));
 }

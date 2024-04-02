@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/03/28 17:27:06 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:28:16 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,24 @@ static void			ft_shell_handler(int signal);
 void				ft_child_signals(void);
 void				ft_main_signals(void);
 
+// EXECUTOR
+int					ft_execute(t_data *data);
+int					ft_create_processes(t_data *data);
+int					ft_actions(pid_t pid, t_cmd *cmd);
+int					ft_redirect(t_cmd *cmd);
+int					ft_restore_io(t_cmd *cmd);
+int					ft_create_pipes(t_data *data);
+void				ft_link_io(t_data *data);
+int					ft_check_data(t_data *data);
+int					ft_check_fds(t_fds *io);
+
 // ERROR
 void				ft_exit_error(char *str, int n);
+
+// UTILS
+int					ft_list_size(t_cmd *cmd);
+
+// CLEANING
+void				ft_free_content(t_data *data);
 
 #endif

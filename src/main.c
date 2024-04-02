@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/03/26 12:27:26 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:11:21 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	ft_main_loop(t_data *data)
 			ft_exit_error("exit", ERROR);
 		add_history(data->user_input);
 		// data->cmd = ft_parse(data->user_input);
-		// ft_child_signals()
-		// g_exit_code = ft_execute(data);
-		free(data->user_input);
+		ft_child_signals();
+		g_exit_code = ft_execute(data);
+		ft_free_content(data);
 	}
 }
 

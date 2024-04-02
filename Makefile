@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/03/22 16:38:53 by ezhou            ###   ########.fr        #
+#    Updated: 2024/04/02 11:27:18 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,11 @@ SRC	=	./src/main.c \
 		./src/Builtins/ft_pwd.c \
 		./src/Builtins/ft_unset.c \
 		./src/Signals/signals.c \
+		./src/Execute/check.c \
+		./src/Execute/execute.c \
+		./src/Execute/pipes.c \
+		./src/Execute/utils.c \
+		./src/Cleaning/ft_free.c \
 
 OBJ = $(SRC:.c=.o)
 

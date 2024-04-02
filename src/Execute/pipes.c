@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/28 12:46:38 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:28:49 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_create_pipes(t_data *data)
 			return (ERROR);
 		temp = temp->next;
 	}
-	return (SUCCESS)
+	return (SUCCESS);
 }
 
 void	ft_link_io(t_data *data)
@@ -44,5 +44,4 @@ void	ft_link_io(t_data *data)
 			temp->fds->outfile = temp->fds->pipe[1];
 		temp = temp->next;
 	}
-	return (SUCCESS)
 }
