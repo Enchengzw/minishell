@@ -6,11 +6,11 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/22 15:35:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 18:04:26 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "../../Include/minishell.h"
 
 static	char	*ft_current_path(void)
 {
@@ -40,13 +40,13 @@ static	void	ft_update_oldpwd(t_env *env)
 	if (!cwd)
 		return ;
 	i = 0;
-	while (env->env[i])
+	while (env->env[0][i])
 	{
-		if (!ft_strncmp(env->env[i], "OLDPWD", 6))
+		if (!ft_strncmp(env->env[0][i], "OLDPWD", 6))
 		{
 			temp = ft_strjoin("OLDPWD=", cwd);
-			free(env->env[i]);
-			env->env[i] = temp;
+			free(env->env[0][i]);
+			env->env[0][i] = temp;
 		}
 		i++;
 	}
@@ -62,13 +62,13 @@ static	void	ft_update_pwd(t_env *env)
 	if (!cwd)
 		return ;
 	i = 0;
-	while (env->env[i])
+	while (env->env[0][i])
 	{
-		if (!ft_strncmp(env->env[i], "PWD", 3))
+		if (!ft_strncmp(env->env[0][i], "PWD", 3))
 		{
 			temp = ft_strjoin("PWD=", cwd);
-			free(env->env[i]);
-			env->env[i] = temp;
+			free(env->env[0][i]);
+			env->env[0][i] = temp;
 		}
 		i++;
 	}
@@ -99,29 +99,3 @@ int	ft_cd(t_cmd **cmd)
 	free(temp);
 	return (ERROR);
 }
-
-/*  int main(int argc, char **argv, char **env)
-{
-	t_cmd *cmd;
-	int	i = 0;
-
-	cmd = (t_cmd *)malloc(sizeof(t_cmd) * 1);
-	cmd->cmd_path = "/bin/cd";
-	cmd->arg = (char **)malloc(sizeof(char *) * 3);
-	cmd->arg[0] = "cd";
-	cmd->arg[1] = "/Users/ezhou/minishell/src";
-	cmd->arg[2] = 0;
-	cmd->env = (t_env *)malloc(sizeof(t_env) * 1);
-	cmd->env->env_size = ft_dpointer_size(env);
-	cmd->env->env = (char **)malloc(sizeof(char *) * cmd->env->env_size);
-	while (env[i])
-	{
-		cmd->env->env[i] = ft_strdup(env[i]);
-		i++;
-	}
-	cmd->num_arg = 1;
-	ft_cd(&cmd);
-	i = 0;
-	ft_pwd();
-	return (0);
-}  */

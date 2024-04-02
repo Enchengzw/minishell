@@ -6,11 +6,11 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:22:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/22 15:35:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 18:13:59 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "../../Include/minishell.h"
 
 static void	ft_str_swap(char **a, char **b)
 {

@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/02 11:27:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:43:16 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	ft_create_processes(t_data *data)
 			return (free(childrens), 12);
 		temp = temp->next;
 	}
+	return (SUCCESS);
 }
 
 int	ft_execute(t_data *data)
@@ -86,8 +87,7 @@ int	ft_execute(t_data *data)
 	if (code != INT_MIN)
 		return (code);
 	if (ft_create_pipes(data))
-		return (ft_putstr_fd("Not enough resources to create pipe", STDERR),
-			(ERROR));
+		return (ft_putstr_fd("Not enough resources to create pipe", STDERR), 12);
 	ft_link_io(data);
 	return (ft_create_processes(data));
 }

@@ -6,14 +6,14 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/02 11:28:16 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:14:22 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
+# include "../Libft/libft.h"
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -45,7 +45,7 @@ typedef struct s_fds
 
 typedef struct s_env
 {
-	char			**env;
+	char			***env;
 	int				env_size;
 }					t_env;
 
