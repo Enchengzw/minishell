@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/04/02 11:27:18 by ezhou            ###   ########.fr        #
+#    Updated: 2024/04/03 18:10:21 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -lreadline
+CFLAGS = -g -Wall -Wextra -Werror -lreadline
 
 LIBFT = Libft/
 INCLUDE = Include/

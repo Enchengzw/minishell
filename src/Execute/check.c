@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/26 17:17:51 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/03 11:43:03 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_check_data(t_data *data)
 	temp = data->cmd;
 	while(temp)
 	{
-		if (!ft_check_fds(temp->fds))
+		if (ft_check_fds(temp->fds))
 			return (ERROR);
 		temp = temp->next;
 	}

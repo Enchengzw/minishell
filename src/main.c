@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/02 11:11:21 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/03 18:46:54 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,4 @@ int	main(int argc, char **argv, char **env)
 	ft_main_loop(data);
 	// ft_free_all
 	return (0);
-}
+} 
