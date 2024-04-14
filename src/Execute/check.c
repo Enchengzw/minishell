@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/03 11:43:03 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:23:14 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	ft_check_fds(t_fds *io)
 {
-	if (!io || !io->infile || !io->outfile)
+	if (!io || io->infile == -1 || io->outfile == -1)
 		return (ERROR);
 	return (SUCCESS);
 }
- 
+
 int	ft_check_data(t_data *data)
 {
-	t_cmd *temp;
-	
+	t_cmd	*temp;
+
 	if (!data || !data->cmd)
 		return (SUCCESS);
 	temp = data->cmd;
-	while(temp)
+	while (temp)
 	{
 		if (ft_check_fds(temp->fds))
 			return (ERROR);

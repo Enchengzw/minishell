@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
+#    By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/04/03 18:10:21 by ezhou            ###   ########.fr        #
+#    Updated: 2024/04/11 17:59:48 by rauferna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,10 @@ SRC	=	./src/main.c \
 		./src/Execute/pipes.c \
 		./src/Execute/utils.c \
 		./src/Cleaning/ft_free.c \
+		./src/Parse/check_args.c \
+		./src/Parse/ft_split_mod.c \
+		./src/Parse/parse.c \
+		./src/Parse/redirections.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/03 11:47:58 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/12 11:02:47 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <fcntl.h>
 
 # define GREEN_TEXT "\x1b[32m"
+# define YELLOW_TEXT "\x1b[33m"
 # define RESET_TEXT "\x1b[0m"
 
 # define ERROR 1
@@ -53,11 +54,13 @@ typedef struct s_cmd
 {
 	struct s_cmd	*next;
 	struct s_cmd	*previous;
-	t_fds           *fds;
+	t_fds			*fds;
 	char			*cmd_path;
 	char			**arg;
 	t_env			*env;
 	int				num_arg;
+	int				file_flag;
+	int				cmd_flag;
 }					t_cmd;
 
 typedef struct s_data
@@ -90,10 +93,20 @@ static void			ft_shell_handler(int signal);
 void				ft_child_signals(void);
 void				ft_main_signals(void);
 
+//PARSE
+t_cmd				*ft_parse(char *input, t_data *data);
+void				ft_here_doc(char **args, int i, t_cmd *cmd);
+int					check_redirections(char **args, int i, t_cmd *cmd);
+int					openfile(char *file, int type);
+int					ft_strcmp(const char *s1, const char *s2);
+char				*find_pathcmd(char **envp, char *command);
+char				**ft_split_mod(char const *s, char c);
+t_cmd				*parseinit(char *command, t_data *data);
+
 // EXECUTOR
 int					ft_execute(t_data *data);
 int					ft_create_processes(t_data *data);
-int					ft_actions(pid_t pid, t_cmd *cmd);
+int					ft_actions(pid_t pid, t_cmd *cmd, t_data *data);
 int					ft_redirect(t_cmd *cmd);
 int					ft_restore_io(t_cmd *cmd);
 int					ft_create_pipes(t_data *data);
@@ -103,6 +116,9 @@ int					ft_check_fds(t_fds *io);
 
 // ERROR
 void				ft_exit_error(char *str, int n);
+int					error_cnf(char *command);
+int					error_fnf(char *file);
+int					error_syntax(char *file);
 
 // UTILS
 int					ft_list_size(t_cmd *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/03 17:49:23 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:26:22 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	ft_create_pipes(t_data *data)
 
 void	ft_link_io(t_data *data)
 {
-	t_cmd 	*temp;
-	
+	t_cmd	*temp;
+
 	temp = data->cmd;
-	while(temp)
+	while (temp)
 	{
 		if (!temp->fds->infile)
 		{
