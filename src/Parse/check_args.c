@@ -6,119 +6,123 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/12 13:57:45 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:45:44 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	check_cmd(char **args, int *i, int *j, t_cmd *cmd, t_data *data)
+static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
 {
-	if (*j > 0 && args[*j - 1][0] == '<')
-		return ;	
-	if (cmd->cmd_flag == 1)
-		check_redirections(args, *j, cmd);
+	if (*j > 0 && args[*j - 1][0] == '<' && !args[*j - 1][1])
+		return ;
 	else
 	{
-		cmd->cmd_path = find_pathcmd(data->env, args[*j]);
-		if (cmd->cmd_path)
-		{
-			cmd->cmd_flag = 1;
-			cmd->arg[(*i)++] = args[*j];
-		}
+		if (ft_is_builtin(args[*j]) == 0)
+			cmd->is_builtin = 1;
+		else
+			cmd->cmd_path = find_pathcmd(env, args[*j]);
 	}
 }
 
-void	process_args(char **args, int *j, int *i, t_cmd *cmd, t_data *data)
+static void	check_cmd2(char **args, int *i, int *j, t_cmd *cmd)
 {
-	cmd->num_arg = 0;
+	if (cmd->cmd_path)
+	{
+		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		cmd->cmd_flag = 1;
+	}
+}
+
+static void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
+{
+	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
+		&& (!args[*j + 1] || !args[*j + 1][0]))
+		error_syntax(args[*j]);
+	if (args[*j] && args[*j][0] == ';')
+		cmd->semicolon_flag = 1;
+}
+
+char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
+{
+	int	i;
+
+	i = 0;
 	while (args[*j] && args[*j][0] != '|' && args[*j][0] != ';')
 	{
 		if (args[*j][0] == '<' || args[*j][0] == '>')
 			check_redirections(args, *j, cmd);
 		else if (ft_strncmp(args[*j], "./", 2) == 0)
-			cmd->arg[(*i)++] = args[*j];
-		else if (args[*j][0] != '-')
-			check_cmd(args, i, j, cmd, data);
-		else if (args[*j][0] == '-' && args[*j][1] && cmd->cmd_flag == 1)
-			cmd->arg[(*i)++] = args[*j];
+			cmd->arg[(i)++] = ft_strdup(args[*j]);
+		else if (cmd->cmd_flag == 0)
+		{
+			check_cmd1(data->env, args, j, cmd);
+			check_cmd2(args, &i, j, cmd);
+		}
+		else if (cmd->cmd_flag == 1)
+			cmd->arg[(i)++] = ft_strdup(args[*j]);
 		else
 			error_syntax(args[*j]);
 		(*j)++;
 	}
-	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
-		&& (!args[*j + 1] || !args[*j + 1][0]))
-		error_syntax(args[*j]);
-}
-
-void	check_args(char **args, char *command, t_data *data)
-{
-	int		i;
-	int		j;
-	t_cmd	*temp;
-
-	i = 0;
-	j = 0;
-	data->cmd->file_flag = 0;
-	temp = data->cmd;
-	temp = ft_calloc(1, sizeof(t_cmd));
-	if (!temp)
-		return ;
-	temp->next = NULL;
-	while (args && args[j])
-	{
-		while (args[i])
-			i++;
-		temp->arg = (char **)ft_calloc(i + 1, sizeof(char **));
-		if (!temp->arg)
-		{
-			free (temp->arg);
-			return ;
-		}
-		temp->cmd_flag = 0;
-		i = 0;
-		process_args(args, &j, &i, temp, data);
-		if (args[j])
-			j++;
-		temp->num_arg = i;
-		if (temp->next)
-			temp = temp->next;
-		else if (args[j])
-		{
-			temp->next = ft_calloc(1, sizeof(t_cmd));
-			if (!temp->next)
-				return ;
-			temp = temp->next;
-			temp->next = NULL;
-		}
-		data->cmd = temp;
-	}
-	data->cmd->next = NULL;
-}
-
-t_cmd	*parseinit(char *command, t_data *data)
-{
-	int		i;
-	int		j;
-	char	**args;
-
-	i = 0;
-	j = 0;
-	if (!command)
-		return (NULL);
-	args = ft_split_mod(command, ' ');
-	check_args(args, command, data);
-	int k = 0;
-	while (data->cmd)
-	{
-		while (data->cmd->arg[k])
-			ft_printf("%s\n", data->cmd->arg[k++]);
-		data->cmd = data->cmd->next;
-	}
-	return (data->cmd);
+	ft_check_exceptions(args, j, cmd);
+	return (cmd->arg);
 }
 
 /*
+	int k = 0;
+	while (node->cmd)
+	{
+		while (node->cmd->arg[k])
+			ft_printf("%s\n", node->cmd->arg[k++]);
+		node->cmd = node->cmd->next;
+		ft_printf("--------\n");
+	}
+void	check_args(char **args, t_data *data)
+{
+	int		i;
+	int		j;
+	t_data	*temp;
+
+	i = 0;
+	j = 0;
+	temp = data;
+	temp->cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!temp)
+		return ;
+	temp->cmd->next = NULL;
+	while (args && args[j])
+	{
+		while (args[i++])
+		temp->cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));//calcular long exacta
+		if (!temp->cmd->arg)
+		{
+			free (temp->cmd->arg);
+			return ;
+		}
+		i = 0;
+		data->cmd = temp->cmd;
+		if (args[j])
+		{
+			j++;
+			temp->cmd->next = ft_calloc(1, sizeof(t_cmd));
+			if (!temp->cmd->next)
+				return ;
+			temp->cmd = temp->cmd->next;
+		}
+	}
+}
+*/
+/*
+		if (data->cmd->file_flag == 1)
+		{
+			int k = 0;
+			t_cmd *temp_cmd;
+			temp_cmd = data->cmd->previous;
+			while (temp_cmd->arg[k])
+				ft_printf("%s\n", temp_cmd->arg[k++]);
+			ft_printf("--------\n");
+		}
 	(*i)++;
 	cmd->arg[*i] = NULL;
 

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/12 11:02:47 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:29:26 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ typedef struct s_cmd
 	char			**arg;
 	t_env			*env;
 	int				num_arg;
-	int				file_flag;
+	int				infile_flag;
+	int				outfile_flag;
 	int				cmd_flag;
+	int				semicolon_flag;
+	int				is_builtin;
 }					t_cmd;
 
 typedef struct s_data
@@ -95,13 +98,17 @@ void				ft_main_signals(void);
 
 //PARSE
 t_cmd				*ft_parse(char *input, t_data *data);
+int					ft_is_builtin(char *command);
 void				ft_here_doc(char **args, int i, t_cmd *cmd);
 int					check_redirections(char **args, int i, t_cmd *cmd);
 int					openfile(char *file, int type);
+void				create_struct(char **args, t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);
 t_cmd				*parseinit(char *command, t_data *data);
+char				**process_args(char **args, int *j, t_cmd *cmd,
+						t_data *data);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

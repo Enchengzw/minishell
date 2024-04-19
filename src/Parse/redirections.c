@@ -6,63 +6,45 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/12 11:13:15 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:17:19 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_here_doc(char **args, int i, t_cmd *cmd)
+static int	ft_redirections_init(t_cmd *cmd)
 {
-	char	*line;
-	char	*limit;
-	int		fd;
-	//si sales con Ctrl + D segfault
-	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
+	if (cmd->fds)
 	{
-		error_syntax("newline");
-		return ;
+		if (cmd->fds->infile)
+			close(cmd->fds->infile);
+		if (cmd->fds->outfile)
+			close(cmd->fds->outfile);
 	}
-	if (ft_strlen(args[i]) > 2)
-		limit = args[i] + 2;	
-	else if (args[i + 1] && ft_strlen(args[i]) == 2)
-		limit = args[i + 1];
-	fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	write(2, "> ", 2);
-	line = get_next_line(0);
-	while (1)
-	{
-		if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
-			&& (ft_strlen(line) - 1) == ft_strlen(limit))
-			break ;
-		write(2, "> ", 2);
-		write(fd, line, ft_strlen(line));
-		line = get_next_line(0);
-	}
-	cmd->fds->here_document = fd;
-	close(fd);
-	unlink("temp");
+	cmd->fds = ft_calloc(1, sizeof(t_fds));
+	if (!cmd->fds)
+		return (ERROR);
+	return (SUCCESS);
 }
 
 static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 {
 	if (ft_strncmp(args[*i], "<", 1) == 0)
 	{
-		if (args[*i][*i + 1])
-			cmd->fds->infile = openfile(&args[*i][*i + 1], 1);
-		else
+		if (ft_strlen(args[*i]) == 1)
 			cmd->fds->infile = openfile(args[*i + 1], 1);
+		else
+			cmd->fds->infile = openfile(args[*i] + 1, 1);
 	}
 	else if (ft_strncmp(args[*i], ">", 1) == 0)
 	{
-		if (args[*i][*i + 1])
-			cmd->fds->outfile = openfile(&args[*i][*i + 1], 2);
-		else
+		if (ft_strlen(args[*i]) == 1)
 			cmd->fds->outfile = openfile(args[*i + 1], 2);
+		else
+			cmd->fds->outfile = openfile(args[*i] + 1, 1);
 	}
 	else
 	{
-		cmd->fds->infile = open(args[*i], O_RDONLY, 0644);
 		if (cmd->fds->infile < 0
 			&& ft_strncmp(args[*i - 1], "<<", 2) != 0)
 			error_fnf(args[*i]);
@@ -71,31 +53,28 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 
 int	check_redirections(char **args, int i, t_cmd *cmd)
 {
-	cmd->fds = malloc(sizeof(t_fds));
-	if (!cmd->fds)
-		return (-1);
-	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
+	if (ft_redirections_init(cmd) == 1)
+		return (ERROR);
+	if (!args[i + 1] && (ft_strlen(args[i]) == 2 && (args[i][1] == '<'
+			|| args[i][1] == '>') || ft_strlen(args[i]) == 1))
 	{
-		if (args[i][0] == '<' || args[i][0] == '>')
-			error_syntax(args[i]);
-		else
-			error_fnf(args[i]);
-		return (1);
+		error_syntax(args[i]);
+		return (ERROR);
 	}
-	if (ft_strncmp(args[i], ">>", 1) == 0)
+	else if (ft_strncmp(args[i], ">>", 2) == 0)
 	{
-		if (args[i][i + 1])
-			cmd->fds->outfile = openfile(&args[i][i + 1], 3);
-		else
+		if (ft_strlen(args[i]) == 2)
 			cmd->fds->outfile = openfile(args[i + 1], 3);
+		else
+			cmd->fds->outfile = openfile(args[i] + 2, 3);
 	}
 	else if (ft_strncmp(args[i], "<<", 2) == 0)
 		ft_here_doc(args, i, cmd);
 	else
 		continue_redirections(args, &i, cmd);
 	if (cmd->fds->infile >= 0)
-		cmd->file_flag = 1;
-	return (cmd->fds->infile);
+		cmd->infile_flag = 1;
+	else if (cmd->fds->outfile >= 0)
+		cmd->outfile_flag = 1;
+	return (SUCCESS);
 }
-
-

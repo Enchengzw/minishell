@@ -6,7 +6,7 @@
 #    By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/04/11 17:59:48 by rauferna         ###   ########.fr        #
+#    Updated: 2024/04/18 15:35:10 by rauferna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,8 @@ SRC	=	./src/main.c \
 		./src/Parse/ft_split_mod.c \
 		./src/Parse/parse.c \
 		./src/Parse/redirections.c \
+		./src/Parse/ft_here_doc.c \
+		./src/Parse/parse_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

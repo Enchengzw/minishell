@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/12 14:00:31 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:29:55 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,73 +34,82 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 }
 
-char	*find_path_loop(char *path_line, char *path, char *command)
+static void	node_new(t_cmd *cmd, char **args)
 {
-	int		i;
-	char	**paths;
+	int	i;
 
 	i = 0;
-	while (path_line[i])
+	cmd->infile_flag = 0;
+	cmd->outfile_flag = 0;
+	cmd->cmd_flag = 0;
+	cmd->num_arg = 0;
+	cmd->semicolon_flag = 0;
+	cmd->is_builtin = 0;
+	while (args[i])
+		i++;
+	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
+	if (!cmd->arg)
 	{
-		paths = ft_split(path_line, ':');
-		if (!paths || !paths[i])
-			break ;
-		path = paths[i];
-		if (ft_strchr(command, '/') == NULL)
-		{
-			path = ft_strjoin(path, "/");
-			path = ft_strjoin(path, command);
-		}
+		free (cmd->arg);
+		return ;
+	}
+}
+
+void	create_struct(char **args, t_data *data)
+{
+	int		i;
+	t_cmd	*node;
+	t_cmd	*last;
+
+	if (!data)
+		return ;
+	i = 0;
+	last = NULL;
+	while (args[i])
+	{
+		node = ft_calloc(1, sizeof(t_cmd));
+		if (!node)
+			return ;
+		node_new(node, args);
+		node->next = NULL;
+		node->arg = process_args(args, &i, node, data);
+		if (args[i])
+			i++;
+		if (last)
+			last->next = node;
 		else
-			path = ft_strjoin(path, ft_strrchr(command, '/'));
-		if (access(path, F_OK) == 0)
-			return (free(paths), path);
-		i++;
+			data->cmd = node;
+		last = node;
+		node->num_arg = i;
 	}
-	error_cnf(command);
-	return (free(path), NULL);
 }
 
-char	*find_pathcmd(char **envp, char *command)
+t_cmd	*parseinit(char *command, t_data *data)
 {
 	int		i;
-	char	*path;
-	char	*path_line;
-	char	*res;
-
+	int		j;
+	char	**args;
+	t_cmd	*node;
+	//t_cmd	*current_node;
 	i = 0;
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
-		i++;
-	path_line = envp[i] + 5;
-	return (find_path_loop(path_line, path, command));
-}
-
-int	openfile(char *file, int type)
-{
-	int	fd[2];
-
-	if (type == 1)
-	{
-		fd[0] = open(file, O_RDONLY, 0644);
-		if (fd[0] == -1)
-			error_fnf(file);
-		return (fd[0]);
-	}
-	else if (type == 2)
-	{
-		fd[1] = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd[1] == -1)
-			error_fnf(file);
-		return (fd[1]);
-	}
-	else if (type == 3)
-	{
-		fd[1] = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd[1] == -1)
-			error_fnf(file);
-		return (fd[1]);
-	}
-	exit(EXIT_FAILURE);
+	j = 0;
+	if (!command)
+		return (NULL);
+	args = ft_split_mod(command, ' ');
+	create_struct(args, data);
+	/*
+    current_node = data->cmd;
+    while (current_node)
+    {
+        int k = 0;
+        while (current_node->arg[k])
+            ft_printf("%s\n", current_node->arg[k++]);
+        current_node = current_node->next;
+        ft_printf("--------\n");
+    }
+	*/
+	ft_free_char(args);
+	return (node);
 }
 
 t_cmd	*ft_parse(char *input, t_data *data)
@@ -115,6 +124,7 @@ t_cmd	*ft_parse(char *input, t_data *data)
 }
 
 /*
+		cmd->fds->infile = open(args[*i], O_RDONLY, 0644);
  && (i == 0 || (ft_strncmp(args[i - 1], "|", 1) == 0)
  && ft_strlen(args[i - 1]) == 1)
 
