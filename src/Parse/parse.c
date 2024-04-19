@@ -6,11 +6,25 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/19 10:29:55 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:27:40 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	create_fds(t_cmd *cmd)
+{
+	cmd->fds = ft_calloc(1, sizeof(t_fds));
+	if (!cmd->fds)
+	{
+		ft_putstr_fd("Malloc Error\n", STDERR);
+		return ;
+	}
+	if (cmd->outfile_flag == 0)
+		cmd->fds->outfile = -1;
+	if (cmd->infile_flag == 0)
+		cmd->fds->infile = -1;
+}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
@@ -84,20 +98,29 @@ void	create_struct(char **args, t_data *data)
 	}
 }
 
-t_cmd	*parseinit(char *command, t_data *data)
+int	ft_parse(char *input, t_data *data)
 {
 	int		i;
 	int		j;
 	char	**args;
-	t_cmd	*node;
 	//t_cmd	*current_node;
+	t_cmd	*command;
+
 	i = 0;
 	j = 0;
-	if (!command)
-		return (NULL);
-	args = ft_split_mod(command, ' ');
+	if (!input)
+		return (ERROR);
+	args = ft_split_mod(input, ' ');
 	create_struct(args, data);
-	/*
+	if (data->cmd->infile_flag == 0 || data->cmd->outfile_flag == 0)//hcerlo en toda la estructura
+		create_fds(data->cmd);
+	ft_free_char(args);
+	//checkear si cmd valid y si fd invalid
+	//ft_printf("minishell: Todo mal\n");
+	return (SUCCESS);
+}
+
+/*
     current_node = data->cmd;
     while (current_node)
     {
@@ -107,23 +130,6 @@ t_cmd	*parseinit(char *command, t_data *data)
         current_node = current_node->next;
         ft_printf("--------\n");
     }
-	*/
-	ft_free_char(args);
-	return (node);
-}
-
-t_cmd	*ft_parse(char *input, t_data *data)
-{
-	t_cmd	*command;
-
-	if (!input)
-		return (NULL);
-	command = parseinit(input, data);
-	//ft_printf("minishell: Todo mal\n");
-	return (command);
-}
-
-/*
 		cmd->fds->infile = open(args[*i], O_RDONLY, 0644);
  && (i == 0 || (ft_strncmp(args[i - 1], "|", 1) == 0)
  && ft_strlen(args[i - 1]) == 1)

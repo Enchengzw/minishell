@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/19 11:49:24 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 12:21:14 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_here_doc(char **args, int i, t_cmd *cmd)
 		}
 	}
 	waitpid(pid, NULL, 0);
-	cmd->fds->here_document = fd[1];
+	cmd->fds->infile = fd[1];
 	close(fd[1]);
 	unlink("temp");
 }

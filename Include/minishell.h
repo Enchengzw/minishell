@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/19 10:29:26 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:22:14 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_fds
 {
 	int	infile;
 	int	outfile;
-	int	here_document;
 	int	pipe[2];
 	int	std_in;
 	int	std_out;
@@ -97,7 +96,7 @@ void				ft_child_signals(void);
 void				ft_main_signals(void);
 
 //PARSE
-t_cmd				*ft_parse(char *input, t_data *data);
+int					ft_parse(char *input, t_data *data);
 int					ft_is_builtin(char *command);
 void				ft_here_doc(char **args, int i, t_cmd *cmd);
 int					check_redirections(char **args, int i, t_cmd *cmd);

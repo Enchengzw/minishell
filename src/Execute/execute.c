@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/19 11:09:12 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:04:36 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ int	ft_execute(t_data *data)
 	code = ft_check_data(data);
 	if (code != INT_MIN)
 		return (code);
-	/*if (ft_create_pipes(data) == SUCCESS)
-		return (ft_putstr_fd("Not enough resources to create pipe", STDERR), 12);*/
+	if (ft_create_pipes(data) == SUCCESS)
+		return (ft_putstr_fd("Not enough resources to create pipe\n", STDERR), 12);
 	ft_link_io(data);
 	return (ft_create_processes(data));
 }

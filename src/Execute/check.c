@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/19 11:24:09 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:03:59 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ int	ft_check_data(t_data *data)
 	temp = data->cmd;
 	while (temp)
 	{
+		ft_printf("%d", temp->cmd_flag);
 		if (temp->cmd_flag == 0)
 			return (ERROR);
-		/*if (ft_check_fds(temp))
+		/*if (ft_check_fds(temp->fds))
 			return (ERROR);*/
 		temp = temp->next;
 	}

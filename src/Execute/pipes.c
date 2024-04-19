@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/19 11:46:03 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/19 12:20:02 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	ft_link_io(t_data *data)
 		if (!temp->infile_flag)
 		{			
 			write(2, "B\n", 2);
-			if (temp->fds->here_document)
-				temp->fds->infile = temp->fds->here_document;
-			else if (temp->previous)
+			if (temp->previous)
 				temp->fds->infile = temp->previous->fds->pipe[0];
 		}
 			write(1, "C\n", 1);
