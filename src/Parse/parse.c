@@ -6,25 +6,11 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/19 14:27:40 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:23:09 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-void	create_fds(t_cmd *cmd)
-{
-	cmd->fds = ft_calloc(1, sizeof(t_fds));
-	if (!cmd->fds)
-	{
-		ft_putstr_fd("Malloc Error\n", STDERR);
-		return ;
-	}
-	if (cmd->outfile_flag == 0)
-		cmd->fds->outfile = -1;
-	if (cmd->infile_flag == 0)
-		cmd->fds->infile = -1;
-}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
@@ -53,6 +39,7 @@ static void	node_new(t_cmd *cmd, char **args)
 	int	i;
 
 	i = 0;
+	cmd->file_flag = 0;
 	cmd->infile_flag = 0;
 	cmd->outfile_flag = 0;
 	cmd->cmd_flag = 0;
@@ -112,8 +99,6 @@ int	ft_parse(char *input, t_data *data)
 		return (ERROR);
 	args = ft_split_mod(input, ' ');
 	create_struct(args, data);
-	if (data->cmd->infile_flag == 0 || data->cmd->outfile_flag == 0)//hcerlo en toda la estructura
-		create_fds(data->cmd);
 	ft_free_char(args);
 	//checkear si cmd valid y si fd invalid
 	//ft_printf("minishell: Todo mal\n");

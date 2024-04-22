@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/19 12:51:10 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:55:52 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ static int	ft_redirections_init(t_cmd *cmd)
 static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 {
 	if (ft_strncmp(args[*i], ">>", 2) != 0
-		|| ft_strncmp(args[*i], "<<", 2) != 0)
+		&& ft_strncmp(args[*i], "<<", 2) != 0)
 	{
+		ft_printf("Dsa da\n");
 		if (ft_strncmp(args[*i], "<", 1) == 0)
 		{
 			if (ft_strlen(args[*i]) == 1)
@@ -56,12 +57,12 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 int	check_redirections(char **args, int i, t_cmd *cmd)
 {
 	if (ft_redirections_init(cmd) == 1)
-		return (ERROR);
+		return (-1);
 	if (!args[i + 1] && (ft_strlen(args[i]) == 2 && (args[i][1] == '<'
 			|| args[i][1] == '>') || ft_strlen(args[i]) == 1))
 	{
 		error_syntax(args[i]);
-		return (ERROR);
+		return (-1);
 	}
 	else if (ft_strncmp(args[i], ">>", 2) == 0)
 	{
@@ -74,6 +75,6 @@ int	check_redirections(char **args, int i, t_cmd *cmd)
 		ft_here_doc(args, i, cmd);
 	continue_redirections(args, &i, cmd);
 	if (cmd->fds->outfile == -1 || cmd->fds->infile == -1)
-		return (ERROR);
-	return (SUCCESS);
+		return (-1);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/19 14:22:14 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:12:38 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_cmd
 	int				infile_flag;
 	int				outfile_flag;
 	int				cmd_flag;
+	int				file_flag;
 	int				semicolon_flag;
 	int				is_builtin;
 }					t_cmd;

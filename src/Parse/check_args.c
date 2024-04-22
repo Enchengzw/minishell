@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/18 17:45:44 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:46:10 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
 		if (ft_is_builtin(args[*j]) == 0)
 			cmd->is_builtin = 1;
 		else
+		{
 			cmd->cmd_path = find_pathcmd(env, args[*j]);
+			if (!cmd->cmd_path)
+				cmd->cmd_flag = -1;
+		}
 	}
 }
 
@@ -50,8 +54,10 @@ char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 	i = 0;
 	while (args[*j] && args[*j][0] != '|' && args[*j][0] != ';')
 	{
+		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
+			break ;
 		if (args[*j][0] == '<' || args[*j][0] == '>')
-			check_redirections(args, *j, cmd);
+			cmd->file_flag = check_redirections(args, *j, cmd);
 		else if (ft_strncmp(args[*j], "./", 2) == 0)
 			cmd->arg[(i)++] = ft_strdup(args[*j]);
 		else if (cmd->cmd_flag == 0)

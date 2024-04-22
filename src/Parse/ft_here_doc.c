@@ -6,29 +6,16 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/19 12:21:14 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:18:07 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_here_doc(char **args, int i, t_cmd *cmd)
+static void	ft_here_doc_loop(int *fd, char *limit, char *line)
 {
-	char		*line;
-	char		*limit;
-	int			fd[2];
-	pid_t		pid;
-	//si sales con Ctrl + D al salir no sale con Ctrl + D a la primera
-	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
-	{
-		error_syntax("newline");
-		return ;
-	}
-	if (ft_strlen(args[i]) > 2)
-		limit = args[i] + 2;	
-	else if (args[i + 1] && ft_strlen(args[i]) == 2)
-		limit = args[i + 1];
-	fd[1] = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	pid_t pid;
+
 	if (pipe(fd) == -1)
 		exit(1);//exit
 	pid = fork();
@@ -51,7 +38,44 @@ void	ft_here_doc(char **args, int i, t_cmd *cmd)
 		}
 	}
 	waitpid(pid, NULL, 0);
+}
+
+void	ft_here_doc(char **args, int i, t_cmd *cmd)
+{
+	char		*line;
+	char		*limit;
+	int			fd[2];
+	//si sales con Ctrl + D al salir no sale con Ctrl + D a la primera
+	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
+	{
+		error_syntax("newline");
+		return ;
+	}
+	if (ft_strlen(args[i]) > 2)
+		limit = args[i] + 2;
+	else if (args[i + 1] && ft_strlen(args[i]) == 2)
+		limit = args[i + 1];
+	fd[1] = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	ft_here_doc_loop(fd, limit, line);
 	cmd->fds->infile = fd[1];
 	close(fd[1]);
 	unlink("temp");
 }
+
+/*
+#include <termios.h>
+#include <unistd.h>
+
+void set_non_canonical_mode() {
+    struct termios term;
+
+    // get the current terminal settings
+    tcgetattr(STDIN_FILENO, &term);
+
+    // modify the settings to non-canonical mode
+    term.c_lflag &= ~(ICANON | ECHO);
+
+    // set the terminal to non-canonical mode
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+*/
