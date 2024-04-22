@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/22 11:55:52 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:41:15 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 	if (ft_strncmp(args[*i], ">>", 2) != 0
 		&& ft_strncmp(args[*i], "<<", 2) != 0)
 	{
-		ft_printf("Dsa da\n");
 		if (ft_strncmp(args[*i], "<", 1) == 0)
 		{
 			if (ft_strlen(args[*i]) == 1)
@@ -45,12 +44,12 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 			if (ft_strlen(args[*i]) == 1)
 				cmd->fds->outfile = openfile(args[*i + 1], 2);
 			else
-				cmd->fds->outfile = openfile(args[*i] + 1, 1);
+				cmd->fds->outfile = openfile(args[*i] + 1, 2);
 		}
 	}
 	if (cmd->fds->infile >= 0)
 		cmd->infile_flag = 1;
-	else if (cmd->fds->outfile >= 0)
+	if (cmd->fds->outfile >= 0)
 		cmd->outfile_flag = 1;
 }
 

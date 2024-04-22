@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/19 14:04:36 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:02:03 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_restore_io(t_cmd *cmd)
 
 int	ft_redirect(t_cmd *cmd)
 {
-	if (cmd->fds->infile)
+	if (cmd->fds->infile > 0)
 	{
 		if (dup2(cmd->fds->infile, STDIN_FILENO) == -1)
 		{
@@ -32,8 +32,9 @@ int	ft_redirect(t_cmd *cmd)
 		}
 		close(cmd->fds->infile);
 	}
-	if (cmd->fds->outfile)
+	if (cmd->fds->outfile > 0)
 	{
+		printf("%d\n", cmd->fds->outfile);
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
 		{
 			ft_putstr_fd("Dup2 Error\n", 2);
@@ -95,7 +96,7 @@ int	ft_execute(t_data *data)
 	code = ft_check_data(data);
 	if (code != INT_MIN)
 		return (code);
-	if (ft_create_pipes(data) == SUCCESS)
+	if (ft_create_pipes(data) == ERROR)
 		return (ft_putstr_fd("Not enough resources to create pipe\n", STDERR), 12);
 	ft_link_io(data);
 	return (ft_create_processes(data));
