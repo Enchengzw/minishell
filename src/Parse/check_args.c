@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/23 12:41:48 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:11:10 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ static void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
 		cmd->semicolon_flag = 1;
 }
 
+static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
+{
+	cmd->cmd_path = ft_strdup(args[*j]);
+	cmd->arg[(*i)++] = ft_strdup(args[*j]);
+	cmd->cmd_flag = 1;
+}
+
 char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
 	int	i;
@@ -60,7 +67,7 @@ char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 		if (args[*j][0] == '<' || args[*j][0] == '>')
 			cmd->file_flag = check_redirections(args, *j, cmd);
 		else if (ft_strncmp(args[*j], "./", 2) == 0)
-			cmd->arg[(i)++] = ft_strdup(args[*j]);
+			ft_check_script_or_program(args, j, &i, cmd);
 		else if (cmd->cmd_flag == 0)
 		{
 			check_cmd1(data->env, args, j, cmd);

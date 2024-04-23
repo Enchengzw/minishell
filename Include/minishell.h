@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/23 11:40:23 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:59:34 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_cmd
 	t_fds			*fds;
 	char			*cmd_path;
 	char			**arg;
-	t_env			*env;//puede quitarse quiza
+	t_env			*env;
 	int				num_arg;
 	int				infile_flag;
 	int				outfile_flag;
