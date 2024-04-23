@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/22 18:02:03 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:08:29 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ int	ft_actions(pid_t pid, t_cmd *cmd, t_data *data)
 {
 	if (pid == 0)
 	{
-		/*ft_printf("adsa%s\n %s\n", cmd->cmd_path, cmd->arg[0]);*/
-		//close(cmd->fds->pipe[0]);
+		ft_putstr_fd("I'm the child\n", 2);
 		if (execve(cmd->cmd_path, cmd->arg, data->env) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
 	}
 	else
 	{
 		waitpid(pid, &g_exit_code, 0);
+		ft_putstr("I'm the father\n");
 		if (ft_restore_io(cmd))
 			return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);
 	}
@@ -76,15 +76,18 @@ int	ft_create_processes(t_data *data)
 	childrens = (pid_t *)ft_calloc(size + 1, sizeof(pid_t));
 	while (++i < size)
 	{
+		printf("I'm inside\n");
 		ft_child_signals();
 		if (ft_redirect(temp))
 			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
 		childrens[i] = fork();
 		if (childrens[i] == -1)
 			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
+		ft_putstr_fd("Hello\n", 2);
 		if (ft_actions(childrens[i], temp, data))
 			return (free(childrens), 12);
 		temp = temp->next;
+		ft_putstr_fd("Hola\n", 2);
 	}
 	return (SUCCESS);
 }
@@ -100,4 +103,5 @@ int	ft_execute(t_data *data)
 		return (ft_putstr_fd("Not enough resources to create pipe\n", STDERR), 12);
 	ft_link_io(data);
 	return (ft_create_processes(data));
+	return (0);
 }

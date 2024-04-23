@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/22 17:53:40 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:36:37 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,13 @@ void	ft_link_io(t_data *data)
 	temp = data->cmd;
 	while (temp)
 	{
-			write(2, "A\n", 2);
 		if (temp->infile_flag == 0)
 		{			
-			write(2, "B\n", 2);
 			if (temp->previous)
 				temp->fds->infile = temp->previous->fds->pipe[0];
 		}
-			write(1, "C\n", 2);
-		if (temp->outfile_flag == 0)
+		if (temp->outfile_flag == 0 && temp->next)
 			temp->fds->outfile = temp->fds->pipe[1];
 		temp = temp->next;
-			write(2, "D\n", 2);
 	}
 }

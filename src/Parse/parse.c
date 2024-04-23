@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/22 11:23:09 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:13:35 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 }
 
-static void	node_new(t_cmd *cmd, char **args)
+static void	node_new(t_cmd *cmd, char **args, char **env)
 {
 	int	i;
 
@@ -46,6 +46,7 @@ static void	node_new(t_cmd *cmd, char **args)
 	cmd->num_arg = 0;
 	cmd->semicolon_flag = 0;
 	cmd->is_builtin = 0;
+	cmd->env = &env;
 	while (args[i])
 		i++;
 	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
@@ -71,7 +72,7 @@ void	create_struct(char **args, t_data *data)
 		node = ft_calloc(1, sizeof(t_cmd));
 		if (!node)
 			return ;
-		node_new(node, args);
+		node_new(node, args, data->env);
 		node->next = NULL;
 		node->arg = process_args(args, &i, node, data);
 		if (args[i])
