@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/23 15:30:04 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:41:18 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	ft_redirect(t_cmd *cmd)
 	}
 	if (cmd->fds->outfile > 0)
 	{
-		printf("%d\n", cmd->fds->outfile);
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
 		{
 			ft_putstr_fd("Dup2 Error\n", 2);
@@ -51,6 +50,7 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 	{
 		if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
+		return (0);
 	}
 	else
 	{

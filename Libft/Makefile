@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:53:06 by ezhou             #+#    #+#              #
-#    Updated: 2024/03/07 12:32:25 by ezhou            ###   ########.fr        #
+#    Updated: 2024/04/24 12:30:02 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 ft_lstadd_back_bonus.c ft_lstlast_bonus.c ft_lstdelone_bonus.c \
 ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c ft_putnbr_base.c \
 ft_clean.c print_all_lines.c ft_strchrindex.c ft_strrchrindex.c \
-ft_dpointer_size.c ft_free_dpointer.c ft_realloc.c
+ft_dpointer_size.c ft_free_dpointer.c ft_realloc.c ft_strcmp.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
@@ -43,7 +43,7 @@ $(NAME) : $(OBJ)
 	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c
-	@$(CC) -c -o $@ $<
+	$(CC) -c -o $@ $<
 	@echo "$(COLOUR_BLUE)(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧ Compilando archivos .c$(COLOUR_END)" 
 
 clean:

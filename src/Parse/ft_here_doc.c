@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/22 13:18:07 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:25:38 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,6 @@ void set_non_canonical_mode() {
     struct termios term;
 
     // get the current terminal settings
-    tcgetattr(STDIN_FILENO, &term);
-
-    // modify the settings to non-canonical mode
-    term.c_lflag &= ~(ICANON | ECHO);
-
-    // set the terminal to non-canonical mode
     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 */

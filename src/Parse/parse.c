@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:15:09 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:21:09 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,10 @@ void	ft_init_message(void)
 {
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd(YELLOW_TEXT "             ____WELCOME TO MINISHELL____\n", 1);
+<<<<<<< HEAD
+=======
+	ft_putstr_fd(YELLOW_TEXT "				Made by ezhou and rauferna\n", 1);
+>>>>>>> refs/remotes/origin/master
 	ft_putstr_fd("\n", 1);
 }
 !!CURIOSO Caso= :

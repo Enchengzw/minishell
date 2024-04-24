@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/11 17:02:11 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:24:03 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ typedef struct s_cmd
 	int				num_arg;
 }					t_cmd; */
 
-void	ft_free_content(t_data *data)
+void	ft_free_list(t_cmd *cmd)
 {
-	if (data->user_input)
-		free(data->user_input);
 	//if (data->cmd)
 		//ft_free_list(data->cmd);
 }
