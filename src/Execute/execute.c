@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/23 15:08:29 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/23 15:30:04 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ int	ft_redirect(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	ft_actions(pid_t pid, t_cmd *cmd, t_data *data)
+int	ft_actions(pid_t pid, t_cmd *cmd)
 {
 	if (pid == 0)
 	{
-		ft_putstr_fd("I'm the child\n", 2);
-		if (execve(cmd->cmd_path, cmd->arg, data->env) == -1)
+		if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
 	}
 	else
@@ -84,7 +83,7 @@ int	ft_create_processes(t_data *data)
 		if (childrens[i] == -1)
 			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
 		ft_putstr_fd("Hello\n", 2);
-		if (ft_actions(childrens[i], temp, data))
+		if (ft_actions(childrens[i], temp))
 			return (free(childrens), 12);
 		temp = temp->next;
 		ft_putstr_fd("Hola\n", 2);

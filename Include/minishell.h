@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/22 11:12:38 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:15:35 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char				**process_args(char **args, int *j, t_cmd *cmd,
 // EXECUTOR
 int					ft_execute(t_data *data);
 int					ft_create_processes(t_data *data);
-int					ft_actions(pid_t pid, t_cmd *cmd, t_data *data);
+int					ft_actions(pid_t pid, t_cmd *cmd);
 int					ft_redirect(t_cmd *cmd);
 int					ft_restore_io(t_cmd *cmd);
 int					ft_create_pipes(t_data *data);

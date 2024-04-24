@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/23 13:41:53 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/23 15:22:37 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ t_data	*ft_init(char **env)
 	data->env = ft_dpointer_dupe(env);
 	if (!data->env)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
-	data->cmd = ft_calloc(1, sizeof(t_cmd));
-	if (!data->cmd)
-		return (ft_putstr_fd("Malloc Error\n", STDERR), ft_free_char(data->env),
-			free(data), NULL);
 	return (data);
 }
 

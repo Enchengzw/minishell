@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/23 15:13:35 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:15:09 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 }
 
-static void	node_new(t_cmd *cmd, char **args, char **env)
+static t_cmd *node_new(t_cmd *cmd, char **args, char ***env)
 {
 	int	i;
-
+	
 	i = 0;
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->file_flag = 0;
 	cmd->infile_flag = 0;
 	cmd->outfile_flag = 0;
@@ -46,15 +47,18 @@ static void	node_new(t_cmd *cmd, char **args, char **env)
 	cmd->num_arg = 0;
 	cmd->semicolon_flag = 0;
 	cmd->is_builtin = 0;
-	cmd->env = &env;
+	cmd->env = (t_env *)malloc(sizeof(t_env));
+	cmd->env->env = env;
+	cmd->env->env_size = ft_dpointer_size(*env);
 	while (args[i])
 		i++;
 	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
 	if (!cmd->arg)
 	{
 		free (cmd->arg);
-		return ;
+		return (NULL);
 	}
+	return (cmd);
 }
 
 void	create_struct(char **args, t_data *data)
@@ -69,10 +73,10 @@ void	create_struct(char **args, t_data *data)
 	last = NULL;
 	while (args[i])
 	{
-		node = ft_calloc(1, sizeof(t_cmd));
+		node = node_new(node, args, &data->env);
+
 		if (!node)
 			return ;
-		node_new(node, args, data->env);
 		node->next = NULL;
 		node->arg = process_args(args, &i, node, data);
 		if (args[i])
