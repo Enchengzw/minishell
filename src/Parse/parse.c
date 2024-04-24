@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:21:09 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 15:23:17 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 }
 
-static t_cmd *node_new(t_cmd *cmd, char **args, char ***env)
+static t_cmd *node_new(t_cmd *cmd, char **args, char ***env, int *exit_code)
 {
 	int	i;
 	
@@ -50,6 +50,7 @@ static t_cmd *node_new(t_cmd *cmd, char **args, char ***env)
 	cmd->env = (t_env *)malloc(sizeof(t_env));
 	cmd->env->env = env;
 	cmd->env->env_size = ft_dpointer_size(*env);
+	cmd->exit_code = exit_code;
 	while (args[i])
 		i++;
 	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
@@ -73,7 +74,7 @@ void	create_struct(char **args, t_data *data)
 	last = NULL;
 	while (args[i])
 	{
-		node = node_new(node, args, &data->env);
+		node = node_new(node, args, &data->env, &data->exit_code);
 
 		if (!node)
 			return ;

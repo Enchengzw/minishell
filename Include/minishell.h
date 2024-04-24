@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/24 12:21:56 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 15:19:08 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,13 @@ typedef struct s_cmd
 	int				file_flag;
 	int				semicolon_flag;
 	int				is_builtin;
+	int				*exit_code;
 }					t_cmd;
 
 typedef struct s_data
 {
 	// t_token		*token;
+	int				exit_code;
 	char			*user_input;
 	char			**env;
 	t_cmd			*cmd;

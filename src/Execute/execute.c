@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/24 12:41:18 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 13:18:50 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_redirect(t_cmd *cmd)
 	if (cmd->fds->outfile > 0)
 	{
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
-		{
+		{ 
 			ft_putstr_fd("Dup2 Error\n", 2);
 			return (ERROR);
 		}
