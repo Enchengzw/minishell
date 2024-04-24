@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/02 18:04:26 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 17:35:26 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,27 @@ static	void	ft_update_pwd(t_env *env)
 
 int	ft_cd(t_cmd **cmd)
 {
-	int		i;
 	char	*temp;
 
-	i = 0;
 	temp = ft_strdup((*cmd)->arg[1]);
 	ft_update_oldpwd((*cmd)->env);
 	if ((*cmd)->num_arg == 0)
 	{
+		if (!getenv("HOME"))
+		{
+			printf("bash: cd: HOME not set\n");
+			return (free(temp), ERROR);
+		}
 		chdir(getenv("HOME"));
 		ft_update_pwd((*cmd)->env);
-		return (SUCCESS);
+		return (free(temp), SUCCESS);
 	}
 	if (chdir(temp) == -1)
 		printf("bash: cd: %s: No such file or directory\n", temp);
 	else
 	{
-		free(temp);
 		ft_update_pwd((*cmd)->env);
-		return (SUCCESS);
+		return (free(temp), SUCCESS);
 	}
-	free(temp);
-	return (ERROR);
+	return (free(temp), ERROR);
 }
