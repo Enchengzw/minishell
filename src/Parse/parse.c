@@ -3,41 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 16:13:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 16:36:33 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ft_strcmp(const char *s1, const char *s2)
+static void	link_nodes(t_data *data)
 {
-	unsigned int	i;
-	unsigned int	lens1;
-	unsigned int	lens2;
-	unsigned int	n;
+	t_cmd	*cmd;
+	t_cmd	*next;
 
-	i = 0;
-	lens1 = ft_strlen(s1);
-	lens2 = ft_strlen(s2);
-	if (lens1 > lens2)
-		n = lens1;
-	else
-		n = lens2;
-	while ((s1[i] && s2[i]) && (s1[i] == s2[i]) && i < n)
-		i++;
-	if (i < n)
-		return ((int)((unsigned char)(s1[i]) - ((unsigned char)s2[i])));
-	else
-		return (0);
+	cmd = data->cmd;
+	cmd->previous = NULL;
+	next = data->cmd->next;
+	while (next)
+	{
+		next->previous = cmd;
+		cmd = cmd->next;
+		next = next->next;
+	}
 }
 
-static t_cmd *node_new(t_cmd *cmd, char **args, char ***env)
+static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env)
 {
 	int	i;
-	
+
 	i = 0;
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->file_flag = 0;
@@ -47,17 +41,16 @@ static t_cmd *node_new(t_cmd *cmd, char **args, char ***env)
 	cmd->num_arg = 0;
 	cmd->semicolon_flag = 0;
 	cmd->is_builtin = 0;
-	cmd->env = (t_env *)malloc(sizeof(t_env));
+	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
+	if (!cmd->env)
+		return (NULL);
 	cmd->env->env = env;
 	cmd->env->env_size = ft_dpointer_size(*env);
 	while (args[i])
 		i++;
 	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
 	if (!cmd->arg)
-	{
-		free (cmd->arg);
-		return (NULL);
-	}
+		return (free(cmd->arg), NULL);
 	return (cmd);
 }
 
@@ -74,7 +67,6 @@ void	create_struct(char **args, t_data *data)
 	while (args[i])
 	{
 		node = node_new(node, args, &data->env);
-
 		if (!node)
 			return ;
 		node->next = NULL;
@@ -95,18 +87,19 @@ int	ft_parse(char *input, t_data *data)
 	int		i;
 	int		j;
 	char	**args;
-	//t_cmd	*current_node;
 	t_cmd	*command;
 
 	i = 0;
 	j = 0;
 	if (!input)
 		return (ERROR);
+	//input = pre_check_quotes(input);
 	args = ft_split_mod(input, ' ');
 	create_struct(args, data);
+	if (data->cmd)
+		link_nodes(data);
+	//free(input);
 	ft_free_char(args);
-	//checkear si cmd valid y si fd invalid
-	//ft_printf("minishell: Todo mal\n");
 	return (SUCCESS);
 }
 
@@ -149,10 +142,7 @@ void	ft_init_message(void)
 {
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd(YELLOW_TEXT "             ____WELCOME TO MINISHELL____\n", 1);
-<<<<<<< HEAD
-=======
 	ft_putstr_fd(YELLOW_TEXT "				Made by ezhou and rauferna\n", 1);
->>>>>>> refs/remotes/origin/master
 	ft_putstr_fd("\n", 1);
 }
 !!CURIOSO Caso= :

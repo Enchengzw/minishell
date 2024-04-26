@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_mod.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:09 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/24 19:55:46 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,3 +130,18 @@ char	**ft_split_mod(char const *s, char c)
 	res[i] = 0;
 	return (res);
 }
+
+/*else if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
+	i++;
+		while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')))
+	{
+		if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
+		{
+			res[j] = s[i + 1];
+			i += 2;
+		}
+		else
+			res[j] = s[i++];
+		j++;
+	}
+	*/

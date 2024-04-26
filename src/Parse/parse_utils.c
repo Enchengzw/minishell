@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:47 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:03:47 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
+{
+	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
+		&& (!args[*j + 1] || !args[*j + 1][0]))
+		error_syntax(args[*j]);
+	if (args[*j] && args[*j][0] == ';')
+		cmd->semicolon_flag = 1;
+}
 
 int	ft_is_builtin(char *command)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/24 16:12:38 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:44:25 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_redirect(t_cmd *cmd)
 	if (cmd->fds->outfile > 0)
 	{
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
-		{ 
+		{
 			ft_putstr_fd("Dup2 Error\n", 2);
 			return (ERROR);
 		}
@@ -48,6 +48,7 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 {
 	if (pid == 0)
 	{
+		ft_child_signals();
 		if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
 		return (0);
@@ -55,7 +56,7 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 	else
 	{
 		waitpid(pid, &g_exit_code, 0);
-		ft_putstr("I'm the father\n");
+		ft_putnbr_fd(cmd->fds->std_in, 2);
 		if (ft_restore_io(cmd))
 			return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);
 	}
@@ -75,19 +76,16 @@ int	ft_create_processes(t_data *data)
 	childrens = (pid_t *)ft_calloc(size + 1, sizeof(pid_t));
 	while (++i < size)
 	{
-		printf("I'm inside\n");
-		ft_child_signals();
 		if (ft_redirect(temp))
 			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
 		childrens[i] = fork();
 		if (childrens[i] == -1)
 			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
-		ft_putstr_fd("Hello\n", 2);
 		if (ft_actions(childrens[i], temp))
 			return (free(childrens), 12);
 		temp = temp->next;
-		ft_putstr_fd("Hola\n", 2);
 	}
+	printf("WE OUT\n");
 	return (SUCCESS);
 }
 
@@ -101,6 +99,11 @@ int	ft_execute(t_data *data)
 	if (ft_create_pipes(data) == ERROR)
 		return (ft_putstr_fd("Not enough resources to create pipe\n", STDERR), 12);
 	ft_link_io(data);
-	return (ft_create_processes(data));
-	return (0);
+/* 	while (data->cmd)
+	{
+		ft_printf("INFILE: %d OUTFILE : %d PIPE[0] : %d PIPE [1] : %d INFILE_FLAG: %d \n", data->cmd->fds->infile, data->cmd->fds->outfile, data->cmd->fds->pipe[0], data->cmd->fds->pipe[1], data->cmd->infile_flag);
+		data->cmd = data->cmd->next;
+	} */
+	return (ft_create_processes(data)); 
+/*  	return (0);  */
 }

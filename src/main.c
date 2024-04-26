@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 16:13:17 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:47:23 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ t_data	*ft_init(char **env)
 	data->env = ft_dpointer_dupe(env);
 	if (!data->env)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
+	data->std_in = dup(STDIN_FILENO);
+	data->std_out = dup(STDOUT_FILENO);
+	ft_putstr_fd("THIS IS STDIN: ", 2);
+	ft_putnbr_fd(data->std_in, 2);
+	ft_putstr_fd("\n", 2);
 	return (data);
 }
 
@@ -33,12 +38,17 @@ void	ft_main_loop(t_data *data)
 		ft_main_signals();
 		data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
 		if (!data->user_input)
-			ft_exit_error("exit", ERROR);
+			ft_exit_error("exit\n", ERROR);
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
 		ft_child_signals();
 		g_exit_code = ft_execute(data);
-		//ft_free_content(data);
+		if (data->cmd)
+		{
+			free(data->user_input);
+			ft_free_list(data->cmd);
+			data->cmd = NULL;
+		}
 	}
 }
 

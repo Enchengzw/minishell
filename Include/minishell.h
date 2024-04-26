@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/24 16:12:09 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:20:06 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <termios.h>
 
 # define GREEN_TEXT "\x1b[32m"
 # define YELLOW_TEXT "\x1b[33m"
@@ -98,9 +99,11 @@ void				ft_main_signals(void);
 
 //PARSE
 int					ft_parse(char *input, t_data *data);
+void				ft_check_exceptions(char **args, int *j, t_cmd *cmd);
 int					ft_is_builtin(char *command);
-void				ft_here_doc(char **args, int i, t_cmd *cmd);
-int					check_redirections(char **args, int i, t_cmd *cmd);
+char				*pre_check_quotes(char *input);
+int					ft_here_doc(char **args, int i, t_cmd *cmd);
+int					check_redirections(char **args, int i, t_cmd *cmd, t_data *data);
 int					openfile(char *file, int type);
 void				create_struct(char **args, t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
@@ -132,5 +135,6 @@ int					ft_list_size(t_cmd *cmd);
 
 // CLEANING
 void				ft_free_content(t_data *data);
+void				ft_free_list(t_cmd *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/22 17:54:11 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:34:51 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_check_fds(t_fds *io)
 }
 */
 
-void	create_fds(t_cmd *cmd)
+void	create_fds(t_cmd *cmd, t_data *data)
 {
 	if (cmd->file_flag == 0)
 	{
@@ -36,6 +36,9 @@ void	create_fds(t_cmd *cmd)
 		cmd->fds->outfile = 0;
 	if (cmd->infile_flag == 0)
 		cmd->fds->infile = 0;
+	cmd->fds->std_in = data->std_in;
+	cmd->fds->std_out =data->std_out;
+	printf("HE ENTRADO\n");
 	//ft_printf("Dsa da\ninfile: %d\noutfile: %d\n", cmd->fds->infile, cmd->fds->outfile);
 }
 
@@ -52,7 +55,7 @@ int	ft_check_data(t_data *data)
 			return (ERROR);
 		//ft_printf("No errors\ninfile: %d\noutfile: %d\n", temp->infile_flag, temp->outfile_flag);
 		if (temp->infile_flag == 0 || temp->outfile_flag == 0)
-			create_fds(temp);
+			create_fds(temp, data);
 		//ft_printf("Create fd OK\n");
 		//ft_printf("A A\ninfile: %d\noutfile: %d\n", temp->fds->infile, temp->fds->outfile);
 		//ft_printf("-------------------------------------------------------------------\n");

@@ -3,44 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:38 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/25 19:14:20 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	ft_here_doc_loop(int *fd, char *limit, char *line)
+static void	ft_here_doc_loop(char *line, char *limit, int fd)
 {
-	pid_t pid;
-
-	if (pipe(fd) == -1)
-		exit(1);//exit
-	pid = fork();
-	if (pid == -1)
-		exit(1);//exit
-	else if (pid == 0)
+	write(2, "> ", 2);
+	line = get_next_line(0);
+	while (1)
 	{
+		if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
+			&& (ft_strlen(line) - 1) == ft_strlen(limit))
+			break ;
 		write(2, "> ", 2);
+		write(fd, line, ft_strlen(line));
+		free(line);
 		line = get_next_line(0);
-		while (1)
-		{
-			if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
-				&& (ft_strlen(line) - 1) == ft_strlen(limit))
-				break ;
-			write(2, "> ", 2);
-			write(fd[1], line, ft_strlen(line));
-			line = get_next_line(0);
-			if (!line)
-				kill(pid, SIGTERM);
-		}
 	}
-	waitpid(pid, NULL, 0);
+	if (line)
+		free(line);
 }
 
-void	ft_here_doc(char **args, int i, t_cmd *cmd)
+static int	ft_here_doc_2(int *fd, char *limit, char *line)
+{
+	pid_t			pid;
+	struct termios	old_termios;
+	struct termios	new_termios;
+
+	tcgetattr(0, &old_termios);
+	new_termios = old_termios;
+	new_termios.c_lflag &= ~(ICANON | ECHO);
+	tcsetattr(0, TCSANOW, &new_termios);
+	if (pipe(fd) == -1)
+		return (1);
+	pid = fork();
+	if (pid == -1)
+		return (1);
+	else if (pid == 0)
+	{
+		close(fd[0]);
+		ft_here_doc_loop(line, limit, fd[1]);
+		close(fd[1]);
+		exit(0);
+	}
+	tcsetattr(0, TCSANOW, &old_termios);
+	waitpid(pid, NULL, 0);
+	return (0);
+}
+
+int	ft_here_doc(char **args, int i, t_cmd *cmd)
 {
 	char		*line;
 	char		*limit;
@@ -49,17 +66,19 @@ void	ft_here_doc(char **args, int i, t_cmd *cmd)
 	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
 	{
 		error_syntax("newline");
-		return ;
+		return (1);
 	}
 	if (ft_strlen(args[i]) > 2)
 		limit = args[i] + 2;
 	else if (args[i + 1] && ft_strlen(args[i]) == 2)
 		limit = args[i + 1];
-	fd[1] = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	ft_here_doc_loop(fd, limit, line);
-	cmd->fds->infile = fd[1];
+	if (pipe(fd) == -1)
+		return (1);
+	if (ft_here_doc_2(fd, limit, line) == 1)
+		return (write(STDERR, "Here doc error\n", STDERR));
+	cmd->fds->infile = fd[0];
 	close(fd[1]);
-	unlink("temp");
+	return (0);
 }
 
 /*

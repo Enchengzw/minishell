@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:21 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 13:21:22 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	ft_redirections_init(t_cmd *cmd)
+static int	ft_redirections_init(t_cmd *cmd, t_data *data)
 {
 	if (cmd->fds)
 	{
@@ -24,6 +24,8 @@ static int	ft_redirections_init(t_cmd *cmd)
 	cmd->fds = ft_calloc(1, sizeof(t_fds));
 	if (!cmd->fds)
 		return (ERROR);
+	cmd->fds->std_in = data->std_in;
+	cmd->fds->std_out =data->std_out;
 	return (SUCCESS);
 }
 
@@ -53,9 +55,9 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 		cmd->outfile_flag = 1;
 }
 
-int	check_redirections(char **args, int i, t_cmd *cmd)
+int	check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 {
-	if (ft_redirections_init(cmd) == 1)
+	if (ft_redirections_init(cmd, data) == 1)
 		return (-1);
 	if (!args[i + 1] && (ft_strlen(args[i]) == 2 && (args[i][1] == '<'
 			|| args[i][1] == '>') || ft_strlen(args[i]) == 1))
@@ -71,7 +73,10 @@ int	check_redirections(char **args, int i, t_cmd *cmd)
 			cmd->fds->outfile = openfile(args[i] + 2, 3);
 	}
 	else if (ft_strncmp(args[i], "<<", 2) == 0)
-		ft_here_doc(args, i, cmd);
+	{
+		if (ft_here_doc(args, i, cmd) == 1)
+			return (1);
+	}
 	continue_redirections(args, &i, cmd);
 	if (cmd->fds->outfile == -1 || cmd->fds->infile == -1)
 		return (-1);

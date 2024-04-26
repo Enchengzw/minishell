@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 12:24:16 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/04/26 16:18:28 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
 {
-	if (*j > 0 && args[*j - 1][0] == '<' && !args[*j - 1][1])
+	if (*j > 0 && (args[*j - 1][0] == '<' && !args[*j - 1][1])
+		&& (args[*j - 1][0] == '<' && args[*j - 1][1] == '<'))
 		return ;
 	else
 	{
@@ -31,20 +32,31 @@ static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
 
 static void	check_cmd2(char **args, int *i, int *j, t_cmd *cmd)
 {
-	if (cmd->cmd_path)
+	if (cmd->is_builtin == 1)
+	{
+		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		cmd->cmd_flag = 1;
+	}
+	else if (cmd->cmd_path)
 	{
 		cmd->arg[(*i)++] = ft_strdup(args[*j]);
 		cmd->cmd_flag = 1;
 	}
 }
 
-static void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
+static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 {
-	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
-		&& (!args[*j + 1] || !args[*j + 1][0]))
-		error_syntax(args[*j]);
-	if (args[*j] && args[*j][0] == ';')
-		cmd->semicolon_flag = 1;
+	if (*j > 0 && args[*j - 1][0] == '>' || args[*j - 1][0] == '<')
+		return ;
+	else
+		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+}
+
+static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
+{
+	cmd->cmd_path = ft_strdup(args[*j]);
+	cmd->arg[(*i)++] = ft_strdup(args[*j]);
+	cmd->cmd_flag = 1;
 }
 
 char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
@@ -57,20 +69,21 @@ char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
 		if (args[*j][0] == '<' || args[*j][0] == '>')
-			cmd->file_flag = check_redirections(args, *j, cmd);
+			cmd->file_flag = check_redirections(args, *j, cmd, data);
 		else if (ft_strncmp(args[*j], "./", 2) == 0)
-			cmd->arg[(i)++] = ft_strdup(args[*j]);
+			ft_check_script_or_program(args, j, &i, cmd);
 		else if (cmd->cmd_flag == 0)
 		{
 			check_cmd1(data->env, args, j, cmd);
 			check_cmd2(args, &i, j, cmd);
 		}
 		else if (cmd->cmd_flag == 1)
-			cmd->arg[(i)++] = ft_strdup(args[*j]);
+			ft_check_rest(cmd, args, &i, j);
 		else
 			error_syntax(args[*j]);
 		(*j)++;
 	}
+	cmd->arg[i] = NULL;
 	ft_check_exceptions(args, j, cmd);
 	return (cmd->arg);
 }
@@ -208,11 +221,17 @@ t_cmd	*parseinit(char *command, t_data *data)
 			ft_printf("%s", data->cmd->arg[k++]);
 		}
 
-for each command in the command line:
-    if the command includes a pipe:
-        split the command into two parts at the pipe
-        execute the first part and store its output
-        pass the output as input to the second part and execute it
-    else:
-        execute the command
+	if (cmd->is_builtin == 1)
+	{
+		if (ft_strcmp("echo", args[0]) == 0
+			&& ft_strcmp("-n", args[1]) == 0)
+			cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		else if (args[*i][0] != '-')
+			cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		else
+		{
+			error_syntax(args[*j]);
+			cmd->cmd_flag = -1;
+		}
+	}
 */
