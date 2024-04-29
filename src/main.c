@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/26 13:47:23 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:37:27 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ t_data	*ft_init(char **env)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
 	data->std_in = dup(STDIN_FILENO);
 	data->std_out = dup(STDOUT_FILENO);
-	ft_putstr_fd("THIS IS STDIN: ", 2);
-	ft_putnbr_fd(data->std_in, 2);
-	ft_putstr_fd("\n", 2);
 	return (data);
 }
 

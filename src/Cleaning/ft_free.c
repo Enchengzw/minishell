@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/26 12:04:17 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:41:34 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 			close(node->fds->outfile);
 			free(node->fds);
 		}
-		ft_printf("freed file\n");
+		//ft_printf("freed file\n");
 		if (node->cmd_path)
 			free(node->cmd_path);
-		ft_printf("freed path\n");
+		//ft_printf("freed path\n");
 		if (node->arg)
 			ft_free_char(node->arg);
-		ft_printf("freed arg\n");
+		//ft_printf("freed arg\n");
 		free(node);
-		ft_printf("*************************\n");
+		//ft_printf("*************************\n");
 		node = node->next;
 	}
 }

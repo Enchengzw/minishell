@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/26 13:44:25 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:38:51 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_restore_io(t_cmd *cmd)
 
 int	ft_redirect(t_cmd *cmd)
 {
-	if (cmd->fds->infile > 0)
+	if (cmd->fds->infile >= 0)
 	{
 		if (dup2(cmd->fds->infile, STDIN_FILENO) == -1)
 		{
@@ -32,7 +32,7 @@ int	ft_redirect(t_cmd *cmd)
 		}
 		close(cmd->fds->infile);
 	}
-	if (cmd->fds->outfile > 0)
+	if (cmd->fds->outfile >= 0)
 	{
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
 		{
@@ -56,7 +56,6 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 	else
 	{
 		waitpid(pid, &g_exit_code, 0);
-		ft_putnbr_fd(cmd->fds->std_in, 2);
 		if (ft_restore_io(cmd))
 			return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);
 	}
@@ -85,7 +84,6 @@ int	ft_create_processes(t_data *data)
 			return (free(childrens), 12);
 		temp = temp->next;
 	}
-	printf("WE OUT\n");
 	return (SUCCESS);
 }
 

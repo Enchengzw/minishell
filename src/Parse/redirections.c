@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/26 13:21:22 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:39:15 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 				cmd->fds->outfile = openfile(args[*i] + 1, 2);
 		}
 	}
-	if (cmd->fds->infile >= 0)
+	if (cmd->fds->infile && cmd->fds->infile != -1)
 		cmd->infile_flag = 1;
-	if (cmd->fds->outfile >= 0)
+	if (cmd->fds->outfile && cmd->fds->outfile != -1)
 		cmd->outfile_flag = 1;
 }
 

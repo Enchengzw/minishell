@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/26 16:36:33 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:26:15 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	ft_parse(char *input, t_data *data)
 	if (!input)
 		return (ERROR);
 	//input = pre_check_quotes(input);
+	if (!input)
+		return (write(2, "Unspected quote \n", 17), ERROR);
 	args = ft_split_mod(input, ' ');
 	create_struct(args, data);
 	if (data->cmd)
