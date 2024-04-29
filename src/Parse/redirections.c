@@ -6,26 +6,29 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/29 16:39:15 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:44:37 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	ft_redirections_init(t_cmd *cmd, t_data *data)
+static int	ft_redirections_init(t_cmd *cmd, char **args, int *i, t_data *data)
 {
 	if (cmd->fds)
 	{
-		if (cmd->fds->infile)
+		if (cmd->infile_flag == 1 && args[*i][0] != '>')
 			close(cmd->fds->infile);
-		if (cmd->fds->outfile)
+		if (cmd->outfile_flag == 1 && args[*i][0] == '>')
 			close(cmd->fds->outfile);
 	}
-	cmd->fds = ft_calloc(1, sizeof(t_fds));
-	if (!cmd->fds)
-		return (ERROR);
+	else
+	{
+		cmd->fds = ft_calloc(1, sizeof(t_fds));
+		if (!cmd->fds)
+			return (ERROR);
+	}
 	cmd->fds->std_in = data->std_in;
-	cmd->fds->std_out =data->std_out;
+	cmd->fds->std_out = data->std_out;
 	return (SUCCESS);
 }
 
@@ -40,6 +43,7 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 				cmd->fds->infile = openfile(args[*i + 1], 1);
 			else
 				cmd->fds->infile = openfile(args[*i] + 1, 1);
+			cmd->infile_flag = 1;
 		}
 		else if (ft_strncmp(args[*i], ">", 1) == 0)
 		{
@@ -47,17 +51,14 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 				cmd->fds->outfile = openfile(args[*i + 1], 2);
 			else
 				cmd->fds->outfile = openfile(args[*i] + 1, 2);
+			cmd->outfile_flag = 1;
 		}
 	}
-	if (cmd->fds->infile && cmd->fds->infile != -1)
-		cmd->infile_flag = 1;
-	if (cmd->fds->outfile && cmd->fds->outfile != -1)
-		cmd->outfile_flag = 1;
 }
 
 int	check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 {
-	if (ft_redirections_init(cmd, data) == 1)
+	if (ft_redirections_init(cmd, args, &i, data) == 1)
 		return (-1);
 	if (!args[i + 1] && (ft_strlen(args[i]) == 2 && (args[i][1] == '<'
 			|| args[i][1] == '>') || ft_strlen(args[i]) == 1))
@@ -71,6 +72,7 @@ int	check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 			cmd->fds->outfile = openfile(args[i + 1], 3);
 		else
 			cmd->fds->outfile = openfile(args[i] + 2, 3);
+		cmd->outfile_flag = 1;
 	}
 	else if (ft_strncmp(args[i], "<<", 2) == 0)
 	{
