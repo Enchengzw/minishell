@@ -6,13 +6,13 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/26 16:18:28 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:24:54 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
+static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 {
 	if (*j > 0 && (args[*j - 1][0] == '<' && !args[*j - 1][1])
 		&& (args[*j - 1][0] == '<' && args[*j - 1][1] == '<'))
@@ -23,15 +23,11 @@ static void	check_cmd1(char **env, char **args, int *j, t_cmd *cmd)
 			cmd->is_builtin = 1;
 		else
 		{
-			cmd->cmd_path = find_pathcmd(env, args[*j]);
+			cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*j]);
 			if (!cmd->cmd_path)
 				cmd->cmd_flag = -1;
 		}
 	}
-}
-
-static void	check_cmd2(char **args, int *i, int *j, t_cmd *cmd)
-{
 	if (cmd->is_builtin == 1)
 	{
 		cmd->arg[(*i)++] = ft_strdup(args[*j]);
@@ -46,20 +42,40 @@ static void	check_cmd2(char **args, int *i, int *j, t_cmd *cmd)
 
 static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 {
+	int	k;
+
+	k = 0;
 	if (*j > 0 && args[*j - 1][0] == '>' || args[*j - 1][0] == '<')
 		return ;
+	else if (args[*j][0] == '$')
+	{
+		while ((*(cmd->env->env))[k])//echo $PATH | tr ':' '\n'
+		{
+			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + 1,
+				ft_strlen(args[*j]) - 1) == 0)
+				cmd->arg[(*i)++] = ft_strdup((*(cmd->env->env))[k]
+						+ ft_strlen(args[*j]));
+			k++;
+		}
+	}
 	else
 		cmd->arg[(*i)++] = ft_strdup(args[*j]);
 }
 
 static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
 {
+	if (access(args[*j], F_OK) != 0)
+	{
+		error_fnf(args[*j]);
+		cmd->cmd_flag = -1;
+		return ;
+	}
 	cmd->cmd_path = ft_strdup(args[*j]);
 	cmd->arg[(*i)++] = ft_strdup(args[*j]);
 	cmd->cmd_flag = 1;
 }
 
-char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
+char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
 	int	i;
 
@@ -69,14 +85,11 @@ char	**process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
 		if (args[*j][0] == '<' || args[*j][0] == '>')
-			cmd->file_flag = check_redirections(args, *j, cmd, data);
+			cmd->file_flag = ft_check_redirections(args, *j, cmd, data);
 		else if (ft_strncmp(args[*j], "./", 2) == 0)
 			ft_check_script_or_program(args, j, &i, cmd);
 		else if (cmd->cmd_flag == 0)
-		{
-			check_cmd1(data->env, args, j, cmd);
-			check_cmd2(args, &i, j, cmd);
-		}
+			check_cmd(args, &i, j, cmd);
 		else if (cmd->cmd_flag == 1)
 			ft_check_rest(cmd, args, &i, j);
 		else

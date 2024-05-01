@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/22 15:35:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/01 13:00:25 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_echo(char **args)
 		}
 		while (args[i])
 		{
-			printf("%s", args[i]);
+			ft_printf("%s", args[i]);
 			if (args[i + 1] && args[i][0] != '\0')
 				write(1, " ", 1);
 			i++;

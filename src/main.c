@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/29 16:37:27 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:50:24 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,11 @@ int	main(int argc, char **argv, char **env)
 }
 
 //comprobar permisos antes de ejecutar
-//cuando haces Ctrl + C no debe aparecer ^C
-//Cerrar parser cuando haya error
+//cuando haces Ctrl + C no debe aparecer ^C (opcional)
+//Los builtins no redirigen el outfile bien
+//si pones por ejemplo echo $PATH | tr ':' '\n' no le llega el path
+//No estan arreglados unos casos que habias arreglado en cd, porque he tenido que arreglar el de echo
+//cuando pongas echo $? que muestre el return del antiguo comando
+//Los builtins los he puesto yo para ir probando ciertos casos y faltan cosas, por ejemplo en exit, no se a que se refiere con t_cmd **start
+//las señales no sale con control c a la primera cuando ejecutas varios comandos
+

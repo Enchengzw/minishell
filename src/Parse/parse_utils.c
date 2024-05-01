@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/29 18:35:25 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:12:06 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_is_builtin(char *command)
 		return (1);
 }
 
-char	*find_path_loop(char *path_line, char *path, char *command)
+static char	*find_path_loop(char *path_line, char *path, char *command)
 {
 	int		i;
 	char	**paths;
@@ -68,7 +68,7 @@ char	*find_path_loop(char *path_line, char *path, char *command)
 	return (free(path), NULL);
 }
 
-char	*find_pathcmd(char **envp, char *command)
+char	*ft_find_pathcmd(char **envp, char *command)
 {
 	int		i;
 	char	*path;
@@ -82,7 +82,7 @@ char	*find_pathcmd(char **envp, char *command)
 	return (find_path_loop(path_line, path, command));
 }
 
-int	openfile(char *file, int type)
+int	ft_openfile(char *file, int type)
 {
 	int	fd[2];
 

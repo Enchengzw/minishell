@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/24 19:55:46 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:20:14 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,11 @@ static char	*getarray(const char *s, char c)
 	j = 0;
 	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')))
 	{
-		if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
+		if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n' && s[i + 1] == c)
 		{
 			res[j] = s[i + 1];
 			i += 2;
 		}
-		/*else if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
-			i++;*/
 		else
 			res[j] = s[i++];
 		j++;
@@ -72,20 +70,15 @@ static char	*check_quotes(char *str, const char *s)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == 39)
+		if ((str[i] == 39 || str[i] == 34))
 		{
-			res = getarray(s + 1, 39);
-			free(str);
-			return (res);
-		}
-		else if (str[i] == 34)
-		{
-			res = getarray(s + 1, 34);
+			res = getarray(s + i + 1, str[i]);
 			free(str);
 			return (res);
 		}
 		i++;
 	}
+	str[i] = '\0';
 	return (str);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/29 18:45:43 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:35:19 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	create_fds(t_cmd *cmd, t_data *data)
 	if (cmd->infile_flag == 0)
 		cmd->fds->infile = -1;
 	cmd->fds->std_in = data->std_in;
-	cmd->fds->std_out =data->std_out;
+	cmd->fds->std_out = data->std_out;
 	//ft_printf("Dsa da\ninfile: %d\noutfile: %d\n", cmd->fds->infile, cmd->fds->outfile);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/25 19:14:20 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:10:54 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 		close(fd[0]);
 		ft_here_doc_loop(line, limit, fd[1]);
 		close(fd[1]);
-		exit(0);
+		kill(pid, SIGTERM);
 	}
 	tcsetattr(0, TCSANOW, &old_termios);
 	waitpid(pid, NULL, 0);
@@ -77,6 +77,7 @@ int	ft_here_doc(char **args, int i, t_cmd *cmd)
 	if (ft_here_doc_2(fd, limit, line) == 1)
 		return (write(STDERR, "Here doc error\n", STDERR));
 	cmd->fds->infile = fd[0];
+	cmd->infile_flag = 1;
 	close(fd[1]);
 	return (0);
 }

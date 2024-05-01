@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/04/26 13:20:06 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:13:38 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int					ft_echo(char **args);
 int					ft_env(t_cmd **cmd);
 int					ft_export(t_cmd **cmd);
 int					ft_print_sorted_env(char **env);
+int					ft_exit(t_cmd *cmd, t_cmd **start);
+int					ft_unset(t_cmd **cmd);
 
 // BUILTINS UTILS
 int					ft_valid_name(char *string);
@@ -101,16 +103,16 @@ void				ft_main_signals(void);
 int					ft_parse(char *input, t_data *data);
 void				ft_check_exceptions(char **args, int *j, t_cmd *cmd);
 int					ft_is_builtin(char *command);
-char				*pre_check_quotes(char *input);
+char				*ft_pre_check_quotes(char *input);
 int					ft_here_doc(char **args, int i, t_cmd *cmd);
-int					check_redirections(char **args, int i, t_cmd *cmd, t_data *data);
-int					openfile(char *file, int type);
-void				create_struct(char **args, t_data *data);
+int					ft_check_redirections(char **args, int i, t_cmd *cmd,
+						t_data *data);
+int					ft_openfile(char *file, int type);
+void				ft_create_struct(char **args, t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
-char				*find_pathcmd(char **envp, char *command);
+char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);
-t_cmd				*parseinit(char *command, t_data *data);
-char				**process_args(char **args, int *j, t_cmd *cmd,
+char				**ft_process_args(char **args, int *j, t_cmd *cmd,
 						t_data *data);
 
 // EXECUTOR

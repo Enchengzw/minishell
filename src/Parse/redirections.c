@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/29 18:44:37 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:11:23 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,23 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 		if (ft_strncmp(args[*i], "<", 1) == 0)
 		{
 			if (ft_strlen(args[*i]) == 1)
-				cmd->fds->infile = openfile(args[*i + 1], 1);
+				cmd->fds->infile = ft_openfile(args[*i + 1], 1);
 			else
-				cmd->fds->infile = openfile(args[*i] + 1, 1);
+				cmd->fds->infile = ft_openfile(args[*i] + 1, 1);
 			cmd->infile_flag = 1;
 		}
 		else if (ft_strncmp(args[*i], ">", 1) == 0)
 		{
 			if (ft_strlen(args[*i]) == 1)
-				cmd->fds->outfile = openfile(args[*i + 1], 2);
+				cmd->fds->outfile = ft_openfile(args[*i + 1], 2);
 			else
-				cmd->fds->outfile = openfile(args[*i] + 1, 2);
+				cmd->fds->outfile = ft_openfile(args[*i] + 1, 2);
 			cmd->outfile_flag = 1;
 		}
 	}
 }
 
-int	check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
+int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 {
 	if (ft_redirections_init(cmd, args, &i, data) == 1)
 		return (-1);
@@ -69,9 +69,9 @@ int	check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(args[i], ">>", 2) == 0)
 	{
 		if (ft_strlen(args[i]) == 2)
-			cmd->fds->outfile = openfile(args[i + 1], 3);
+			cmd->fds->outfile = ft_openfile(args[i + 1], 3);
 		else
-			cmd->fds->outfile = openfile(args[i] + 2, 3);
+			cmd->fds->outfile = ft_openfile(args[i] + 2, 3);
 		cmd->outfile_flag = 1;
 	}
 	else if (ft_strncmp(args[i], "<<", 2) == 0)

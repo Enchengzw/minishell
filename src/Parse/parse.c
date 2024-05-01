@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/04/29 18:51:45 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:02:16 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env)
 	cmd->env->env_size = ft_dpointer_size(*env);
 	while (args[i])
 		i++;
-	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));	//calcular long exacta
+	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));
 	if (!cmd->arg)
 		return (free(cmd->arg), NULL);
 	return (cmd);
 }
 
-void	create_struct(char **args, t_data *data)
+void	ft_create_struct(char **args, t_data *data)
 {
 	int		i;
 	t_cmd	*node;
@@ -70,7 +70,7 @@ void	create_struct(char **args, t_data *data)
 		if (!node)
 			return ;
 		node->next = NULL;
-		node->arg = process_args(args, &i, node, data);
+		node->arg = ft_process_args(args, &i, node, data);
 		if (args[i])
 			i++;
 		if (last)
@@ -93,14 +93,14 @@ int	ft_parse(char *input, t_data *data)
 	j = 0;
 	if (!input)
 		return (ERROR);
-	//input = pre_check_quotes(input); revisar <"out file"
+	input = ft_pre_check_quotes(input);
 	if (!input)
-		return (write(2, "Unspected quote \n", 17), ERROR);
-	args = ft_split_mod(input, ' ');
-	create_struct(args, data);
+		return (write(2, "Unspected quote \n", 17), STDERR);
+	args = ft_split_mod(input, ' ');//revisar comillas
+	ft_create_struct(args, data);
 	if (data->cmd)
 		link_nodes(data);
-	//free(input);
+	free(input);
 	ft_free_char(args);
 	return (SUCCESS);
 }
