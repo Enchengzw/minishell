@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:14:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/24 16:09:16 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 13:09:33 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ static void	ft_shell_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
+		rl_on_new_line();
+		rl_replace_line("", 0);	
+		rl_redisplay();
 		write(1, "\n", 1);	
 		rl_on_new_line();
 		rl_replace_line("", 0);	

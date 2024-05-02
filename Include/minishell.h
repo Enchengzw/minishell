@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/01 16:13:38 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:55:06 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int					ft_unset(t_cmd **cmd);
 
 // BUILTINS UTILS
 int					ft_valid_name(char *string);
-int					ft_is_in_env_index(char **env, char *variable, int *index);
+int					ft_is_in_env_index(char **env, char *variable, int *index, int *flag);
 int					ft_print_export_error(char *variable);
 
 // SIGNALS

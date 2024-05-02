@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:19:42 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/02 18:14:27 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 12:27:59 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,30 @@ int	ft_valid_name(char	*string)
 	return (SUCCESS);
 }
 
-int	ft_is_in_env_index(char **env, char *variable, int *index)
+int	ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 {
 	char	*key;
 	char	**temp;
 	int		i;
-	int		flag;
 
 	i = 0;
-	flag = 0;
+	*flag = 0;
 	temp = ft_split(variable, '=');
+	if (!temp)
+		return (ft_putstr_fd("Malloc Error\n", 2), ERROR);
 	key = temp[0];
 	while (env[i])
 	{
 		if (!ft_strncmp(key, env[i], ft_strlen(key)))
 		{
-			flag = 1;
+			*flag = 1;
 			*index = i;
 			break ;
 		}
 		i++;
 	}
 	ft_free_char(temp);
-	return (flag);
+	return (SUCCESS);
 }
 
 int	ft_print_export_error(char *variable)

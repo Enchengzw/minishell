@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:22:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/02 18:13:59 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 11:57:16 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,16 @@ int	ft_print_sorted_env(char **env)
 
 	i = 0;
 	dupe = ft_dpointer_dupe(env);
+	if (!dupe)
+		return (ERROR);
 	ft_sort(dupe);
 	while (dupe[i])
 	{
 		printf("declare -x %s\n", dupe[i]);
 		i++;
 	}
-	return (0);
+	ft_free_char(dupe);
+	return (SUCCESS);
 }
 
 /* int main(int argc, char **argv, char **env)

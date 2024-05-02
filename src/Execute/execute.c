@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/01 20:26:03 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:17:38 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,27 @@ int	ft_redirect(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-void	execute_builtins(t_cmd *cmd)
+int	execute_builtins(t_cmd *cmd)
 {
+	int	exit;
+
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
-		ft_cd(&cmd);
+		exit = ft_cd(&cmd);
 	else if (ft_strcmp(cmd->arg[0], "echo") == 0)
-		ft_echo(cmd->arg);
+		exit = ft_echo(cmd->arg);
 	else if (ft_strcmp(cmd->arg[0], "env") == 0)
-		ft_env(&cmd);
+		exit = ft_env(&cmd);
 	else if (ft_strcmp(cmd->arg[0], "exit") == 0)//WARNING
-		ft_exit(cmd, cmd->arg);
+		exit = ft_exit(cmd, cmd->arg);
 	else if (ft_strcmp(cmd->arg[0], "export") == 0)
-		ft_export(&cmd);
+		exit = ft_export(&cmd);
 	else if (ft_strcmp(cmd->arg[0], "pwd") == 0)
-		ft_pwd();
+		exit = ft_pwd();
 	else if (ft_strcmp(cmd->arg[0], "unset") == 0)
-		ft_unset(&cmd);
+		exit = ft_unset(&cmd);
+	if (ft_restore_io(cmd))
+			return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);
+	return (exit);
 }
 
 int	ft_actions(pid_t pid, t_cmd *cmd)
@@ -67,11 +72,8 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 	if (pid == 0)
 	{
 		ft_child_signals();
-		if (cmd->is_builtin == 1)
-			execute_builtins(cmd);
-		else if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
+		if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
-		return (0);
 	}
 	else
 	{
@@ -84,24 +86,27 @@ int	ft_actions(pid_t pid, t_cmd *cmd)
 
 int	ft_create_processes(t_data *data)
 {
-	int		size;
-	pid_t	*childrens;
-	int		i;
+	pid_t	children;
 	t_cmd	*temp;
 
 	temp = data->cmd;
-	i = -1;
-	size = ft_list_size(data->cmd);
-	childrens = (pid_t *)ft_calloc(size + 1, sizeof(pid_t));
-	while (++i < size)
+	while (temp)
 	{
 		if (ft_redirect(temp))
-			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
-		childrens[i] = fork();
-		if (childrens[i] == -1)
-			return (free(childrens), ft_putstr_fd("Out of resources\n", STDERR), 12);
-		if (ft_actions(childrens[i], temp))
-			return (free(childrens), 12);
+			return (ft_putstr_fd("Out of resources\n", STDERR), 12);
+		if (temp->is_builtin == 1)
+		{
+			if (execute_builtins(temp))
+				return (12);
+		}
+		else
+		{
+			children = fork();
+			if (children == -1)
+				return (ft_putstr_fd("Out of resources\n", STDERR), 12);
+			if (ft_actions(children, temp))
+				return (12);
+		}
 		temp = temp->next;
 	}
 	return (SUCCESS);
