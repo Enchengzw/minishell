@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:30:18 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 13:16:18 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 16:02:47 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	ft_unset(t_cmd **cmd)
 	char	**arg;
 	int		index;
 
+	(*cmd)->num_arg = ft_dpointer_size((*cmd)->arg);
 	arg = (*cmd)->arg;
 	i = 0;
 	if ((*cmd)->num_arg < 1)

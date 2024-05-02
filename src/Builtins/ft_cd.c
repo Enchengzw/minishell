@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 13:10:36 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 15:55:12 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,12 @@ int	ft_cd(t_cmd **cmd)
 {
 	char	*temp;
 
+	(*cmd)->num_arg = ft_dpointer_size((*cmd)->arg);
 	temp = ft_strdup((*cmd)->arg[1]);
 	if (!temp)
 		return (ft_putstr_fd("Malloc Error\n", 2), ERROR);
 	ft_update_oldpwd((*cmd)->env);
-	if ((*cmd)->num_arg == 0)
+	if ((*cmd)->num_arg == 1)
 	{
 		if (ft_default_cd(cmd))
 			return (free(temp), ERROR);

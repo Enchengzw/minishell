@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 13:17:38 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 13:21:10 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_redirect(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	execute_builtins(t_cmd *cmd)
+int	execute_builtins(t_cmd *cmd, t_data *data)
 {
 	int	exit;
 
@@ -55,7 +55,7 @@ int	execute_builtins(t_cmd *cmd)
 	else if (ft_strcmp(cmd->arg[0], "env") == 0)
 		exit = ft_env(&cmd);
 	else if (ft_strcmp(cmd->arg[0], "exit") == 0)//WARNING
-		exit = ft_exit(cmd, cmd->arg);
+		exit = ft_exit(cmd, data);
 	else if (ft_strcmp(cmd->arg[0], "export") == 0)
 		exit = ft_export(&cmd);
 	else if (ft_strcmp(cmd->arg[0], "pwd") == 0)
@@ -96,7 +96,7 @@ int	ft_create_processes(t_data *data)
 			return (ft_putstr_fd("Out of resources\n", STDERR), 12);
 		if (temp->is_builtin == 1)
 		{
-			if (execute_builtins(temp))
+			if (execute_builtins(temp, data))
 				return (12);
 		}
 		else
