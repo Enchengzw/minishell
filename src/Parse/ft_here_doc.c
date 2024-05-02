@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/01 13:10:54 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/02 21:57:39 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 		close(fd[0]);
 		ft_here_doc_loop(line, limit, fd[1]);
 		close(fd[1]);
-		kill(pid, SIGTERM);
+		exit(0);
 	}
 	tcsetattr(0, TCSANOW, &old_termios);
+	kill(pid, SIGTERM);
 	waitpid(pid, NULL, 0);
 	return (0);
 }
