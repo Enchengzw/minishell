@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 12:38:47 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 16:02:19 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/02 23:19:59 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	ft_only_digits(char *str, int *exit)
 			ft_print_error(str, exit);
 			return (0);
 		}
+		i++;
 	}
 	return (1);
 }
@@ -44,15 +45,16 @@ int	ft_exit(t_cmd *cmd, t_data *start)
 	ft_putstr_fd("exit\n", 2);
 	if (cmd->num_arg > 2)
 		return (ft_putstr_fd("exit: too many arguments\n", 2), ERROR);
-	if (cmd->num_arg < 1)
+	if (cmd->num_arg <= 1)
 		code = g_exit_code;
 	else
 	{
-		if (ft_only_digits(cmd->arg[1], &code))
+		if (ft_only_digits(cmd->arg[1], &code) == 1)
 			code = ft_atol(cmd->arg[1]);
 	} 
 	if (code > 255)
 		code = code % 256;
+
 	//ft_clear_all(start);
 	exit(code);
 }
