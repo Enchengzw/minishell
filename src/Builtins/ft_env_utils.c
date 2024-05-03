@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:19:42 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 12:27:59 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/03 12:15:18 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_valid_name(char	*string)
 	int	i;
 
 	i = 0;
+	if (string[i] == '=')
+		return (ERROR);
 	while (string[i] && string[i] != '=')
 	{
 		if (i == 0)
