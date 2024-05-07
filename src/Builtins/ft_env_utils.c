@@ -6,13 +6,38 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:19:42 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/03 12:15:18 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 11:57:01 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Include/minishell.h"
 
-int	ft_valid_name(char	*string)
+char	*ft_getenv(char *variable, char **env)
+{
+	int		i;
+	char	*value;
+	char	*to_copy;
+	
+	i = 0;
+	while (env[i])
+	{
+		if (!ft_strncmp(variable, env[i], ft_strlen(variable)))
+		{
+			if (ft_strcontains(env[i], '=') && env[i][ft_strlen(variable)] == '=')
+			{
+				to_copy = ft_strchr(env[i], '=') + 1;
+				value = ft_strdup(to_copy);
+				if (!value)
+					return (ft_putstr_fd("Malloc Error\n", 2), NULL);
+				return (value);
+			}
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int		ft_valid_name(char	*string)
 {
 	int	i;
 
@@ -41,7 +66,7 @@ int	ft_valid_name(char	*string)
 	return (SUCCESS);
 }
 
-int	ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
+int		ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 {
 	char	*key;
 	char	**temp;
@@ -67,7 +92,7 @@ int	ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 	return (SUCCESS);
 }
 
-int	ft_print_export_error(char *variable)
+int		ft_print_export_error(char *variable)
 {
 	printf("export: `%s': not a valid identifier\n", variable);
 	return (ERROR);

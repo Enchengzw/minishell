@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 15:55:12 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 11:37:46 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ static	int	ft_update_pwd(t_env *env)
 
 static int		ft_default_cd(t_cmd **cmd)
 {
-	if (!getenv("HOME"))
+	if (!ft_getenv("HOME", (*cmd)->env->env[0]))
 	{
 		printf("bash: cd: HOME not set\n");
 		return (ERROR);
 	}
-	chdir(getenv("HOME"));
+	chdir(ft_getenv("HOME", (*cmd)->env->env[0]));
 	if (ft_update_pwd((*cmd)->env))
 		return (ERROR);
 	return (SUCCESS);
@@ -103,7 +103,7 @@ int	ft_cd(t_cmd **cmd)
 	if (!temp)
 		return (ft_putstr_fd("Malloc Error\n", 2), ERROR);
 	ft_update_oldpwd((*cmd)->env);
-	if ((*cmd)->num_arg == 1)
+	if ((*cmd)->num_arg == 1 || !ft_strcmp((*cmd)->arg[1], "~"))
 	{
 		if (ft_default_cd(cmd))
 			return (free(temp), ERROR);

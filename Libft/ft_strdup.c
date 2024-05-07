@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 12:03:45 by ezhou             #+#    #+#             */
-/*   Updated: 2023/10/19 15:18:05 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 11:53:47 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ char	**ft_dpointer_dupe(char **original)
 		new[i] = ft_strdup(original[i]);
 		i++;
 	}
-	new[i] = 0;
+	new[i] = NULL;
 	return (new);
 }

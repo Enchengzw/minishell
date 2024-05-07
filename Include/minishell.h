@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/02 13:22:47 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 11:37:15 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int					ft_exit(t_cmd *cmd, t_data *start);
 int					ft_unset(t_cmd **cmd);
 
 // BUILTINS UTILS
+char				*ft_getenv(char *variable, char **env);
 int					ft_valid_name(char *string);
 int					ft_is_in_env_index(char **env, char *variable, int *index, int *flag);
 int					ft_print_export_error(char *variable);
