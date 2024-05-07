@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/07 13:17:00 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 13:24:27 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int ft_close(int fd)
 	return (ERROR);
 }
 
-int	ft_close_everything(t_data *data)
+int	ft_close_all_fds(t_data *data)
 {
 	t_cmd	*temp;
 
@@ -77,4 +77,5 @@ int	ft_close_everything(t_data *data)
 			return (ERROR);
 		temp = temp->next;
 	}
+	return (SUCCESS);
 }

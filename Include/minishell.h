@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/07 11:37:15 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 13:24:14 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char				**ft_process_args(char **args, int *j, t_cmd *cmd,
 // EXECUTOR
 int					ft_execute(t_data *data);
 int					ft_create_processes(t_data *data);
-int					ft_actions(pid_t pid, t_cmd *cmd);
+int					ft_actions(pid_t pid, t_cmd *cmd, t_data *data);
 int					ft_redirect(t_cmd *cmd);
 int					ft_restore_io(t_cmd *cmd);
 int					ft_create_pipes(t_data *data);
@@ -139,5 +139,6 @@ int					ft_list_size(t_cmd *cmd);
 // CLEANING
 void				ft_free_content(t_data *data);
 void				ft_free_list(t_cmd *cmd);
+int					ft_close_all_fds(t_data *data);
 
 #endif
