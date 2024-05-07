@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/07 11:11:35 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/07 13:17:21 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,17 @@ int	ft_redirect(t_cmd *cmd)
 	{
 		if (dup2(cmd->fds->infile, STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd("Dup2 ErroIr\n", 2);
+			ft_putstr_fd("Dup2 Error Infile\n", 2);
 			return (ERROR);
 		}
-		close(cmd->fds->infile);
 	}
 	if (cmd->fds->outfile >= 0)
 	{
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
 		{
-			ft_putstr_fd("Dup2 Error\n", 2);
+			ft_putstr_fd("Dup2 Error Outfile\n", 2);
 			return (ERROR);
 		}
-		close(cmd->fds->outfile);
 	}
 	return (SUCCESS);
 }
@@ -67,10 +65,11 @@ int	execute_builtins(t_cmd *cmd, t_data *data)
 	return (exit);
 }
 
-int	ft_actions(pid_t pid, t_cmd *cmd)
+int	ft_actions(pid_t pid, t_cmd *cmd, t_data *data)
 {
 	if (pid == 0)
 	{
+		ft_close_all_fds(data);
 		ft_child_signals();
 		if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 			return (ft_putstr_fd("Error executing execve\n", STDERR), ERROR);
@@ -104,7 +103,7 @@ int	ft_create_processes(t_data *data)
 			children = fork();
 			if (children == -1)
 				return (ft_putstr_fd("Out of resources\n", STDERR), 12);
-			if (ft_actions(children, temp))
+			if (ft_actions(children, temp, data))
 				return (12);
 		}
 		temp = temp->next;
