@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+         #
+#    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/04/25 11:34:54 by rauferna         ###   ########.fr        #
+#    Updated: 2024/05/08 13:09:26 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,10 @@ SRC	=	./src/main.c \
 		./src/Signals/signals.c \
 		./src/Execute/check.c \
 		./src/Execute/execute.c \
-		./src/Execute/pipes.c \
+		./src/Execute/children.c \
 		./src/Execute/utils.c \
+		./src/Execute/fd_handler.c \
+		./src/Execute/parent.c \
 		./src/Cleaning/ft_free.c \
 		./src/Parse/check_args.c \
 		./src/Parse/ft_split_mod.c \
@@ -50,6 +52,7 @@ SRC	=	./src/main.c \
 		./src/Parse/ft_here_doc.c \
 		./src/Parse/parse_utils.c \
 		./src/Parse/pre_check_quotes.c \
+		./src/debug.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -57,7 +60,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	@$(MAKE) -C $(LIBFT)
-	@$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
 	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c

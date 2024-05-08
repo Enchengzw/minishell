@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/01 16:35:19 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:46:31 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-/*
-int	ft_check_fds(t_fds *io)
-{
-	if (!io || !io->infile || !io->outfile)
-		return (ERROR);
-	return (SUCCESS);
-}
-*/
 
 void	create_fds(t_cmd *cmd, t_data *data)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/01 19:50:24 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:13:54 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_main_loop(t_data *data)
 		ft_main_signals();
 		data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
 		if (!data->user_input)
-			ft_exit_error("exit\n", ERROR);
+			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
 		ft_child_signals();
