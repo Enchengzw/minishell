@@ -28,7 +28,7 @@ static void	link_nodes(t_data *data)
 	}
 }
 
-static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env)
+static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env, int quote)
 {
 	int	i;
 
@@ -41,6 +41,7 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env)
 	cmd->num_arg = 0;
 	cmd->semicolon_flag = 0;
 	cmd->is_builtin = 0;
+	cmd->quote = quote;
 	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!cmd->env)
 		return (NULL);
@@ -54,7 +55,7 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env)
 	return (cmd);
 }
 
-void	ft_create_struct(char **args, t_data *data)
+void	ft_create_struct(char **args, t_data *data, int quote)
 {
 	int		i;
 	t_cmd	*node;
@@ -66,7 +67,7 @@ void	ft_create_struct(char **args, t_data *data)
 	last = NULL;
 	while (args[i])
 	{
-		node = node_new(node, args, &data->env);
+		node = node_new(node, args, &data->env, quote);
 		if (!node)
 			return ;
 		node->next = NULL;
@@ -86,18 +87,20 @@ int	ft_parse(char *input, t_data *data)
 {
 	int		i;
 	int		j;
+	int		quote;
 	char	**args;
 	t_cmd	*command;
 
 	i = 0;
 	j = 0;
+	quote = 0;
 	if (!input)
 		return (ERROR);
-	input = ft_pre_check_quotes(input);
+	input = ft_pre_check_quotes(input, &quote);
 	if (!input)
 		return (write(2, "Unspected quote \n", 17), STDERR);
 	args = ft_split_mod(input, ' ');//revisar comillas
-	ft_create_struct(args, data);
+	ft_create_struct(args, data, quote);
 	if (data->cmd)
 		link_nodes(data);
 	free(input);

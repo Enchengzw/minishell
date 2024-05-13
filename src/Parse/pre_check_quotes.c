@@ -79,17 +79,22 @@ static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 		res[(*j)++] = input[*i];
 	(*i)++;
 	k = *i;
-	while (input[*i] != quote)
+	while (input[*i] && input[*i] != quote)
+	{
 		res[(*j)++] = input[(*i)++];
+	}
 	if (!input[*i])
 		return (1);
 	if (ft_check_spaces(input, k, quote) == 1 && input[*i] == quote)
 		res[(*j)++] = input[*i];
 	(*i)++;
-	return (0);
+	if (quote == 34)
+		return (3);
+	else
+		return (2);
 }
 
-char	*ft_pre_check_quotes(char *input)
+char	*ft_pre_check_quotes(char *input, int *quote)
 {
 	int		i;
 	int		j;
@@ -106,8 +111,9 @@ char	*ft_pre_check_quotes(char *input)
 	{
 		if (input[i] == 34 || input[i] == 39)
 		{
-			if (ft_check_in_quote(input, res, &i, &j) == 1)
-				return (NULL);			
+			*quote = ft_check_in_quote(input, res, &i, &j);
+			if (*quote == 1)
+				return (NULL);
 		}
 		else
 			res[j++] = input[i++];

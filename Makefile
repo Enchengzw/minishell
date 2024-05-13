@@ -60,7 +60,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	@$(MAKE) -C $(LIBFT)
-	$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) -I./$(INCLUDE) -o $(NAME) $(OBJ) -lft -LLibft/ -lft -lreadline
 	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c

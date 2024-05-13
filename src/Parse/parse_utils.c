@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/01 16:12:06 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/06 22:53:29 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
 {
 	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
 		&& (!args[*j + 1] || !args[*j + 1][0]))
-		error_syntax(args[*j]);
+		{
+			error_syntax(args[*j]);
+			cmd->cmd_flag = -1;
+		}
 	if (args[*j] && args[*j][0] == ';')
 		cmd->semicolon_flag = 1;
 }
@@ -78,6 +81,11 @@ char	*ft_find_pathcmd(char **envp, char *command)
 	i = 0;
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
+	if (!envp[i])
+	{
+		error_fnf(command);
+		return (NULL);
+	}
 	path_line = envp[i] + 5;
 	return (find_path_loop(path_line, path, command));
 }

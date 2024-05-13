@@ -24,6 +24,8 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <termios.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define GREEN_TEXT "\x1b[32m"
 # define YELLOW_TEXT "\x1b[33m"
@@ -65,6 +67,7 @@ typedef struct s_cmd
 	int				file_flag;
 	int				semicolon_flag;
 	int				is_builtin;
+	int				quote;
 }					t_cmd;
 
 typedef struct s_data
@@ -104,12 +107,12 @@ void				ft_main_signals(void);
 int					ft_parse(char *input, t_data *data);
 void				ft_check_exceptions(char **args, int *j, t_cmd *cmd);
 int					ft_is_builtin(char *command);
-char				*ft_pre_check_quotes(char *input);
+char				*ft_pre_check_quotes(char *input, int *quote);
 int					ft_here_doc(char **args, int i, t_cmd *cmd);
 int					ft_check_redirections(char **args, int i, t_cmd *cmd,
 						t_data *data);
 int					ft_openfile(char *file, int type);
-void				ft_create_struct(char **args, t_data *data);
+void				ft_create_struct(char **args, t_data *data, int quote);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);

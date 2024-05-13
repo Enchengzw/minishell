@@ -6,11 +6,21 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/02 22:06:29 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/06 21:30:11 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+size_t ft_strlen_nospace(char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] && str[i] != ' ')
+		i++;
+	return (i);
+}
 
 static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 {
@@ -43,18 +53,23 @@ static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 {
 	int	k;
+	int	start;
 
 	k = 0;
+	start = 0;
+	while (args[*j] && args[*j][start] == ' ')
+		start++;
 	if (*j > 0 && args[*j - 1][0] == '>' || args[*j - 1][0] == '<')
 		return ;
-	else if (args[*j][0] == '$')
+	else if (args[*j][start] == '$' && cmd->quote != 2 && args[*j][start + 1] != '?')
 	{
-		while ((*(cmd->env->env))[k])//echo $PATH | tr ':' '\n'
+
+		while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
 		{
-			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + 1,
-				ft_strlen(args[*j]) - 1) == 0)
+			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1,
+				ft_strlen_nospace(args[*j] + start) - 1) == 0)
 				cmd->arg[(*i)++] = ft_strdup((*(cmd->env->env))[k]
-						+ ft_strlen(args[*j]));
+						+ ft_strlen_nospace(args[*j] + start)); 
 			k++;
 		}
 	}
@@ -102,6 +117,17 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 }
 
 /*
+		while ((*(cmd->env->env))[k])
+		{
+			char *equal_sign = ft_strchr((*(cmd->env->env))[k], '=');
+			if (equal_sign != NULL)
+			{
+				int name_length = equal_sign - (*(cmd->env->env))[k];
+				if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1, name_length) == 0)
+					cmd->arg[(*i)++] = ft_strdup(equal_sign + 1);
+			}
+			k++;
+		}
 	int k = 0;
 	while (node->cmd)
 	{
