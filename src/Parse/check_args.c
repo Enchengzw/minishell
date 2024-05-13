@@ -50,6 +50,27 @@ static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 	}
 }
 
+static char	*ft_copy_char(char *str)
+{
+	int i;
+	char *res;
+
+	i = 0;
+	res = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
+	if (!res)
+		return (NULL);
+	while (str[i])
+	{
+		//if (str[i + 1] && str[i] == '$' && str[i + 1] == '?')
+			//res[i++] = g_exit_code + '0';add function to get exit code
+		//else
+			res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
 static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 {
 	int	k;
@@ -63,7 +84,6 @@ static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 		return ;
 	else if (args[*j][start] == '$' && cmd->quote != 2 && args[*j][start + 1] != '?')
 	{
-
 		while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
 		{
 			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1,
@@ -74,7 +94,7 @@ static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 		}
 	}
 	else
-		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		cmd->arg[(*i)++] = ft_copy_char(args[*j]);
 }
 
 static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)

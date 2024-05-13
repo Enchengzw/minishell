@@ -19,7 +19,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g -Wall -Wextra -Werror -lreadline
+CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = Libft/
 INCLUDE = Include/
@@ -59,9 +59,10 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(MAKE) -C $(LIBFT)
-	$(CC) $(CFLAGS) -I./$(INCLUDE) -o $(NAME) $(OBJ) -lft -LLibft/ -lft -lreadline
-	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
+	$(MAKE) -C $(LIBFT)
+	#@$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) -I./$(INCLUDE) -o $(NAME) $(OBJ) -lft -L$(LIBFT) -lft -lreadline
+	echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c
 	@$(CC) -I./$(INCLUDE) -c -o $@ $<
@@ -73,7 +74,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "$(COLOUR_RED)(╯°□°）╯︵ ┻━┻ $(NAME) removido!$(COLOUR_END)"
+	@echo "$(COLOUR_RED)(╯°□°）╯︵ ┻━┻ $(NAME) removido!$(COLOUR_END))"
 
 re: fclean all
 

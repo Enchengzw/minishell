@@ -19,12 +19,12 @@ void	ft_print_echo(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == '$' && str[i + 1] == '?')
+		/*if (str[i + 1] && str[i] == '$' && str[i + 1] == '?')
 		{
 			ft_printf("%d", g_exit_code);
 			i++;
 		}
-		else
+		else*/
 			ft_printf("%c", str[i]);
 		i++;
 	}
