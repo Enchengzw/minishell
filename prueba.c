@@ -5,7 +5,7 @@
 # include <limits.h>
 # include <fcntl.h>
 # include "Libft/libft.h"
-
+/*
 int main(int ac, char **av, char **env)
 {
     if (ac == 1)
@@ -15,4 +15,16 @@ int main(int ac, char **av, char **env)
     }
     if (av)
         ft_printf("a");
+}*/
+int main(int ac, char **av, char **env)
+{
+    if (ac == 2)
+    {
+        char *path[] = {av[1], NULL};
+        char *hola = ft_strdup(av[1]);
+        if (execve(hola, path, env) == -1)
+            perror("Error executing script");
+    }
+
+    return 0;
 }

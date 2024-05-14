@@ -6,21 +6,11 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/06 21:30:11 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:04:31 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-size_t ft_strlen_nospace(char *str)
-{
-	size_t i;
-
-	i = 0;
-	while (str[i] && str[i] != ' ')
-		i++;
-	return (i);
-}
 
 static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 {
@@ -48,63 +38,6 @@ static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 		cmd->arg[(*i)++] = ft_strdup(args[*j]);
 		cmd->cmd_flag = 1;
 	}
-}
-
-void	ft_get_exit_code(char *str, int *i)
-{
-    int len;
-    int exit_code;
-    char buffer[4];
-
-    len = 0;
-    if (g_exit_code == 0)
-    {
-        str[(*i)++] = '0';
-        return;
-    }
-    exit_code = g_exit_code;
-    while (exit_code > 0)
-    {
-        buffer[len++] = (exit_code % 10) + '0';
-        exit_code /= 10;
-    }
-    while (len > 0)
-    {
-        str[*i] = buffer[--len];
-        (*i)++;
-    }
-}
-
-static char	*ft_copy_char(char *str, t_cmd *cmd)
-{
-	int i;
-	int j;
-	char *res;
-
-	i = 0;
-	j = 0;
-	res = (char *)ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	if (!res)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i + 1] && str[i] == '$' && str[i + 1] == '?' && cmd->quote != 2)
-		{
-			ft_get_exit_code(res, &j);
-			i += 2;
-		}
-		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
-		{
-			if (ft_getenv(str + i + 1, *(cmd->env->env)) == NULL)
-				return (res);
-			res = ft_strjoin(res, ft_getenv(str + i + 1, *(cmd->env->env)));
-			return (res);
-		}
-		else
-			res[j++] = str[i++];
-	}
-	res[j] = '\0';
-	return (res);
 }
 
 static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
@@ -163,7 +96,8 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 
 /*
 
-while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
+while ((*(cmd->env->env))[k])
+//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
 		{
 			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1,
 				ft_strlen_nospace(args[*j] + start) - 1) == 0)
@@ -190,6 +124,15 @@ while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NU
 		node->cmd = node->cmd->next;
 		ft_printf("--------\n");
 	}
+	size_t ft_strlen_nospace(char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] && str[i] != ' ')
+		i++;
+	return (i);
+}
 void	check_args(char **args, t_data *data)
 {
 	int		i;

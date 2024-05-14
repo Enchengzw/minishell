@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
+#    By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/05/08 13:09:26 by ezhou            ###   ########.fr        #
+#    Updated: 2024/05/14 19:41:29 by rauferna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror -lreadline
 
 LIBFT = Libft/
 INCLUDE = Include/
@@ -52,6 +52,7 @@ SRC	=	./src/main.c \
 		./src/Parse/ft_here_doc.c \
 		./src/Parse/parse_utils.c \
 		./src/Parse/pre_check_quotes.c \
+		./src/Parse/expand_env.c \
 		./src/debug.c \
 
 OBJ = $(SRC:.c=.o)
@@ -59,10 +60,9 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(MAKE) -C $(LIBFT)
-	#@$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
-	@$(CC) $(CFLAGS) -I./$(INCLUDE) -o $(NAME) $(OBJ) -lft -L$(LIBFT) -lft -lreadline
-	echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
+	@$(MAKE) -C $(LIBFT)
+	@$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c
 	@$(CC) -I./$(INCLUDE) -c -o $@ $<
@@ -74,7 +74,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "$(COLOUR_RED)(╯°□°）╯︵ ┻━┻ $(NAME) removido!$(COLOUR_END))"
+	@echo "$(COLOUR_RED)(╯°□°）╯︵ ┻━┻ $(NAME) removido!$(COLOUR_END)"
 
 re: fclean all
 

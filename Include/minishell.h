@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/08 13:46:24 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/14 19:18:16 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int					ft_unset(t_cmd **cmd);
 // BUILTINS UTILS
 char				*ft_getenv(char *variable, char **env);
 int					ft_valid_name(char *string);
-int					ft_is_in_env_index(char **env, char *variable, int *index, int *flag);
+int					ft_is_in_env_index(char **env, char *variable,
+						int *index, int *flag);
 int					ft_print_export_error(char *variable);
 
 // SIGNALS
@@ -118,6 +119,7 @@ char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);
 char				**ft_process_args(char **args, int *j, t_cmd *cmd,
 						t_data *data);
+char				*ft_copy_char(char *str, t_cmd *cmd);
 
 // EXECUTOR
 int					ft_execute(t_data *data);
