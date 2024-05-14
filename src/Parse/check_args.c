@@ -50,24 +50,60 @@ static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
 	}
 }
 
-static char	*ft_copy_char(char *str)
+void	ft_get_exit_code(char *str, int *i)
+{
+    int len;
+    int exit_code;
+    char buffer[4];
+
+    len = 0;
+    if (g_exit_code == 0)
+    {
+        str[(*i)++] = '0';
+        return;
+    }
+    exit_code = g_exit_code;
+    while (exit_code > 0)
+    {
+        buffer[len++] = (exit_code % 10) + '0';
+        exit_code /= 10;
+    }
+    while (len > 0)
+    {
+        str[*i] = buffer[--len];
+        (*i)++;
+    }
+}
+
+static char	*ft_copy_char(char *str, t_cmd *cmd)
 {
 	int i;
+	int j;
 	char *res;
 
 	i = 0;
-	res = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
+	j = 0;
+	res = (char *)ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	while (str[i])
 	{
-		//if (str[i + 1] && str[i] == '$' && str[i + 1] == '?')
-			//res[i++] = g_exit_code + '0';add function to get exit code
-		//else
-			res[i] = str[i];
-		i++;
+		if (str[i + 1] && str[i] == '$' && str[i + 1] == '?' && cmd->quote != 2)
+		{
+			ft_get_exit_code(res, &j);
+			i += 2;
+		}
+		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
+		{
+			if (ft_getenv(str + i + 1, *(cmd->env->env)) == NULL)
+				return (res);
+			res = ft_strjoin(res, ft_getenv(str + i + 1, *(cmd->env->env)));
+			return (res);
+		}
+		else
+			res[j++] = str[i++];
 	}
-	res[i] = '\0';
+	res[j] = '\0';
 	return (res);
 }
 
@@ -82,19 +118,8 @@ static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 		start++;
 	if (*j > 0 && args[*j - 1][0] == '>' || args[*j - 1][0] == '<')
 		return ;
-	else if (args[*j][start] == '$' && cmd->quote != 2 && args[*j][start + 1] != '?')
-	{
-		while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
-		{
-			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1,
-				ft_strlen_nospace(args[*j] + start) - 1) == 0)
-				cmd->arg[(*i)++] = ft_strdup((*(cmd->env->env))[k]
-						+ ft_strlen_nospace(args[*j] + start)); 
-			k++;
-		}
-	}
 	else
-		cmd->arg[(*i)++] = ft_copy_char(args[*j]);
+		cmd->arg[(*i)++] = ft_copy_char(args[*j], cmd);
 }
 
 static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
@@ -137,6 +162,15 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 }
 
 /*
+
+while ((*(cmd->env->env))[k])//args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
+		{
+			if (ft_strncmp((*(cmd->env->env))[k], args[*j] + start + 1,
+				ft_strlen_nospace(args[*j] + start) - 1) == 0)
+				cmd->arg[(*i)++] = ft_strdup((*(cmd->env->env))[k]
+						+ ft_strlen_nospace(args[*j] + start)); 
+			k++;
+		}
 		while ((*(cmd->env->env))[k])
 		{
 			char *equal_sign = ft_strchr((*(cmd->env->env))[k], '=');

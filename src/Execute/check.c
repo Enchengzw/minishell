@@ -41,8 +41,10 @@ int	ft_check_data(t_data *data)
 	temp = data->cmd;
 	while (temp)
 	{
-		if (temp->file_flag == -1 || temp->cmd_flag <= 0)
-			return (ERROR);
+		if (temp->file_flag == -1)
+			return (1);
+		if (temp->cmd_flag == -1)
+			return (127);
 		//ft_printf("No errors\ninfile: %d\noutfile: %d\n", temp->infile_flag, temp->outfile_flag);
 		if (temp->infile_flag == 0 || temp->outfile_flag == 0)
 			create_fds(temp, data);
