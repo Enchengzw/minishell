@@ -67,6 +67,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	last = NULL;
 	while (args[i])
 	{
+		ft_printf("aadasW\n");
 		node = node_new(node, args, &data->env, quote);
 		if (!node)
 			return ;

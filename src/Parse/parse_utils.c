@@ -63,7 +63,7 @@ static char	*find_path_loop(char *path_line, char *path, char *command)
 		}
 		else
 			path = ft_strjoin(path, ft_strrchr(command, '/'));
-		if (access(path, F_OK) == 0)
+		if (access(path, F_OK | R_OK ) == 0)
 			return (free(paths), path);
 		i++;
 	}

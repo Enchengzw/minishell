@@ -19,7 +19,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g -Wall -Wextra -Werror -lreadline
+CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = Libft/
 INCLUDE = Include/
@@ -61,7 +61,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	@$(MAKE) -C $(LIBFT)
-	@$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
+	@$(CC) $(CFLAGS) -I./$(INCLUDE) -o $(NAME) $(OBJ) -L$(LIBFT) -lft -lreadline
 	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c

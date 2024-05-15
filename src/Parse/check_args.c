@@ -57,10 +57,10 @@ static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
 
 static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
 {
-	if (access(args[*j], F_OK) != 0)
+	if (access(args[*j], F_OK | R_OK) != 0)
 	{
 		error_fnf(args[*j]);
-		cmd->cmd_flag = -1;
+		cmd->file_flag = -1;
 		return ;
 	}
 	cmd->cmd_path = ft_strdup(args[*j]);
@@ -68,13 +68,43 @@ static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
 	cmd->cmd_flag = 1;
 }
 
+static char	*ft_split_quotes(char *str, t_cmd *cmd)
+{
+	int		i;
+	char	*res;
+
+	i = 0;
+
+	if (str[i] == '|' && !str[i + 1])
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '|')
+			break ;
+		i++;
+	}
+	res = ft_calloc(i + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '|')
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
 char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (args[*j] && args[*j][0] != '|' && args[*j][0] != ';')
+	while (args[*j] && args[*j][0] != ';')
 	{
+		if (ft_strchr(args[*j], '|') != NULL)
+			break ;
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
 		if (args[*j][0] == '<' || args[*j][0] == '>')
@@ -95,7 +125,8 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 }
 
 /*
-
+		if (args[*j][0] == '|' && !args[*j][1])
+			break ;
 while ((*(cmd->env->env))[k])
 //args[*j][0] == '$' ft_strchr(args[*j], '$') == NULL
 		{

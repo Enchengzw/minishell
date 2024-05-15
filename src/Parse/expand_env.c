@@ -20,7 +20,11 @@ void	ft_get_exit_code(char *str, int *j, int *i)
 
 	len = 0;
 	if (g_exit_code == 0)
+	{
 		str[(*j)++] = '0';
+		*i += 2;
+		return ;
+	}
 	exit_code = g_exit_code;
 	while (exit_code > 0)
 	{
@@ -32,9 +36,8 @@ void	ft_get_exit_code(char *str, int *j, int *i)
 		str[*j] = buffer[--len];
 		(*j)++;
 	}
-	*i = *(i + 2);
+	*i += 2;
 }
-
 
 char	*ft_copy_char(char *str, t_cmd *cmd)
 {
