@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/01 20:02:16 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:08:19 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,15 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 
 static int	ft_check_pipes(char *str)
 {
-	int		i;
+	int	i;
+
 	i = 0;
-	if (str[0] == '|' || str[0] == ';')
-		return (1);
 	while (str[i])
 	{
 		if (str[i] == '|')
 		{
+			if (str[i + 1] == '\0')
+				return (1);
 			if (str[i + 1] == '|' && str[i + 2] == '|')
 				return (1);
 			if (str[i + 1] == ';' && str[i + 2] == '|')
@@ -103,6 +104,7 @@ static int	ft_check_pipes(char *str)
 	return (0);
 }
 
+//mirar : (es un comodín)
 int	ft_parse(char *input, t_data *data)
 {
 	int		i;
@@ -121,7 +123,7 @@ int	ft_parse(char *input, t_data *data)
 		return (write(2, "Unspected quote \n", 17), STDERR);
 	if (ft_check_pipes(input) == 1)
 		return (error_syntax(input));
-	args = ft_split_mod_pipe(input, '|');//revisar comillas
+	args = ft_split_mod_pipe(input, '|', 1);//revisar comillas
 	ft_create_struct(args, data, quote);
 	if (data->cmd)
 		link_nodes(data);

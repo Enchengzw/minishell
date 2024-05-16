@@ -6,96 +6,94 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/14 17:04:31 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:58:20 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	check_cmd(char **args, int *i, int *j, t_cmd *cmd)
+static void	check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 {
-	if (*j > 0 && (args[*j - 1][0] == '<' && !args[*j - 1][1])
-		&& (args[*j - 1][0] == '<' && args[*j - 1][1] == '<'))
+	if (*k > 0 && (args[*k - 1][0] == '<' && !args[*k - 1][1])
+		&& (args[*k - 1][0] == '<' && args[*k - 1][1] == '<'))
 		return ;
 	else
 	{
-		if (ft_is_builtin(args[*j]) == 0)
+		if (ft_is_builtin(args[*k]) == 0)
 			cmd->is_builtin = 1;
 		else
 		{
-			cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*j]);
+			cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*k]);
 			if (!cmd->cmd_path)
 				cmd->cmd_flag = -1;
 		}
 	}
 	if (cmd->is_builtin == 1)
 	{
-		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
 		cmd->cmd_flag = 1;
 	}
 	else if (cmd->cmd_path)
 	{
-		cmd->arg[(*i)++] = ft_strdup(args[*j]);
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
 		cmd->cmd_flag = 1;
 	}
 }
 
-static void	ft_check_rest(t_cmd *cmd, char **args, int *i, int *j)
+static void	ft_check_script_or_program(char **args, int *k, int *i, t_cmd *cmd)
 {
-	int	k;
-	int	start;
-
-	k = 0;
-	start = 0;
-	while (args[*j] && args[*j][start] == ' ')
-		start++;
-	if (*j > 0 && args[*j - 1][0] == '>' || args[*j - 1][0] == '<')
-		return ;
-	else
-		cmd->arg[(*i)++] = ft_copy_char(args[*j], cmd);
-}
-
-static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
-{
-	if (access(args[*j], F_OK | R_OK) != 0)
+	if (access(args[*k], F_OK | R_OK) != 0)
 	{
-		error_fnf(args[*j]);
+		error_fnf(args[*k]);
 		cmd->file_flag = -1;
 		return ;
 	}
-	cmd->cmd_path = ft_strdup(args[*j]);
-	cmd->arg[(*i)++] = ft_strdup(args[*j]);
+	cmd->cmd_path = ft_strdup(args[*k]);
+	cmd->arg[(*i)++] = ft_strdup(args[*k]);
 	cmd->cmd_flag = 1;
+}
+
+static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
+{
+	int	start;
+
+	start = 0;
+	if (ft_strncmp(args[*k], "./", 2) == 0)
+		ft_check_script_or_program(args, k, i, cmd);
+	else if (cmd->cmd_flag == 0)
+		check_cmd(args, i, k, cmd);
+	else if (cmd->cmd_flag == 1)
+	{
+		while (args[*k] && args[*k][start] == ' ')
+			start++;
+		if (*k > 0 && args[*k - 1][0] == '>' || args[*k - 1][0] == '<')
+			return ;
+		else
+			cmd->arg[(*i)++] = ft_copy_char(args[*k], cmd);
+	}
+	else
+		error_syntax(args[*k]);
 }
 
 char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
-	int	i;
-	int k = 0;
-	char **res;
+	int		i;
+	int		k;
+	char	**res;
 
-	res = ft_calloc(1000, sizeof(char *));//len exacta
-	if (!res)
-		return (NULL);
 	i = 0;
-	res = ft_split_mod(args[*j], ' ');
+	k = 0;
+	res = ft_split_mod_pipe(args[*j], ' ', 0);
 	while (res[k])
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
 		if (res[k][0] == '<' || res[k][0] == '>')
 			cmd->file_flag = ft_check_redirections(res, k, cmd, data);
-		else if (ft_strncmp(res[k], "./", 2) == 0)
-			ft_check_script_or_program(res, &k, &i, cmd);
-		else if (cmd->cmd_flag == 0)
-			check_cmd(res, &i, &k, cmd);
-		else if (cmd->cmd_flag == 1)
-			ft_check_rest(cmd, res, &i, &k);
-		/*else
-			error_syntax(res[k]);*/
+		else
+			ft_check_rest(res, &i, &k, cmd);
 		k++;
 	}
-	//ft_check_exceptions(args, j, cmd);
 	cmd->arg[i] = NULL;
 	return (cmd->arg);
 }

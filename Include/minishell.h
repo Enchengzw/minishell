@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/14 19:18:16 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:15:11 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ char				**ft_split_mod(char const *s, char c);
 char				**ft_process_args(char **args, int *j, t_cmd *cmd,
 						t_data *data);
 char				*ft_copy_char(char *str, t_cmd *cmd);
-char	**ft_split_mod_pipe(char const *s, char c);
+char				**ft_split_mod_pipe(char const *s, char c, int a);
+int					repsc(char const *s, char c);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

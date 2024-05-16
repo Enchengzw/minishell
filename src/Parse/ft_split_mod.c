@@ -6,32 +6,11 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/01 20:20:14 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:20:12 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static int	repsc(char const *s, char c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			i++;
-		else
-		{
-			while (s[i] && s[i] != c)
-				i++;
-			j++;
-		}
-	}
-	return (j);
-}
 
 static char	*getarray(const char *s, char c)
 {
