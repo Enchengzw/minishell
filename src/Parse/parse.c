@@ -67,7 +67,6 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	last = NULL;
 	while (args[i])
 	{
-		ft_printf("aadasW\n");
 		node = node_new(node, args, &data->env, quote);
 		if (!node)
 			return ;
@@ -82,6 +81,26 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 		last = node;
 		node->num_arg = i;
 	}
+}
+
+static int	ft_check_pipes(char *str)
+{
+	int		i;
+	i = 0;
+	if (str[0] == '|' || str[0] == ';')
+		return (1);
+	while (str[i])
+	{
+		if (str[i] == '|')
+		{
+			if (str[i + 1] == '|' && str[i + 2] == '|')
+				return (1);
+			if (str[i + 1] == ';' && str[i + 2] == '|')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 int	ft_parse(char *input, t_data *data)
@@ -100,7 +119,9 @@ int	ft_parse(char *input, t_data *data)
 	input = ft_pre_check_quotes(input, &quote);
 	if (!input)
 		return (write(2, "Unspected quote \n", 17), STDERR);
-	args = ft_split_mod(input, ' ');//revisar comillas
+	if (ft_check_pipes(input) == 1)
+		return (error_syntax(input));
+	args = ft_split_mod_pipe(input, '|');//revisar comillas
 	ft_create_struct(args, data, quote);
 	if (data->cmd)
 		link_nodes(data);

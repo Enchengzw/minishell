@@ -46,6 +46,7 @@ SRC	=	./src/main.c \
 		./src/Execute/parent.c \
 		./src/Cleaning/ft_free.c \
 		./src/Parse/check_args.c \
+		./src/Parse/ft_split_mod_pipe.c \
 		./src/Parse/ft_split_mod.c \
 		./src/Parse/parse.c \
 		./src/Parse/redirections.c \

@@ -68,59 +68,35 @@ static void	ft_check_script_or_program(char **args, int *j, int *i, t_cmd *cmd)
 	cmd->cmd_flag = 1;
 }
 
-static char	*ft_split_quotes(char *str, t_cmd *cmd)
-{
-	int		i;
-	char	*res;
-
-	i = 0;
-
-	if (str[i] == '|' && !str[i + 1])
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] == '|')
-			break ;
-		i++;
-	}
-	res = ft_calloc(i + 1, sizeof(char));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (str[i] && str[i] != '|')
-	{
-		res[i] = str[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
-
 char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
 	int	i;
+	int k = 0;
+	char **res;
 
+	res = ft_calloc(1000, sizeof(char *));//len exacta
+	if (!res)
+		return (NULL);
 	i = 0;
-	while (args[*j] && args[*j][0] != ';')
+	res = ft_split_mod(args[*j], ' ');
+	while (res[k])
 	{
-		if (ft_strchr(args[*j], '|') != NULL)
-			break ;
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
-		if (args[*j][0] == '<' || args[*j][0] == '>')
-			cmd->file_flag = ft_check_redirections(args, *j, cmd, data);
-		else if (ft_strncmp(args[*j], "./", 2) == 0)
-			ft_check_script_or_program(args, j, &i, cmd);
+		if (res[k][0] == '<' || res[k][0] == '>')
+			cmd->file_flag = ft_check_redirections(res, k, cmd, data);
+		else if (ft_strncmp(res[k], "./", 2) == 0)
+			ft_check_script_or_program(res, &k, &i, cmd);
 		else if (cmd->cmd_flag == 0)
-			check_cmd(args, &i, j, cmd);
+			check_cmd(res, &i, &k, cmd);
 		else if (cmd->cmd_flag == 1)
-			ft_check_rest(cmd, args, &i, j);
-		else
-			error_syntax(args[*j]);
-		(*j)++;
+			ft_check_rest(cmd, res, &i, &k);
+		/*else
+			error_syntax(res[k]);*/
+		k++;
 	}
+	//ft_check_exceptions(args, j, cmd);
 	cmd->arg[i] = NULL;
-	ft_check_exceptions(args, j, cmd);
 	return (cmd->arg);
 }
 
