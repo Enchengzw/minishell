@@ -32,12 +32,15 @@ int	repsc(char const *s, char c)
 	}
 	return (j);
 }
-
+/*
 static void	getarray_loop(char *res, int *i, int *j, const char *s, char c)
 {
-	res[*j++] = s[*i + 1];
-	(*i) += 2;
-}
+	if (s[*i] == '\\' && s[*i + 1] == c)
+		res[*j++] = s[*i++];
+	//(*i)++;
+	if (s[*i] == c)
+		res[*j++] = s[*i++];
+}*/
 
 static char	*getarray(const char *s, char c, int n)
 {
@@ -45,9 +48,6 @@ static char	*getarray(const char *s, char c, int n)
 	int		j;
 	char	*res;
 
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));//len exacta
 	if (!res)
 		return (NULL);
@@ -55,12 +55,10 @@ static char	*getarray(const char *s, char c, int n)
 	j = 0;
 	if (s[i] == c && n == 1)
 		res[j++] = s[i++];
-	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')))
+	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\') 
+		|| (s[i] == c && s[i - 1] == '\\') ) )
 	{
-		if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n' && s[i + 1] == c)
-			getarray_loop(res, &i, &j, s, c);
-		else
-			res[j++] = s[i++];
+		res[j++] = s[i++];
 	}
 	if (s[i] == c && n == 1)
 		res[j++] = s[i];

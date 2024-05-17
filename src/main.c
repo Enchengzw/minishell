@@ -71,4 +71,5 @@ int	main(int argc, char **argv, char **env)
 //cuando pongas echo $? que muestre el return del antiguo comando
 //Los builtins los he puesto yo para ir probando ciertos casos y faltan cosas, por ejemplo en exit, no se a que se refiere con t_cmd **start
 //las señales no sale con control c a la primera cuando ejecutas varios comandos
+//arreglar para echo "$PATH  ", supongo que compara con el igual concatenado.
 

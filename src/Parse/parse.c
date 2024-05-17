@@ -122,7 +122,7 @@ int	ft_parse(char *input, t_data *data)
 	if (!input)
 		return (write(2, "Unspected quote \n", 17), STDERR);
 	if (ft_check_pipes(input) == 1)
-		return (error_syntax(input));
+		return (error_syntax("|"));
 	args = ft_split_mod_pipe(input, '|', 1);//revisar comillas
 	ft_create_struct(args, data, quote);
 	if (data->cmd)

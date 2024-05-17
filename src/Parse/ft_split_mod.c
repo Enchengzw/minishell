@@ -21,7 +21,7 @@ static char	*getarray(const char *s, char c)
 	i = 0;
 	while (s[i] && s[i] != c)
 		i++;
-	res = malloc(sizeof(char) * (i + 1));
+	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -52,6 +52,8 @@ static char	*check_quotes(char *str, const char *s)
 		if ((str[i] == 39 || str[i] == 34))
 		{
 			res = getarray(s + i + 1, str[i]);
+			if (res[0] == '\0')
+				return (free(str), NULL);
 			free(str);
 			return (res);
 		}
@@ -69,7 +71,7 @@ char	**ft_split_mod(char const *s, char c)
 
 	i = 0;
 	len = repsc(s, c);
-	res = malloc(sizeof(char *) * ((len + 1)));
+	res = ft_calloc((len + 1), sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (*s && i < len)
@@ -80,8 +82,7 @@ char	**ft_split_mod(char const *s, char c)
 		if (!res[i])
 			return (ft_free_char(res), NULL);
 		res[i] = check_quotes(res[i], s);
-		s += ft_strlen(res[i]);
-		i++;
+		s += ft_strlen(res[i++]);
 		while (*s && *s != c)
 			s++;
 	}

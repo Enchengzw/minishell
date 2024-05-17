@@ -83,7 +83,12 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 
 	i = 0;
 	k = 0;
-	res = ft_split_mod_pipe(args[*j], ' ', 0);
+	res = ft_split_mod(args[*j], ' ');
+	if (res[k] == NULL)
+	{
+		error_syntax("|");
+		cmd->cmd_flag = -1;
+	}
 	while (res[k])
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
