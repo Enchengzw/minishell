@@ -19,8 +19,8 @@ static char	*getarray(const char *s, char c)
 	char	*res;
 
 	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
+	if (!*s || *s == c)
+		return (ft_strdup(" "));
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
@@ -82,7 +82,8 @@ char	**ft_split_mod(char const *s, char c)
 		if (!res[i])
 			return (ft_free_char(res), NULL);
 		res[i] = check_quotes(res[i], s);
-		s += ft_strlen(res[i++]);
+		s += ft_strlen(res[i]);
+		i++;
 		while (*s && *s != c)
 			s++;
 	}

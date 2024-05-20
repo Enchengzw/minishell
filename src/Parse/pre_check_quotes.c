@@ -54,7 +54,7 @@ static int	ft_count_quotes(char *input)
 		return (0);
 }
 
-static int	ft_check_next_quote(char *str, int i, char quote)
+static int	ft_check_next_quote(char *str, int i, char quote)//creo que no se usa
 {
 	while (str[i])
 	{
@@ -63,6 +63,13 @@ static int	ft_check_next_quote(char *str, int i, char quote)
 		i++;
 	}
 	return (1);
+	/*if (input[*i] == quote && input[*i + 1] == quote)
+	{
+		if (input[*i])
+			res[(*j)++] = input[(*i)++];
+		if (input[*i])
+			res[(*j)++] = input[*i];
+	}*/
 }
 
 static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
@@ -80,9 +87,7 @@ static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 	(*i)++;
 	k = *i;
 	while (input[*i] && input[*i] != quote)
-	{
 		res[(*j)++] = input[(*i)++];
-	}
 	if (!input[*i])
 		return (1);
 	if (ft_check_spaces(input, k, quote) == 1 && input[*i] == quote)

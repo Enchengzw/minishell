@@ -63,13 +63,9 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-//comprobar permisos antes de ejecutar
-//cuando haces Ctrl + C no debe aparecer ^C (opcional)
-//Los builtins no redirigen el outfile bien
-//si pones por ejemplo echo $PATH | tr ':' '\n' no le llega el path
-//No estan arreglados unos casos que habias arreglado en cd, porque he tenido que arreglar el de echo
-//cuando pongas echo $? que muestre el return del antiguo comando
-//Los builtins los he puesto yo para ir probando ciertos casos y faltan cosas, por ejemplo en exit, no se a que se refiere con t_cmd **start
-//las señales no sale con control c a la primera cuando ejecutas varios comandos
-//arreglar para echo "$PATH  ", supongo que compara con el igual concatenado.
+//si pones por ejemplo echo $PATH | tr ':' '\n' no le llega el path VUELVE A PASAR
+//cuando pongas echo $? que muestre el return del antiguo comando devuelve 0 si viene de execve en caso de fallo
+//ej pones cat asdsa (ese file no existe) y te devuelve 1 bash, pero minishell devuelve 0
+//he cambiado la funcion de getenv, he puesto una funcion ft_strlen_no_spaces, porque si pones echo "     $PATH   "no expandía, y bash si lo hace->
+//no creo que afecte porque no se usan espacios en las variables de entorno. pero verifica si te afecta
 

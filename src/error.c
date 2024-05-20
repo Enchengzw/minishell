@@ -19,7 +19,7 @@ void	ft_exit_error(char *str, int n, t_data *data)
 	exit(n);
 }
 
-int	error_cnf(char *command)
+int	error_cnf(char *command)//preguntar si se puede incluir ño que te dice la salida de error
 {
 	//ft_printf("minishell: %s: command not found\n", command);
 	ft_putstr_fd("minishell: ", 2);

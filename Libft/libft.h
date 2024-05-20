@@ -187,6 +187,9 @@ int					ft_tolower(int c);
  * @return Returns the difference in ASCII in the first pair of
  * different characters or 0 if they are equal
  */
+
+int					ft_strcmp(const char *s1, const char *s2);
+
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 /**
  * @brief Finds the first occurrence of the little string in the big string

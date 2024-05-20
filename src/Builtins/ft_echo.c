@@ -12,24 +12,6 @@
 
 #include <minishell.h>
 
-void	ft_print_echo(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		/*if (str[i + 1] && str[i] == '$' && str[i + 1] == '?')
-		{
-			ft_printf("%d", g_exit_code);
-			i++;
-		}
-		else*/
-			ft_printf("%c", str[i]);
-		i++;
-	}
-}
-
 int	ft_echo(char **args)
 {
 	int		i;
@@ -46,7 +28,7 @@ int	ft_echo(char **args)
 	}
 	while (args[i])
 	{
-		ft_print_echo(args[i]);
+		ft_printf("%s", args[i]);
 		if (args[i + 1] && args[i][0] != '\0')
 			write(1, " ", 1);
 		i++;
@@ -55,3 +37,4 @@ int	ft_echo(char **args)
 		write(1, "\n", 1);
 	return (SUCCESS);
 }
+

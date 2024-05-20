@@ -12,6 +12,16 @@
 
 #include "../../Include/minishell.h"
 
+static size_t ft_strlen_no_spaces(const char *s)//que vea si le afecta
+{
+	size_t i;
+
+	i = 0;
+	while (s[i] && s[i] != ' ')
+		i++;
+	return (i);
+}
+
 char	*ft_getenv(char *variable, char **env)
 {
 	int		i;
@@ -21,9 +31,9 @@ char	*ft_getenv(char *variable, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (!ft_strncmp(variable, env[i], ft_strlen(variable)))
+		if (!ft_strncmp(variable, env[i], ft_strlen_no_spaces(variable)))
 		{
-			if (ft_strcontains(env[i], '=') && env[i][ft_strlen(variable)] == '=')
+			if (ft_strcontains(env[i], '=') && env[i][ft_strlen_no_spaces(variable)] == '=')
 			{
 				to_copy = ft_strchr(env[i], '=') + 1;
 				value = ft_strdup(to_copy);
