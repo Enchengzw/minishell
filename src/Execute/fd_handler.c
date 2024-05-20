@@ -14,16 +14,21 @@
 
 int ft_close(int *fd)
 {
+	int	result;
+
 	if (*fd > 0)
 	{
-		//printf("closing fd: %d\n", *fd);
-		if (close(*fd) == 0)
+		result = close(*fd);
+		if (result == 0)
 		{
 			*fd = -1;
 			return (SUCCESS);
 		}
 		else
+		{
+			write(2, "Close failure\n", 15);
 			return (ERROR);
+		}
 	}
 	return (SUCCESS);
 }

@@ -34,7 +34,7 @@ int	execute_builtins(t_cmd *cmd, t_data *data)
 		exit = ft_unset(&cmd);
 	if (cmd->next && ft_close(&(cmd->fds->pipe[1])))
 		return (ERROR);
-	if (cmd->previous && ft_close(&(cmd->previous->fds->pipe[0])))
+ 	if (cmd->previous && ft_close(&(cmd->previous->fds->pipe[0])))
 		return (ERROR);
 	if (ft_restore_io(cmd))
 		return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);

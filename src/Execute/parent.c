@@ -18,7 +18,7 @@ int	ft_parent_process(t_cmd *cmd, t_data *data, pid_t pid)
 			return (ft_putstr_fd("Error closing pipe[0]\n", STDERR), ERROR);
 	if (ft_close(&(cmd->fds->pipe[1])))
 		return (ft_putstr_fd("Error closing pipe[1]\n", STDERR), ERROR);
-	waitpid(pid, &g_exit_code, 0);
+	waitpid(pid, &(data->exit_code), 0);
 	/* if (ft_restore_io(cmd))
 			return (ft_putstr_fd("Out of resources\n", STDERR), ERROR); */
 	return (SUCCESS);

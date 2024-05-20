@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <minishell.h> 
 
 /* typedef struct s_data
 {
@@ -36,6 +36,7 @@ typedef struct s_cmd
 void	ft_free_cmd_struct(t_cmd *cmd)
 {
 	t_cmd	*node;
+	t_cmd	*next;
 
 	node = cmd;
 	if (!node)
@@ -55,9 +56,10 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 		if (node->arg)
 			ft_free_char(node->arg);
 		//ft_printf("freed arg\n");
+		next = node->next;
 		free(node);
 		//ft_printf("*************************\n");
-		node = node->next;
+		node = next;
 	}
 }
 

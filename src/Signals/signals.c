@@ -22,7 +22,7 @@ static void	ft_shell_handler(int signal)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_exit_code = 130;
+		//g_exit_code = 130;
 	}
 	return ;
 }
@@ -30,11 +30,12 @@ static void	ft_shell_handler(int signal)
 static void	ft_child_handler(int signal)
 {
 	if (signal == SIGINT)
-		g_exit_code = 130;
-	else if (signal == SIGQUIT)
+		//g_exit_code = 130;
+		return ;
+	if (signal == SIGQUIT)
 	{
-		write(1, "Quit: 3\n", 10);
-		g_exit_code = 131;
+		write(1, "Quit: 3\n", 9);
+		//g_exit_code = 131;
 	}
 	return ;
 }

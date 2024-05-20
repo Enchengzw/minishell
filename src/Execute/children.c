@@ -16,7 +16,6 @@ int	ft_redirect(t_cmd *cmd)
 {
 	if (cmd->fds->infile >= 0)
 	{
-		//write(2, "Infile\n", 7);
 		if (dup2(cmd->fds->infile, STDIN_FILENO) == -1)
 		{
 			ft_putstr_fd("Dup2 Error Infile\n", 2);
@@ -27,7 +26,6 @@ int	ft_redirect(t_cmd *cmd)
 	}
 	if (cmd->fds->outfile >= 0)
 	{
-		//write(2, "Outfile\n", 8);
 		if (dup2(cmd->fds->outfile, STDOUT_FILENO) == -1)
 		{
 			ft_putstr_fd("Dup2 Error Outfile\n", 2);
@@ -44,10 +42,16 @@ void	ft_set_redirections(t_cmd *cmd)
 	if (cmd->infile_flag == 0)
 	{
 		if (cmd->previous)
+		{
 			cmd->fds->infile = cmd->previous->fds->pipe[0];
+			cmd->previous->fds->pipe[0] = -1;
+		}
 	}
 	if (cmd->outfile_flag == 0 && cmd->next)
+	{
 		cmd->fds->outfile = cmd->fds->pipe[1];
+		cmd->fds->pipe[1] = -1;
+	} 
 }
 
 void	ft_child_process(t_cmd *cmd, t_data *data)

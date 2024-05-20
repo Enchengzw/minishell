@@ -35,8 +35,6 @@
 # define SUCCESS 0
 # define STDERR 2
 
-int					g_exit_code;
-
 typedef struct s_fds
 {
 	int	infile;
@@ -60,6 +58,7 @@ typedef struct s_cmd
 	char			*cmd_path;
 	char			**arg;
 	t_env			*env;
+	int				exit_code;
 	int				num_arg;
 	int				infile_flag;
 	int				outfile_flag;
@@ -76,6 +75,7 @@ typedef struct s_data
 	char			*user_input;
 	char			**env;
 	t_cmd			*cmd;
+	int				exit_code;
 	int				std_in;
 	int				std_out;
 }					t_data;

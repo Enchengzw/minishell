@@ -12,20 +12,20 @@
 
 #include <minishell.h>
 
-void	ft_get_exit_code(char *str, int *j, int *i)
+void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 {
 	int		len;
 	int		exit_code;
 	char	buffer[4];
 
 	len = 0;
-	if (g_exit_code == 0)
+	if ((cmd->exit_code) == 0)
 	{
 		str[(*j)++] = '0';
 		*i += 2;
 		return ;
 	}
-	exit_code = g_exit_code;
+	exit_code = cmd->exit_code;
 	while (exit_code > 0)
 	{
 		buffer[len++] = (exit_code % 10) + '0';
@@ -53,7 +53,7 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 	while (str[i])
 	{
 		if (str[i + 1] && str[i] == '$' && str[i + 1] == '?' && cmd->quote != 2)
-			ft_get_exit_code(res, &j, &i);
+			ft_get_exit_code(res, &j, &i, cmd);
 		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
 		{
 			if (ft_getenv(str + i + 1, *(cmd->env->env)) == NULL)

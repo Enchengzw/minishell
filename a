@@ -1,11 +1,1 @@
-closing fd: 5
-#    Makefile                                           :+:      :+:    :+:    #
-NAME = minishell
-all: $(NAME)
-$(NAME) : $(OBJ)
-	@$(MAKE) -C $(LIBFT)
-	$(CC) $(CFLAGS) -I./$(INCLUDE) -L$(LIBFT) -lft -o $(NAME) $(OBJ)
-	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
-	@$(RM) $(OBJ)
-	@$(RM) $(NAME)
-	@echo "$(COLOUR_RED)(╯°□°）╯︵ ┻━┻ $(NAME) removido!$(COLOUR_END)"
+hola

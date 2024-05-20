@@ -46,7 +46,7 @@ int	ft_exit(t_cmd *cmd, t_data *start)
 	if (cmd->num_arg > 2)
 		return (ft_putstr_fd("exit: too many arguments\n", 2), ERROR);
 	if (cmd->num_arg <= 1)
-		code = g_exit_code;
+		code = start->exit_code;
 	else
 	{
 		if (ft_only_digits(cmd->arg[1], &code) == 1)
