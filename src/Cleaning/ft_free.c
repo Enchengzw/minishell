@@ -55,7 +55,7 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 		//ft_printf("freed path\n");
 		if (node->arg)
 			ft_free_char(node->arg);
-		//ft_printf("freed arg\n");
+		ft_printf("freed arg\n");
 		next = node->next;
 		free(node);
 		//ft_printf("*************************\n");

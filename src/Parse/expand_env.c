@@ -12,6 +12,34 @@
 
 #include <minishell.h>
 
+char	*ft_strjoin_allocs1(char *s1, char *s2)
+{
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	if (!s1)
+	{
+		s1 = ft_calloc(sizeof(char), 1);
+		s1[0] = '\0';
+	}
+	if (!s1 || !s2)
+		return (NULL);
+	str = ft_calloc(sizeof(char), (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (s1)
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	free(s1);
+	return (str);
+}
+
 void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 {
 	int		len;
@@ -56,9 +84,7 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 			ft_get_exit_code(res, &j, &i, cmd);
 		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
 		{
-			if (ft_getenv(str + i + 1, *(cmd->env->env)) == NULL)
-				return (res);
-			res = ft_strjoin(res, ft_getenv(str + i + 1, *(cmd->env->env)));
+			res = ft_strjoin_allocs1(res, ft_getenv(str + i + 1, *(cmd->env->env)));
 			return (res);
 		}
 		else
