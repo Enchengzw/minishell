@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:04:00 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/22 19:43:19 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:45:11 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 	}
 	*i += 2;
 }
+
 static void ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 {
 	*res = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
