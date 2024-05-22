@@ -33,6 +33,12 @@ typedef struct s_cmd
 	int				num_arg;
 }					t_cmd; */
 
+void	ft_format_exit_code(int *exit_code)
+{
+	if (*exit_code > 255)
+		*exit_code = *exit_code % 255;
+}
+
 void	ft_free_cmd_struct(t_cmd *cmd)
 {
 	t_cmd	*node;
@@ -55,7 +61,7 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 		//ft_printf("freed path\n");
 		if (node->arg)
 			ft_free_char(node->arg);
-		ft_printf("freed arg\n");
+		//ft_printf("freed arg\n");
 		next = node->next;
 		free(node);
 		//ft_printf("*************************\n");

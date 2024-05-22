@@ -23,6 +23,7 @@ t_data	*ft_init(char **env)
 	data->env = ft_dpointer_dupe(env);
 	if (!data->env)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
+	data->exit_code = 0;
 	data->std_in = dup(STDIN_FILENO);
 	data->std_out = dup(STDOUT_FILENO);
 	return (data);
@@ -46,6 +47,7 @@ void	ft_main_loop(t_data *data)
 			ft_free_list(data->cmd);
 			data->cmd = NULL;
 		}
+		ft_format_exit_code(&(data->exit_code));
 	}
 }
 

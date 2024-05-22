@@ -58,7 +58,7 @@ typedef struct s_cmd
 	char			*cmd_path;
 	char			**arg;
 	t_env			*env;
-	int				exit_code;
+	int				*exit_code;
 	int				num_arg;
 	int				infile_flag;
 	int				outfile_flag;
@@ -141,6 +141,7 @@ int					error_cnf(char *command);
 int					error_fnf(char *file);
 int					error_syntax(char *file);
 void				ft_print_node(t_cmd *cmd);
+void				ft_format_exit_code(int *exit_code);
 
 // UTILS
 int					ft_list_size(t_cmd *cmd);

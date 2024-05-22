@@ -47,13 +47,13 @@ void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 	char	buffer[4];
 
 	len = 0;
-	if ((cmd->exit_code) == 0)
+	if (*(cmd->exit_code) == 0)
 	{
 		str[(*j)++] = '0';
 		*i += 2;
 		return ;
 	}
-	exit_code = cmd->exit_code;
+	exit_code = *(cmd->exit_code);
 	while (exit_code > 0)
 	{
 		buffer[len++] = (exit_code % 10) + '0';

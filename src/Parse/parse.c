@@ -28,7 +28,7 @@ static void	link_nodes(t_data *data)
 	}
 }
 
-static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env, int quote)
+static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int quote)
 {
 	int	i;
 
@@ -45,13 +45,14 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, char ***env, int quote)
 	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!cmd->env)
 		return (NULL);
-	cmd->env->env = env;
-	cmd->env->env_size = ft_dpointer_size(*env);
+	cmd->env->env = &(data->env);
+	cmd->env->env_size = ft_dpointer_size(data->env);
 	while (args[i])
 		i++;
 	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));
 	if (!cmd->arg)
 		return (free(cmd->arg), NULL);
+	cmd->exit_code = &(data->exit_code);
 	return (cmd);
 }
 
@@ -67,7 +68,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	last = NULL;
 	while (args[i])
 	{
-		node = node_new(node, args, &data->env, quote);
+		node = node_new(node, args, data, quote);
 		if (!node)
 			return ;
 		node->next = NULL;
