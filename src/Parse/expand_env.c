@@ -6,13 +6,13 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:04:00 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/14 17:41:18 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:43:19 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*ft_strjoin_allocs1(char *s1, char *s2)
+static char	*ft_strjoin_allocs1(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -66,6 +66,14 @@ void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 	}
 	*i += 2;
 }
+static void ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
+{
+	*res = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
+	while (str[*i] && str[*i] != '/')
+		(*i)++;
+	if (str[*i] && str[*i] == '/')
+		*res = ft_strjoin(*res, str + *i);
+}
 
 char	*ft_copy_char(char *str, t_cmd *cmd)
 {
@@ -84,7 +92,7 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 			ft_get_exit_code(res, &j, &i, cmd);
 		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
 		{
-			res = ft_strjoin_allocs1(res, ft_getenv(str + i + 1, *(cmd->env->env)));
+			ft_copy_char_env(&res, str, &i, cmd);
 			return (res);
 		}
 		else
@@ -93,3 +101,16 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 	res[j] = '\0';
 	return (res);
 }
+/*
+Espacio en blanco ( )
+Tabulación (\t)
+Nueva línea (\n)
+Caracteres de puntuación como punto y coma (;), coma (,), signo de exclamación (!), etc.
+Operadores de redirección y tuberías (<, >, |, etc.)
+Paréntesis ((, ))
+Llaves ({, })
+Corchetes ([, ])
+Comillas (", ')
+Caracteres de escape (\)
+Y otros caracteres especiales como #, &, *, ?, /, :, @, =, $, etc.
+*/

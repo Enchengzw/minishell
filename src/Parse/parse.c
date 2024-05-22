@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/16 20:08:19 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:44:01 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@ static void	link_nodes(t_data *data)
 	}
 }
 
-static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int quote)
+static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int quote, int *j)
 {
-	int	i;
-
-	i = 0;
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->file_flag = 0;
 	cmd->infile_flag = 0;
@@ -47,9 +44,7 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int quote)
 		return (NULL);
 	cmd->env->env = &(data->env);
 	cmd->env->env_size = ft_dpointer_size(data->env);
-	while (args[i])
-		i++;
-	cmd->arg = (char **)ft_calloc(i + 1, sizeof(char **));
+	cmd->arg = ft_split_mod(args[*j], ' ');
 	if (!cmd->arg)
 		return (free(cmd->arg), NULL);
 	cmd->exit_code = &(data->exit_code);
@@ -68,7 +63,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	last = NULL;
 	while (args[i])
 	{
-		node = node_new(node, args, data, quote);
+		node = node_new(node, args, data, quote, &i);
 		if (!node)
 			return ;
 		node->next = NULL;

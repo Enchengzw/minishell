@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/04/29 16:41:34 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:25:15 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,7 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 	while (node)
 	{
 		if (node->file_flag == 1)
-		{
-			close(node->fds->infile);
-			close(node->fds->outfile);
 			free(node->fds);
-		}
 		//ft_printf("freed file\n");
 		if (node->cmd_path)
 			free(node->cmd_path);

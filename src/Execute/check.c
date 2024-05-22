@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/08 13:46:31 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/22 17:45:43 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ int	ft_check_data(t_data *data)
 	temp = data->cmd;
 	while (temp)
 	{
+		/*int k = 0;
+        while (temp->arg[k])
+            ft_printf("%s\n", temp->arg[k++]);
+		ft_printf("--------\n");*/
 		if (temp->file_flag == -1)
 			return (1);
 		if (temp->cmd_flag == -1)

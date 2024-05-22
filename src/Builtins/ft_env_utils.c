@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:19:42 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/07 11:57:01 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/22 18:55:02 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static size_t ft_strlen_no_spaces(const char *s)//que vea si le afecta
 	size_t i;
 
 	i = 0;
-	while (s[i] && s[i] != ' ')
+	while (s[i] && s[i] != ' ' && s[i] != '/')
 		i++;
 	return (i);
 }

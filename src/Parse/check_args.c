@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/16 19:58:20 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:42:37 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,22 @@ char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
 {
 	int		i;
 	int		k;
-	char	**res;
 
 	i = 0;
 	k = 0;
-	res = ft_split_mod(args[*j], ' ');
-	if (res[k] == NULL)
+	if (cmd->arg[k] == NULL)
 	{
 		error_syntax("|");
 		cmd->cmd_flag = -1;
 	}
-	while (res[k])
+	while (cmd->arg[k])
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1)
 			break ;
-		if (res[k][0] == '<' || res[k][0] == '>')
-			cmd->file_flag = ft_check_redirections(res, k, cmd, data);
+		if (cmd->arg[k][0] == '<' || cmd->arg[k][0] == '>')
+			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
 		else
-			ft_check_rest(res, &i, &k, cmd);
+			ft_check_rest(cmd->arg, &i, &k, cmd);
 		k++;
 	}
 	cmd->arg[i] = NULL;
