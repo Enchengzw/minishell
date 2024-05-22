@@ -39,7 +39,7 @@ void	ft_main_loop(t_data *data)
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
 		ft_child_signals();
-		data->exit_code = ft_execute(data);
+		ft_execute(data);
 		if (data->cmd)
 		{
 			free(data->user_input);
