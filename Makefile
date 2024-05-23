@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+         #
+#    By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/05/14 19:41:29 by rauferna         ###   ########.fr        #
+#    Updated: 2024/05/23 12:59:02 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,7 @@ $(NAME) : $(OBJ)
 	@echo "$(COLOUR_GREEN)(•̀ᴗ•́)و $(NAME) generado!$(COLOUR_END)"
 
 %.o : %.c
-	@$(CC) -I./$(INCLUDE) -c -o $@ $<
+	@$(CC) $(CFLAGS) -I./$(INCLUDE) -c -o $@ $<
 	@echo "$(COLOUR_BLUE)(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧ Compilando archivos .c$(COLOUR_END)"
 
 clean:

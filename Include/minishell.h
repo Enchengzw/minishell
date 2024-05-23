@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/22 17:43:26 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:03:57 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ int					ft_is_in_env_index(char **env, char *variable,
 int					ft_print_export_error(char *variable);
 
 // SIGNALS
-static void			ft_shell_handler(int signal);
-static void			ft_shell_handler(int signal);
+void				ft_shell_handler(int signal);
 void				ft_child_signals(void);
 void				ft_main_signals(void);
 
@@ -117,8 +116,7 @@ void				ft_create_struct(char **args, t_data *data, int quote);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);
-char				**ft_process_args(char **args, int *j, t_cmd *cmd,
-						t_data *data);
+char				**ft_process_args(t_cmd *cmd, t_data *data);
 char				*ft_copy_char(char *str, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s, char c, int a);
 int					repsc(char const *s, char c);
@@ -151,5 +149,6 @@ void				ft_free_content(t_data *data);
 void				ft_free_list(t_cmd *cmd);
 int 				ft_close(int *fd);
 int					ft_close_unused_fds(t_cmd *cmd);
+int					ft_free_all(t_data *data);
 
 #endif

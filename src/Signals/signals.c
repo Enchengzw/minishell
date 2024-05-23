@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:14:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 16:25:57 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 13:01:59 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	ft_shell_handler(int signal)
+void	ft_shell_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -44,6 +44,7 @@ void	ft_child_signals()
 {
 	struct sigaction	sa;
 
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &ft_child_handler;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
@@ -54,6 +55,7 @@ void	ft_main_signals()
 {
 	struct sigaction	sa;
 
+	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &ft_shell_handler;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);

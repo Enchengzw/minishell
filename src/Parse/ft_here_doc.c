@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/02 21:57:39 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:05:57 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	ft_here_doc(char **args, int i, t_cmd *cmd)
 	char		*limit;
 	int			fd[2];
 	//si sales con Ctrl + D al salir no sale con Ctrl + D a la primera
+	line = NULL;
 	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
 	{
 		error_syntax("newline");

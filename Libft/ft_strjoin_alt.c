@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin_alt.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 11:41:39 by ezhou             #+#    #+#             */
-/*   Updated: 2023/10/19 15:18:13 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 12:44:32 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin_alt(char *s1, char *s2, int length)
 
 	j = 0;
 	i = 0;
-	result = (char *)malloc(sizeof(char) * length);
+	result = (char *)malloc(sizeof(char) * (length + 1));
 	if (!result)
 		return (NULL);
 	while (s1 && s1[i] && i < (length - 1))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 12:03:45 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/07 11:53:47 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 12:37:05 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**ft_dpointer_dupe(char **original)
 	int		i;
 
 	i = 0;
-	new = (char **)malloc(sizeof(char *) * ft_dpointer_size(original) + 1);
+	new = (char **)malloc(sizeof(char *) * (ft_dpointer_size(original) + 1));
 	while (original && original[i])
 	{
 		new[i] = ft_strdup(original[i]);

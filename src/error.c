@@ -15,7 +15,7 @@
 void	ft_exit_error(char *str, int n, t_data *data)
 {
 	ft_putstr_fd(str, STDERR);
-//	ft_free_all(data)
+	ft_free_all(data);
 	exit(n);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/22 17:42:37 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:03:39 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 	{
 		while (args[*k] && args[*k][start] == ' ')
 			start++;
-		if (*k > 0 && args[*k - 1][0] == '>' || args[*k - 1][0] == '<')
+		if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
 			return ;
 		else
 			cmd->arg[(*i)++] = ft_copy_char(args[*k], cmd);
@@ -75,7 +75,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		error_syntax(args[*k]);
 }
 
-char	**ft_process_args(char **args, int *j, t_cmd *cmd, t_data *data)
+char	**ft_process_args(t_cmd *cmd, t_data *data)
 {
 	int		i;
 	int		k;

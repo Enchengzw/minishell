@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/06 22:53:29 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:06:14 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ char	*ft_find_pathcmd(char **envp, char *command)
 	int		i;
 	char	*path;
 	char	*path_line;
-	char	*res;
 
+	path = 0;
 	i = 0;
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;

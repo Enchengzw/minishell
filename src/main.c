@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/14 17:58:12 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:07:41 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ void	ft_main_loop(t_data *data)
 	while (1)
 	{
 		ft_main_signals();
-		data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
+	 	data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
 		if (!data->user_input)
 			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
-		ft_child_signals();
 		ft_execute(data);
 		if (data->cmd)
 		{
@@ -55,13 +54,14 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
+	(void)argv;
 	if (argc > 1)
 		return (ft_putstr_fd("Too many arguments\n", 2), ERROR);
 	data = ft_init(env);
 	if (!data)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), ERROR);
 	ft_main_loop(data);
-	// ft_free_all
+	ft_free_all(data);
 	return (0);
 }
 

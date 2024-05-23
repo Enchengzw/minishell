@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/14 17:58:05 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:19:55 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ int	ft_execute(t_data *data)
 	code = ft_check_data(data);
 	if (code != INT_MIN)
 		return (code);
-	//ft_print_node(data->cmd);
 	code = ft_create_processes(data);
 	return (code);
-	/*  	return (0);  */
 }

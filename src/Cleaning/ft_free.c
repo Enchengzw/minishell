@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/22 17:25:15 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:54:39 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 		//ft_printf("freed arg\n");
 		next = node->next;
 		free(node);
+		node = NULL;
 		//ft_printf("*************************\n");
 		node = next;
 	}
@@ -69,4 +70,18 @@ void	ft_free_list(t_cmd *cmd)
 {
 	if (cmd)
 		ft_free_cmd_struct(cmd);
+}
+
+int		ft_free_all(t_data *data)
+{
+	if (data->user_input)
+		free(data->user_input);
+	ft_free_list(data->cmd);
+	ft_free_char(data->env);
+	if (ft_close(&(data->std_in)))
+		return (ft_printf("Close failure\n"), ERROR);
+ 	if (ft_close(&(data->std_out)))
+		return (ft_printf("Close failure\n"), ERROR);
+	free(data);
+	return (SUCCESS);
 }

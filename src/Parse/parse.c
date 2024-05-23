@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/22 17:44:01 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:04:40 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 		if (!node)
 			return ;
 		node->next = NULL;
-		node->arg = ft_process_args(args, &i, node, data);
+		node->arg = ft_process_args(node, data);
 		if (args[i])
 			i++;
 		if (last)
@@ -103,14 +103,9 @@ static int	ft_check_pipes(char *str)
 //mirar : (es un comodín)
 int	ft_parse(char *input, t_data *data)
 {
-	int		i;
-	int		j;
 	int		quote;
 	char	**args;
-	t_cmd	*command;
 
-	i = 0;
-	j = 0;
 	quote = 0;
 	if (!input)
 		return (ERROR);

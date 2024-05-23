@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/03 12:00:22 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 13:01:27 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_update_env(char ***env, int *size, char *variable)
 	return (SUCCESS);
 }
 
-int	ft_check_args(char **arg, int *num_arg)
+/* int	ft_check_args(char **arg, int *num_arg)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int	ft_check_args(char **arg, int *num_arg)
 		
 	}
 	return (SUCCESS);
-}
+} */
 
 int	ft_export(t_cmd **cmd)
 {
@@ -61,8 +61,8 @@ int	ft_export(t_cmd **cmd)
 	arg = (*cmd)->arg;
 	(*cmd)->num_arg = ft_dpointer_size(arg);
 	i = 0;
-	if (ft_check_args(arg, &(*cmd)->num_arg))
-		return (ERROR);
+/* 	if (ft_check_args(arg, &(*cmd)->num_arg))
+		return (ERROR); */
 	if ((*cmd)->num_arg == 1)
 		return (ft_print_sorted_env((*cmd)->env->env[0]));
 	while (arg && arg[++i])
