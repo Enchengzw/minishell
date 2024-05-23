@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/05/23 12:59:02 by ezhou            ###   ########.fr        #
+#    Updated: 2024/05/23 17:19:46 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ COLOUR_END=\033[0m
 
 NAME = minishell
 
-CC = gcc
+CC = clang
 
 CFLAGS = -g -Wall -Wextra -Werror
 

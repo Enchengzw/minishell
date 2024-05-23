@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+         #
+#    By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:53:06 by ezhou             #+#    #+#              #
-#    Updated: 2024/04/24 12:30:02 by ezhou            ###   ########.fr        #
+#    Updated: 2024/05/23 17:17:48 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ COLOUR_END=\033[0m
 LIB = ar rcs
 RM = rm -f
 
-CC = gcc -g -Wall -Wextra -Werror
+CC = clang -g -Wall -Wextra -Werror
 CFLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a

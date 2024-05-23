@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 13:07:41 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 17:18:39 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_main_loop(t_data *data)
 			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
+		ft_child_signals();
 		ft_execute(data);
 		if (data->cmd)
 		{

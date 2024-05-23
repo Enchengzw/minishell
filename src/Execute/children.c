@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/23 13:02:09 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/23 17:18:32 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	ft_child_process(t_cmd *cmd, t_data *data)
 	ft_set_redirections(cmd);
 	if (ft_redirect(cmd))
 		ft_exit_error("Error redirecting\n", 1, data);
-	ft_child_signals();
 	if (execve(cmd->cmd_path, cmd->arg, *(cmd->env->env)) == -1)
 		ft_exit_error("Error executing command\n", 1, data);
 }
