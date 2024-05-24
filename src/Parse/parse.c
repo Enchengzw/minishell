@@ -86,14 +86,16 @@ static int	ft_check_pipes(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '|')
+		if (str[i] == '|' || str[i] == ';')
 		{
-			if (str[i + 1] == '\0')
-				return (1);
+			if (str[i] == ';' && str[i + 1] == '\0')
+				return (error_syntax(";"));
+			if (str[i] == '|' && str[i + 1] == '\0')
+				return (error_syntax("|"));
 			if (str[i + 1] == '|' && str[i + 2] == '|')
-				return (1);
-			if (str[i + 1] == ';' && str[i + 2] == '|')
-				return (1);
+				return (error_syntax("|"));
+			if (str[i + 1] == ';' && str[i + 2] == ';')
+				return (error_syntax(";"));
 		}
 		i++;
 	}
@@ -113,8 +115,9 @@ int	ft_parse(char *input, t_data *data)
 	if (!input)
 		return (write(2, "Unspected quote \n", 17), STDERR);
 	if (ft_check_pipes(input) == 1)
-		return (error_syntax("|"));
+		return (ERROR);
 	args = ft_split_mod_pipe(input, '|', 1);//revisar comillas
+	//funcion para chequear caracteres como / : o parentesis
 	ft_create_struct(args, data, quote);
 	if (data->cmd)
 		link_nodes(data);
