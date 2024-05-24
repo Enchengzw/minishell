@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/23 12:54:39 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/24 12:32:05 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 	while (node)
 	{
 		if (node->file_flag == 1)
+		{
+			ft_close(&(node->fds->infile));
+			ft_close(&(node->fds->outfile));
 			free(node->fds);
+		}
 		//ft_printf("freed file\n");
 		if (node->cmd_path)
 			free(node->cmd_path);

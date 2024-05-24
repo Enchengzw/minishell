@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/23 17:18:32 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/24 12:18:38 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	ft_child_process(t_cmd *cmd, t_data *data)
 {
 	if (ft_close(&(cmd->fds->pipe[0])))
 		ft_exit_error("Error closing pipe[0]\n", 1, data);
+	if (ft_close_unused_fds(cmd))
+		ft_exit_error("Close error\n", 1, data);
 	ft_set_redirections(cmd);
 	if (ft_redirect(cmd))
 		ft_exit_error("Error redirecting\n", 1, data);

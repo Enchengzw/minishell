@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/23 12:19:55 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/24 12:36:48 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ int	ft_execute(t_data *data)
 	if (code != INT_MIN)
 		return (code);
 	code = ft_create_processes(data);
+	if (!code)
+		return (ERROR);
 	return (code);
 }
