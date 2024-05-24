@@ -120,6 +120,7 @@ char				**ft_process_args(t_cmd *cmd, t_data *data);
 char				*ft_copy_char(char *str, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s, char c, int a);
 int					repsc(char const *s, char c);
+int 				ft_special_character(char c);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

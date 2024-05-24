@@ -12,6 +12,17 @@
 
 #include <minishell.h>
 
+int ft_special_character(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == ';' || c == ',' || c == '!' 
+		|| c == '<' || c == '>' || c == '|' || c == '{'  || c == '}' || c == '[' 
+			|| c == ']' || c == '"' || c == '\'' || c == '\\' || c == '#' 
+				|| c == '&' || c == '*' || c == '?' || c == '/' || c == ':' 
+					|| c == '@' || c == '=' || c == '$' || c == '%')
+		return (1);
+	return (0);
+}
+
 static char	*ft_strjoin_allocs1(char *s1, char *s2)
 {
 	size_t	i;
@@ -40,7 +51,7 @@ static char	*ft_strjoin_allocs1(char *s1, char *s2)
 	return (str);
 }
 
-void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
+void	ft_get_exit_code(char *str, int *j, t_cmd *cmd)
 {
 	int		len;
 	int		exit_code;
@@ -50,7 +61,6 @@ void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 	if (*(cmd->exit_code) == 0)
 	{
 		str[(*j)++] = '0';
-		*i += 2;
 		return ;
 	}
 	exit_code = *(cmd->exit_code);
@@ -64,16 +74,29 @@ void	ft_get_exit_code(char *str, int *j, int *i, t_cmd *cmd)
 		str[*j] = buffer[--len];
 		(*j)++;
 	}
-	*i += 2;
 }
 
 static void ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 {
 	*res = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
-	while (str[*i] && str[*i] != '/')
+	(*i)++;
+	while (str[*i] && (ft_special_character(str[*i]) == 0))
 		(*i)++;
-	if (str[*i] && str[*i] == '/')
-		*res = ft_strjoin(*res, str + *i);
+	while (str[*i])
+	{
+		if (str[*i] && (ft_special_character(str[*i]) == 1))
+		{
+			if (str[*i] == '$' && str[*i + 1] == '?')
+				(*res) = ft_strjoin_allocs1(*res, ft_itoa(*(cmd->exit_code)));
+			else if (str[*i] == '$' && str[*i + 1])
+				(*res) = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
+			else
+				(*res) = ft_strjoin(*res, str + *i);
+		}
+		while (str[*i] && (ft_special_character(str[*i]) == 0 || str[*i] == '$'))
+			(*i)++;
+		(*i)++;
+	}
 }
 
 char	*ft_copy_char(char *str, t_cmd *cmd)
@@ -90,12 +113,12 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 	while (str[i])
 	{
 		if (str[i + 1] && str[i] == '$' && str[i + 1] == '?' && cmd->quote != 2)
-			ft_get_exit_code(res, &j, &i, cmd);
-		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
 		{
-			ft_copy_char_env(&res, str, &i, cmd);
-			return (res);
+			ft_get_exit_code(res, &j, cmd);
+			i += 2;
 		}
+		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
+			return (ft_copy_char_env(&res, str, &i, cmd), res);
 		else
 			res[j++] = str[i++];
 	}
