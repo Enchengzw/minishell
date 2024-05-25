@@ -17,7 +17,7 @@ COLOUR_END=\033[0m
 
 NAME = minishell
 
-CC = clang
+CC = gcc
 
 CFLAGS = -g -Wall -Wextra -Werror
 
@@ -34,6 +34,7 @@ SRC	=	./src/main.c \
 		./src/Builtins/ft_env.c \
 		./src/Builtins/ft_exit.c \
 		./src/Builtins/ft_export.c \
+		./src/Builtins/ft_export_utils.c \
 		./src/Builtins/ft_print_sorted_env.c \
 		./src/Builtins/ft_pwd.c \
 		./src/Builtins/ft_unset.c \

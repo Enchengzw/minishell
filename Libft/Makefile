@@ -18,7 +18,7 @@ COLOUR_END=\033[0m
 LIB = ar rcs
 RM = rm -f
 
-CC = clang -g -Wall -Wextra -Werror
+CC = gcc -g -Wall -Wextra -Werror
 CFLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a

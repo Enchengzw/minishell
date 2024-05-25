@@ -97,6 +97,9 @@ int					ft_valid_name(char *string);
 int					ft_is_in_env_index(char **env, char *variable,
 						int *index, int *flag);
 int					ft_print_export_error(char *variable);
+char				*ft_get_label(char *variable);
+char    			*ft_get_value(char *variable);
+char    			*ft_make_export_line(char *label, char *value);
 
 // SIGNALS
 void				ft_shell_handler(int signal);

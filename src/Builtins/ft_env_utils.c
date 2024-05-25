@@ -52,26 +52,19 @@ int		ft_valid_name(char	*string)
 	int	i;
 
 	i = 0;
-	if (string[i] == '=')
+	if (string[i] == '=' || (!ft_isalpha(string[i]) && string[i] != '_'))
 		return (ERROR);
-	while (string[i] && string[i] != '=')
+	while (string[++i] && string[i] != '=')
 	{
-		if (i == 0)
+		if (!ft_isalnum(string[i]))
 		{
-			if (!ft_isalpha(string[i]))
+			if (string[i] == '_')
+				;
+			else if (string[i] == '+' && string[i + 1] && string[i + 1] == '=')
+				;
+			else
 				return (ERROR);
 		}
-		else
-		{
-			if (!ft_isalnum(string[i]))
-			{
-				if (string[i] == '_')
-					;
-				else
-					return (ERROR);
-			}
-		}
-		i++;
 	}
 	return (SUCCESS);
 }
@@ -87,7 +80,9 @@ int		ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 	temp = ft_split(variable, '=');
 	if (!temp)
 		return (ft_putstr_fd("Malloc Error\n", 2), ERROR);
-	key = temp[0];
+	key = ft_strtrim(temp[0], "+");
+	if (!key)
+		return (ft_putstr_fd("Malloc Error\n", 2), ft_free_char(temp), ERROR);
 	while (env[i])
 	{
 		if (!ft_strncmp(key, env[i], ft_strlen(key)))
@@ -98,6 +93,7 @@ int		ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 		}
 		i++;
 	}
+	free(key);
 	ft_free_char(temp);
 	return (SUCCESS);
 }

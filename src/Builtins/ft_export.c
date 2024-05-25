@@ -12,6 +12,80 @@
 
 #include "../../Include/minishell.h"
 
+static char	*ft_concatenate(char *label, char *value, char *old_variable)
+{
+	char 	*aux;
+	char	*new_value;
+	char	*new_label;
+	char	*result;
+
+	aux = ft_get_value(old_variable);
+	if (!aux)
+		return (NULL);
+	new_value =	ft_strjoin(aux, value);
+	if (!new_value)
+		return (free(aux), NULL);
+	new_label = ft_strtrim(label, "+");
+	if (!new_label)
+		return (free(aux), free(new_value), NULL);
+	result = ft_make_export_line(new_label, new_value);
+	if (!result)
+		return (free(aux), free(new_value), free(new_label), NULL);
+	free(aux);
+	free(new_value);
+	free(new_label);
+	return (result);
+}
+
+static int	ft_update_old(char *variable, char ***env, int index)
+{
+	char	*label;
+	char	*value;
+	char	*temp;
+
+	if (!ft_strcontains(variable, '='))
+		return (SUCCESS);
+	label = ft_get_label(variable);
+	value = ft_get_value(variable);
+	if (!label || !value)
+		return (free(label), free(value), ERROR);
+	if (ft_strcontains(label, '+'))
+		temp = ft_concatenate(label, value, (*env)[index]);
+	else
+		temp = ft_make_export_line(label, value);
+	if (!temp)
+		return (free(label), free(value), ERROR);
+	free((*env)[index]);
+	(*env)[index] = temp;
+	free(label);
+	free(value);
+	return (SUCCESS);
+}
+
+static int	ft_add_new(char *variable, int size, char ***env)
+{
+	char	*label;
+	char	*value;
+
+	label = ft_get_label(variable);
+	if (!label)
+		return (ERROR);
+	if (ft_strcontains(variable, '='))
+	{
+		value = ft_get_value(variable);
+	}
+	else
+		value = ft_strdup("");
+	if (!value)
+		return (free(label), ERROR);
+	(*env)[(size) - 1] = ft_make_export_line(label, value);
+	if (!(*env)[(size) - 1])
+		return (free(label), free(value), ERROR);
+	free(label);
+	free(value);
+	return (SUCCESS);
+}
+
 static int	ft_update_env(char ***env, int *size, char *variable)
 {
 	int	index;
@@ -21,37 +95,18 @@ static int	ft_update_env(char ***env, int *size, char *variable)
 		return (ERROR);
 	if (flag)
 	{
-		if (ft_strcontains(variable, '='))
-		{
-			free((*env)[index]);
-			(*env)[index] = NULL;
-			(*env)[index] = ft_strdup(variable);
-			if (!(*env)[index])
-				return (ERROR);
-		}
+		if (ft_update_old(variable, env, index))
+			return (ERROR);
 	}
 	else
 	{
 		*size += 1;
 		*env = ft_realloc_doublep_char(*env, *size + 1);
-		(*env)[(*size) - 1] = ft_strdup(variable);
-		if (!(*env)[(*size) - 1])
+		if (!env || ft_add_new(variable, *size, env))
 			return (ERROR);
 	}
 	return (SUCCESS);
 }
-
-/* int	ft_check_args(char **arg, int *num_arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg && arg[++i])
-	{
-		
-	}
-	return (SUCCESS);
-} */
 
 int	ft_export(t_cmd **cmd)
 {
@@ -61,8 +116,6 @@ int	ft_export(t_cmd **cmd)
 	arg = (*cmd)->arg;
 	(*cmd)->num_arg = ft_dpointer_size(arg);
 	i = 0;
-/* 	if (ft_check_args(arg, &(*cmd)->num_arg))
-		return (ERROR); */
 	if ((*cmd)->num_arg == 1)
 		return (ft_print_sorted_env((*cmd)->env->env[0]));
 	while (arg && arg[++i])
@@ -72,7 +125,7 @@ int	ft_export(t_cmd **cmd)
 		else
 			if (ft_update_env((*cmd)->env->env, &((*cmd)->env->env_size),
 				arg[i]))
-				return (ERROR);
+				return (ft_printf("Malloc Error\n"), ERROR);
 	}
 	return (SUCCESS);
 }
