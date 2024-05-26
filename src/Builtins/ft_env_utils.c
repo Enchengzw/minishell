@@ -85,7 +85,8 @@ int		ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 		return (ft_putstr_fd("Malloc Error\n", 2), ft_free_char(temp), ERROR);
 	while (env[i])
 	{
-		if (!ft_strncmp(key, env[i], ft_strlen(key)))
+		if (!ft_strncmp(key, env[i], ft_strlen(key)) && 
+		(!(env[i][ft_strlen(key)]) || env[i][ft_strlen(key)] == '='))
 		{
 			*flag = 1;
 			*index = i;
@@ -93,9 +94,7 @@ int		ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 		}
 		i++;
 	}
-	free(key);
-	ft_free_char(temp);
-	return (SUCCESS);
+	return (free(key), ft_free_char(temp), SUCCESS);
 }
 
 int		ft_print_export_error(char *variable)
