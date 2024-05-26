@@ -43,8 +43,12 @@ static void	ft_sort(char **to_sort)
 int	ft_print_sorted_env(char **env)
 {
 	char	**dupe;
+	char	*label;
+	char	*value;
 	int		i;
 
+	label = NULL;
+	value = NULL;
 	i = 0;
 	dupe = ft_dpointer_dupe(env);
 	if (!dupe)
@@ -52,7 +56,13 @@ int	ft_print_sorted_env(char **env)
 	ft_sort(dupe);
 	while (dupe[i])
 	{
-		printf("declare -x %s\n", dupe[i]);
+		label = ft_get_label(dupe[i]);
+		value = ft_get_value(dupe[i]);
+		if (!label || !value)
+			return (ft_free_char(dupe), free(label), free(value), ERROR);
+		printf("declare -x %s=\"%s\"\n", label, value);
+		ft_clean(label);
+		ft_clean(value);
 		i++;
 	}
 	ft_free_char(dupe);
