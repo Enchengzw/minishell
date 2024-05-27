@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:30:18 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 16:02:47 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:44:43 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	ft_update_env(char ***env, int size, int index)
 		{
 			new[j] = ft_strdup((*env)[i]);
 			if (!new[j])
-				return (ft_free_char(new), ft_putstr_fd("Malloc Error\n", 2), ERROR);
+				return (ft_free_char(new), ft_putstr_fd("Malloc Error\n", 2),
+					ERROR);
 			j++;
 		}
 		i++;
@@ -41,19 +42,18 @@ static int	ft_update_env(char ***env, int size, int index)
 
 int	ft_unset_loop(t_cmd **cmd, char *arg, int *index)
 {
-	int flag;
+	int	flag;
 
 	flag = 0;
 	if (ft_valid_name(arg))
-			ft_print_export_error(arg);
+		ft_print_export_error(arg);
 	else
 	{
 		if (ft_is_in_env_index((*cmd)->env->env[0], arg, index, &flag))
 			return (ERROR);
 		if (flag)
 		{
-			if (ft_update_env((*cmd)->env->env, (*cmd)->env->env_size,
-				*index))
+			if (ft_update_env((*cmd)->env->env, (*cmd)->env->env_size, *index))
 				return (ERROR);
 			(*cmd)->env->env_size -= 1;
 		}

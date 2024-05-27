@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/23 13:01:27 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:44:03 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*ft_concatenate(char *label, char *value, char *old_variable)
 {
-	char 	*aux;
+	char	*aux;
 	char	*new_value;
 	char	*new_label;
 	char	*result;
@@ -22,7 +22,7 @@ static char	*ft_concatenate(char *label, char *value, char *old_variable)
 	aux = ft_get_value(old_variable);
 	if (!aux)
 		return (NULL);
-	new_value =	ft_strjoin(aux, value);
+	new_value = ft_strjoin(aux, value);
 	if (!new_value)
 		return (free(aux), NULL);
 	new_label = ft_strtrim(label, "+");
@@ -124,7 +124,7 @@ int	ft_export(t_cmd **cmd)
 			return (ft_print_export_error(arg[i]));
 		else
 			if (ft_update_env((*cmd)->env->env, &((*cmd)->env->env_size),
-				arg[i]))
+					arg[i]))
 				return (ft_printf("Malloc Error\n"), ERROR);
 	}
 	return (SUCCESS);

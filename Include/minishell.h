@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/05/23 13:03:57 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 13:07:47 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
-	// t_token		*token;
 	char			*user_input;
 	char			**env;
 	t_cmd			*cmd;
@@ -98,8 +97,8 @@ int					ft_is_in_env_index(char **env, char *variable,
 						int *index, int *flag);
 int					ft_print_export_error(char *variable);
 char				*ft_get_label(char *variable);
-char    			*ft_get_value(char *variable);
-char    			*ft_make_export_line(char *label, char *value);
+char				*ft_get_value(char *variable);
+char				*ft_make_export_line(char *label, char *value);
 
 // SIGNALS
 void				ft_shell_handler(int signal);
@@ -123,7 +122,7 @@ char				**ft_process_args(t_cmd *cmd, t_data *data);
 char				*ft_copy_char(char *str, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s, char c, int a);
 int					repsc(char const *s, char c);
-int 				ft_special_character(char c);
+int					ft_special_character(char c);
 
 // EXECUTOR
 int					ft_execute(t_data *data);
@@ -135,7 +134,6 @@ void				ft_child_process(t_cmd *cmd, t_data *data);
 int					ft_parent_process(t_cmd *cmd, t_data *data, pid_t pid);
 int					execute_builtins(t_cmd *cmd, t_data *data);
 void				ft_set_redirections(t_cmd *cmd);
-
 
 // ERROR
 void				ft_exit_error(char *str, int n, t_data *data);
@@ -151,7 +149,7 @@ int					ft_list_size(t_cmd *cmd);
 // CLEANING
 void				ft_free_content(t_data *data);
 void				ft_free_list(t_cmd *cmd);
-int 				ft_close(int *fd);
+int					ft_close(int *fd);
 int					ft_close_unused_fds(t_cmd *cmd);
 int					ft_free_all(t_data *data);
 

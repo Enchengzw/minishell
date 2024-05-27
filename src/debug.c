@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 17:20:04 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/08 13:48:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 13:06:49 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void	ft_print_node(t_cmd *cmd)
 		ft_putstr_fd("i :", 2);
 		ft_putnbr_fd(i, 2);
 		ft_putchar_fd('\n', 2);
-		/* ft_putstr_fd("cmd_path: ", 2);
-		ft_putstr_fd(cmd->cmd_path, 2);
-		ft_putstr_fd("\n", 2); */
-		while(cmd->arg[j])
+		while (cmd->arg[j])
 		{
 			ft_putstr_fd("arg[", 2);
 			ft_putnbr_fd(j, 2);
@@ -43,3 +40,7 @@ void	ft_print_node(t_cmd *cmd)
 		i++;
 	}
 }
+
+	/* ft_putstr_fd("cmd_path: ", 2);
+		ft_putstr_fd(cmd->cmd_path, 2);
+		ft_putstr_fd("\n", 2); */

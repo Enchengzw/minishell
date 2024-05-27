@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/07 11:37:46 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:33:57 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static	int	ft_update_pwd(t_env *env)
 	return (SUCCESS);
 }
 
-static int		ft_default_cd(t_cmd **cmd)
+static int	ft_default_cd(t_cmd **cmd)
 {
 	if (!ft_getenv("HOME", (*cmd)->env->env[0]))
 	{
@@ -93,7 +93,6 @@ static	int	ft_update_oldpwd(t_env *env)
 	return (SUCCESS);
 }
 
-
 int	ft_cd(t_cmd **cmd)
 {
 	char	*temp;
@@ -114,7 +113,7 @@ int	ft_cd(t_cmd **cmd)
 	else
 	{
 		if (ft_update_pwd((*cmd)->env))
-			return(free(temp), ERROR);
+			return (free(temp), ERROR);
 		return (free(temp), SUCCESS);
 	}
 	return (free(temp), ERROR);

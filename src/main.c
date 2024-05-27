@@ -6,11 +6,11 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/24 12:30:53 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:26:22 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h> 
+#include <minishell.h>
 
 t_data	*ft_init(char **env)
 {
@@ -34,13 +34,13 @@ void	ft_main_loop(t_data *data)
 	while (1)
 	{
 		ft_main_signals();
-	 	data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
+		data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
 		if (!data->user_input)
 			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);
 		ft_parse(data->user_input, data);
 		ft_child_signals();
-	 	ft_execute(data);
+		ft_execute(data);
 		if (data->cmd)
 		{
 			free(data->user_input);
@@ -65,10 +65,3 @@ int	main(int argc, char **argv, char **env)
 	ft_free_all(data);
 	return (0);
 }
-
-//si pones por ejemplo echo $PATH | tr ':' '\n' no le llega el path VUELVE A PASAR
-//cuando pongas echo $? que muestre el return del antiguo comando devuelve 0 si viene de execve en caso de fallo
-//ej pones cat asdsa (ese file no existe) y te devuelve 1 bash, pero minishell devuelve 0
-//he cambiado la funcion de getenv, he puesto una funcion ft_strlen_no_spaces, porque si pones echo "     $PATH   "no expandía, y bash si lo hace->
-//no creo que afecte porque no se usan espacios en las variables de entorno. pero verifica si te afecta
-

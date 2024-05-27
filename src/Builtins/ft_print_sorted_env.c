@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:22:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:23:37 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 13:05:42 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	ft_printer(char *to_print)
 	label = ft_get_label(to_print);
 	if (!label)
 		return (ERROR);
-	if (ft_strcontains(to_print, '=') && to_print[ft_strlen(label) + 2])
+	if (ft_strcontains(to_print, '=') && to_print[ft_strlen(label) + 1])
 	{
 		value = ft_get_value(to_print);
 		if (!value)

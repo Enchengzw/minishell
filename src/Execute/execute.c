@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/24 12:36:48 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:46:21 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_create_processes(t_data *data)
 	{
 		if (temp->next)
 		{
-			if(pipe(temp->fds->pipe) == ERROR)
+			if (pipe(temp->fds->pipe) == ERROR)
 				return (ft_putstr_fd("Error creating pipe\n", STDERR), ERROR);
 		}
 		if (temp->is_builtin == 1)

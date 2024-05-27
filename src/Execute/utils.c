@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 13:26:29 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/08 13:56:51 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:50:21 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	execute_builtins(t_cmd *cmd, t_data *data)
 		exit = ft_echo(cmd->arg);
 	else if (ft_strcmp(cmd->arg[0], "env") == 0 && !exit)
 		exit = ft_env(&cmd);
-	else if (ft_strcmp(cmd->arg[0], "exit") == 0 && !exit) // WARNING
+	else if (ft_strcmp(cmd->arg[0], "exit") == 0 && !exit)
 		exit = ft_exit(cmd, data);
 	else if (ft_strcmp(cmd->arg[0], "export") == 0 && !exit)
 		exit = ft_export(&cmd);
@@ -34,7 +34,7 @@ int	execute_builtins(t_cmd *cmd, t_data *data)
 		exit = ft_unset(&cmd);
 	if (cmd->next && ft_close(&(cmd->fds->pipe[1])))
 		return (ERROR);
- 	if (cmd->previous && ft_close(&(cmd->previous->fds->pipe[0])))
+	if (cmd->previous && ft_close(&(cmd->previous->fds->pipe[0])))
 		return (ERROR);
 	if (ft_restore_io(cmd))
 		return (ft_putstr_fd("Out of resources\n", STDERR), ERROR);
@@ -48,7 +48,7 @@ int	ft_list_size(t_cmd *cmd)
 	count = 0;
 	while (cmd)
 	{
-		count +=1;
+		count += 1;
 		cmd = cmd->next;
 	}
 	return (count);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 12:03:30 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/22 16:31:15 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 13:05:06 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ char				*ft_strnstr(const char *big, const char *little,
  * @param nptr A number represented by a string
  * @return The number value of the string or 0 if any error happens
  */
-int				ft_atoi(const char *nptr);
+int					ft_atoi(const char *nptr);
 /**
  * @brief Applies the function f to every byte in the string s
  *

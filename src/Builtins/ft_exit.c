@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 12:38:47 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 23:19:59 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:42:11 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ int	ft_exit(t_cmd *cmd, t_data *start)
 	{
 		if (ft_only_digits(cmd->arg[1], &code) == 1)
 			code = ft_atol(cmd->arg[1]);
-	} 
+	}
 	if (code > 255)
 		code = code % 256;
-
-	//ft_clear_all(start);
+	ft_free_all(start);
 	exit(code);
 }

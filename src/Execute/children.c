@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:16 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/24 12:18:38 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:46:07 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_set_redirections(t_cmd *cmd)
 	{
 		cmd->fds->outfile = cmd->fds->pipe[1];
 		cmd->fds->pipe[1] = -1;
-	} 
+	}
 }
 
 void	ft_child_process(t_cmd *cmd, t_data *data)

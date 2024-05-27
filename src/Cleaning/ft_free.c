@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/24 12:32:05 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 13:04:22 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,13 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 			ft_close(&(node->fds->outfile));
 			free(node->fds);
 		}
-		//ft_printf("freed file\n");
 		if (node->cmd_path)
 			free(node->cmd_path);
-		//ft_printf("freed path\n");
 		if (node->arg)
 			ft_free_char(node->arg);
-		//ft_printf("freed arg\n");
 		next = node->next;
 		free(node);
 		node = NULL;
-		//ft_printf("*************************\n");
 		node = next;
 	}
 }
@@ -76,7 +72,7 @@ void	ft_free_list(t_cmd *cmd)
 		ft_free_cmd_struct(cmd);
 }
 
-int		ft_free_all(t_data *data)
+int	ft_free_all(t_data *data)
 {
 	if (data->user_input)
 		free(data->user_input);
@@ -84,7 +80,7 @@ int		ft_free_all(t_data *data)
 	ft_free_char(data->env);
 	if (ft_close(&(data->std_in)))
 		return (ft_printf("Close failure\n"), ERROR);
- 	if (ft_close(&(data->std_out)))
+	if (ft_close(&(data->std_out)))
 		return (ft_printf("Close failure\n"), ERROR);
 	free(data);
 	return (SUCCESS);
