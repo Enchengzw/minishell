@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_sorted_env.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:22:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/02 11:57:16 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/05/27 12:23:37 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,34 @@ static void	ft_sort(char **to_sort)
 	}
 }
 
+static int	ft_printer(char *to_print)
+{
+	char	*label;
+	char	*value;
+
+	value = NULL;
+	label = ft_get_label(to_print);
+	if (!label)
+		return (ERROR);
+	if (ft_strcontains(to_print, '=') && to_print[ft_strlen(label) + 2])
+	{
+		value = ft_get_value(to_print);
+		if (!value)
+			return (free(label), ERROR);
+		printf("declare -x %s=\"%s\"\n", label, value);
+	}
+	else
+		printf("declare -x %s=\"\"", label);
+	ft_clean(label);
+	ft_clean(value);
+	return (SUCCESS);
+}
+
 int	ft_print_sorted_env(char **env)
 {
 	char	**dupe;
-	char	*label;
-	char	*value;
 	int		i;
 
-	label = NULL;
-	value = NULL;
 	i = 0;
 	dupe = ft_dpointer_dupe(env);
 	if (!dupe)
@@ -56,17 +75,11 @@ int	ft_print_sorted_env(char **env)
 	ft_sort(dupe);
 	while (dupe[i])
 	{
-		label = ft_get_label(dupe[i]);
-		value = ft_get_value(dupe[i]);
-		if (!label || !value)
-			return (ft_free_char(dupe), free(label), free(value), ERROR);
-		printf("declare -x %s=\"%s\"\n", label, value);
-		ft_clean(label);
-		ft_clean(value);
+		if (ft_printer(dupe[i]))
+			return (ft_free_char(dupe), SUCCESS);
 		i++;
 	}
-	ft_free_char(dupe);
-	return (SUCCESS);
+	return (ft_free_char(dupe), SUCCESS);
 }
 
 /* int main(int argc, char **argv, char **env)
