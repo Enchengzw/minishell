@@ -67,7 +67,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 		if (!node)
 			return ;
 		node->next = NULL;
-		node->arg = ft_process_args(node, data);
+		node->arg = ft_process_args(node, data, args);
 		if (args[i])
 			i++;
 		if (last)

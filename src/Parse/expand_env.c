@@ -14,11 +14,11 @@
 
 int ft_special_character(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == ';' || c == ',' || c == '!' 
-		|| c == '<' || c == '>' || c == '|' || c == '{'  || c == '}' || c == '[' 
-			|| c == ']' || c == '"' || c == '\'' || c == '\\' || c == '#' 
-				|| c == '&' || c == '*' || c == '?' || c == '/' || c == ':' 
-					|| c == '@' || c == '=' || c == '$' || c == '%')
+	if (c == ' ' || c == '\t' || c == '\n' || c == ','
+		 || c == '{'  || c == '}' || c == '[' || c == ']' || c == '"'
+		 	|| c == '\'' || c == '\\' || c == '#' || c == '&' || c == '*'
+				|| c == '?' || c == '/' || c == ':'  || c == '@' || c == '='
+					|| c == '$' || c == '%' || c == '-')
 		return (1);
 	return (0);
 }
@@ -79,6 +79,11 @@ void	ft_get_exit_code(char *str, int *j, t_cmd *cmd)
 static void ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 {
 	*res = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
+	if (!(*res))
+	{
+		(*res) = ft_strdup("");
+		return ;
+	}
 	(*i)++;
 	while (str[*i] && (ft_special_character(str[*i]) == 0))
 		(*i)++;
@@ -89,7 +94,8 @@ static void ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 			if (str[*i] == '$' && str[*i + 1] == '?')
 				(*res) = ft_strjoin_allocs1(*res, ft_itoa(*(cmd->exit_code)));
 			else if (str[*i] == '$' && str[*i + 1])
-				(*res) = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1, *(cmd->env->env)));
+				(*res) = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1,
+					*(cmd->env->env)));
 			else
 				(*res) = ft_strjoin(*res, str + *i);
 		}
@@ -117,7 +123,7 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 			ft_get_exit_code(res, &j, cmd);
 			i += 2;
 		}
-		else if (str[i] == '$' && cmd->quote != 2 && str[i + 1] != '?')
+		else if (str[i] == '$' && (str[i + 1] && cmd->quote != 2 && str[i + 1] != '?'))
 			return (ft_copy_char_env(&res, str, &i, cmd), res);
 		else
 			res[j++] = str[i++];

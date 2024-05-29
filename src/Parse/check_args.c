@@ -75,7 +75,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		error_syntax(args[*k]);
 }
 
-char	**ft_process_args(t_cmd *cmd, t_data *data)
+char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
 {
 	int		i;
 	int		k;
@@ -84,7 +84,8 @@ char	**ft_process_args(t_cmd *cmd, t_data *data)
 	k = 0;
 	if (cmd->arg[k] == NULL)
 	{
-		error_syntax("|");
+		if (args[k + 1] != NULL)
+			error_syntax("|");
 		cmd->cmd_flag = -1;
 	}
 	while (cmd->arg[k])
@@ -95,7 +96,8 @@ char	**ft_process_args(t_cmd *cmd, t_data *data)
 			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
 		else
 			ft_check_rest(cmd->arg, &i, &k, cmd);
-		k++;
+		if (cmd->arg[k] != NULL)
+			k++;
 	}
 	cmd->arg[i] = NULL;
 	return (cmd->arg);

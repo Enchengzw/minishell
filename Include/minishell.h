@@ -118,7 +118,7 @@ void				ft_create_struct(char **args, t_data *data, int quote);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, char c);
-char				**ft_process_args(t_cmd *cmd, t_data *data);
+char				**ft_process_args(t_cmd *cmd, t_data *data, char **args);
 char				*ft_copy_char(char *str, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s, char c, int a);
 int					repsc(char const *s, char c);

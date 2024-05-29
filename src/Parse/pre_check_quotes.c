@@ -72,6 +72,20 @@ static int	ft_count_quotes(char *input)
 //	}
 } */
 
+static int	check_dollar_simple(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 39 && str[i + 1] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 {
 	int		k;
@@ -94,10 +108,10 @@ static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 	if (ft_check_spaces(input, k, quote) == 1 && input[*i] == quote)
 		res[(*j)++] = input[*i];
 	(*i)++;
-	if (quote == 34)
-		return (3);
-	else
+	if (check_dollar_simple(input) == 1)
 		return (2);
+	else
+		return (3);
 }
 
 char	*ft_pre_check_quotes(char *input, int *quote)
