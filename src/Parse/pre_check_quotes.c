@@ -14,16 +14,6 @@
 
 //39 simple quotes
 //34 Double quotes
-static int	ft_check_spaces(char *str, int i, char quote)
-{
-	while (str[i] && str[i] != quote)
-	{
-		if (str[i] == ' ')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 static int	ft_count_quotes(char *input)
 {
@@ -54,27 +44,9 @@ static int	ft_count_quotes(char *input)
 		return (0);
 }
 
-/* static int	ft_check_next_quote(char *str, int i, char quote)//creo que no se usa
-{
-	while (str[i])
-	{
-		if (str[i] == quote)
-			return (0);
-		i++;
-	}
-	return (1);
-//if (input[*i] == quote && input[*i + 1] == quote)
-//	{
-//		if (input[*i])
-//			res[(*j)++] = input[(*i)++];
-//		if (input[*i])
-//			res[(*j)++] = input[*i];
-//	}
-} */
-
 static int	check_dollar_simple(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -86,13 +58,24 @@ static int	check_dollar_simple(char *str)
 	return (0);
 }
 
+static int	ft_check_spaces(char *str, int i, char quote)
+{
+	while (str[i] && str[i] != quote)
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 {
 	int		k;
-	char 	quote;
+	char	quote;
 
-	quote = 0;
 	k = 0;
+	quote = 0;
 	if (input[*i] == 34)
 		quote = 34;
 	else if (input[*i] == 39)
@@ -100,8 +83,8 @@ static int	ft_check_in_quote(char *input, char *res, int *i, int *j)
 	if (ft_check_spaces(input, *i + 1, quote) == 1)
 		res[(*j)++] = input[*i];
 	(*i)++;
-	k = *i;
-	while (input[*i] && input[*i] != quote)
+	k = (*i);
+	while (input[*i] && (input[*i] != quote))
 		res[(*j)++] = input[(*i)++];
 	if (!input[*i])
 		return (1);

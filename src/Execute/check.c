@@ -40,6 +40,8 @@ int	ft_check_data(t_data *data)
 	temp = data->cmd;
 	while (temp)
 	{
+		if (temp->two_points == 1 && temp->cmd_flag == 0)
+			return (0);
 		if (temp->file_flag == -1)
 			return (1);
 		if (temp->cmd_flag == -1)
@@ -50,10 +52,3 @@ int	ft_check_data(t_data *data)
 	}
 	return (INT_MIN);
 }
-
-/*
-		 int k = 0;
-        while (temp->arg[k])
-            ft_printf("%s\n", temp->arg[k++]);
-		ft_printf("--------\n");
-*/

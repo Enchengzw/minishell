@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-int	repsc(char const *s, char c)
+static int	repsc(char const *s, char c)
 {
 	int	i;
 	int	j;
@@ -32,15 +32,6 @@ int	repsc(char const *s, char c)
 	}
 	return (j);
 }
-/*
-static void	getarray_loop(char *res, int *i, int *j, const char *s, char c)
-{
-	if (s[*i] == '\\' && s[*i + 1] == c)
-		res[*j++] = s[*i++];
-	//(*i)++;
-	if (s[*i] == c)
-		res[*j++] = s[*i++];
-}*/
 
 static char	*getarray(const char *s, char c, int n)
 {
@@ -48,15 +39,15 @@ static char	*getarray(const char *s, char c, int n)
 	int		j;
 	char	*res;
 
-	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));//len exacta
+	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	i = 0;
 	j = 0;
 	if (s[i] == c && n == 1)
 		res[j++] = s[i++];
-	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\') 
-		|| (s[i] == c && s[i - 1] == '\\') ) )
+	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')
+			|| (s[i] == c && s[i - 1] == '\\')))
 	{
 		res[j++] = s[i++];
 	}
@@ -66,71 +57,52 @@ static char	*getarray(const char *s, char c, int n)
 	return (res);
 }
 
-static char	*check_quotes(char *str, const char *s, int a)
+static char	*check_quotes(const char *s)
 {
 	int		i;
+	int		j;
 	char	*res;
 
 	i = 0;
-	while (str[i])
+	j = 0;
+	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	while (s[i] && s[i] != '|')
 	{
-		if ((str[i] == 39 || str[i] == 34))
-		{
-			if (a == 0)
-				res = getarray(s + i + 1, str[i], 0);
-			else
-			{
-				res = ft_strjoin(ft_substr(str, 0, i),
-						getarray(s + i, str[i], 1));
-			}
-			free(str);
-			return (res);
-		}
-		i++;
+		if ((s[i] == 39 || s[i] == 34))
+			res = ft_strjoin_allocs1(ft_substr(s, 0, i),
+					getarray(s + i, s[i], 1));
+		res[j++] = s[i++];
 	}
-	str[i] = '\0';
-	return (str);
+	res[i] = '\0';
+	return (res);
 }
 
-char	**ft_split_mod_pipe(char const *s, char c, int a)
+char	**ft_split_mod_pipe(char const *s)
 {
 	int		i;
 	int		len;
+	char	c;
 	char	**res;
 
 	i = 0;
+	c = '|';
 	len = repsc(s, c);
-	res = malloc(sizeof(char *) * ((len + 1)));
+	res = ft_calloc((len + 1), sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (*s && i < len)
 	{
 		while (*s && *s == c)
 			s++;
-		res[i] = getarray(s, c, 0);
+		res[i] = check_quotes(s);
 		if (!res[i])
 			return (ft_free_char(res), NULL);
-		res[i] = check_quotes(res[i], s, a);
-		s += ft_strlen(res[i]);
-		i++;
+		s += ft_strlen(res[i++]);
 		while (*s && *s != c)
 			s++;
 	}
 	res[i] = 0;
 	return (res);
 }
-
-/*else if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
-	i++;
-		while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')))
-	{
-		if (s[i] == '\\' && s[i + 1] && s[i + 1] != 'n')
-		{
-			res[j] = s[i + 1];
-			i += 2;
-		}
-		else
-			res[j] = s[i++];
-		j++;
-	}
-	*/

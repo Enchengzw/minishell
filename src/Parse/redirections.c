@@ -56,12 +56,23 @@ static void	continue_redirections(char **args, int *i, t_cmd *cmd)
 	}
 }
 
+static int	ft_check_errors(char **args, int *i)
+{
+	if (!args[*i + 1] && ((ft_strlen(args[*i]) == 2 && (args[*i][1] == '<'
+				|| args[*i][1] == '>')) || ft_strlen(args[*i]) == 1))
+		return (-1);
+	else if (ft_strncmp(args[*i], ">>>", 3) == 0
+		|| ft_strncmp(args[*i], "<<<<", 4) == 0)
+		return (-1);
+	else
+		return (1);
+}
+
 int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 {
 	if (ft_redirections_init(cmd, args, &i, data) == 1)
 		return (-1);
-	if (!args[i + 1] && ((ft_strlen(args[i]) == 2 && (args[i][1] == '<'
-			|| args[i][1] == '>')) || ft_strlen(args[i]) == 1))
+	if (ft_check_errors(args, &i) == -1)
 	{
 		error_syntax(args[i]);
 		return (-1);
@@ -77,7 +88,7 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 	else if (ft_strncmp(args[i], "<<", 2) == 0)
 	{
 		if (ft_here_doc(args, i, cmd) == 1)
-			return (1);
+			return (-1);
 	}
 	continue_redirections(args, &i, cmd);
 	if (cmd->fds->outfile == -1 || cmd->fds->infile == -1)

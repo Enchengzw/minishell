@@ -28,23 +28,24 @@ static void	link_nodes(t_data *data)
 	}
 }
 
-static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int quote, int *j)
+static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int *j)
 {
 	cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
 	cmd->file_flag = 0;
 	cmd->infile_flag = 0;
 	cmd->outfile_flag = 0;
 	cmd->cmd_flag = 0;
 	cmd->num_arg = 0;
-	cmd->semicolon_flag = 0;
 	cmd->is_builtin = 0;
-	cmd->quote = quote;
+	cmd->two_points = 0;
 	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!cmd->env)
 		return (NULL);
 	cmd->env->env = &(data->env);
 	cmd->env->env_size = ft_dpointer_size(data->env);
-	cmd->arg = ft_split_mod(args[*j], ' ');
+	cmd->arg = ft_split_mod(args[*j]);
 	if (!cmd->arg)
 		return (free(cmd->arg), NULL);
 	cmd->exit_code = &(data->exit_code);
@@ -63,7 +64,8 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	last = NULL;
 	while (args[i])
 	{
-		node = node_new(node, args, data, quote, &i);
+		node = node_new(node, args, data, &i);
+		node->quote = quote;
 		if (!node)
 			return ;
 		node->next = NULL;
@@ -79,15 +81,17 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	}
 }
 
-static int	ft_check_pipes(char *str)
+static int	ft_check_syntax_error(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '|' || str[i] == ';')
+		if (str[i] == '|' || str[i] == ';' || str[i] == '&')
 		{
+			if (str[i] == '&' && str[i + 1] == '\0')
+				return (error_syntax("&"));
 			if (str[i] == ';' && str[i + 1] == '\0')
 				return (error_syntax(";"));
 			if (str[i] == '|' && str[i + 1] == '\0')
@@ -102,7 +106,6 @@ static int	ft_check_pipes(char *str)
 	return (0);
 }
 
-//mirar : (es un comodín)
 int	ft_parse(char *input, t_data *data)
 {
 	int		quote;
@@ -114,10 +117,9 @@ int	ft_parse(char *input, t_data *data)
 	input = ft_pre_check_quotes(input, &quote);
 	if (!input)
 		return (write(2, "Unspected quote \n", 17), STDERR);
-	if (ft_check_pipes(input) == 1)
+	if (ft_check_syntax_error(input) == 1)
 		return (ERROR);
-	args = ft_split_mod_pipe(input, '|', 1);//revisar comillas
-	//funcion para chequear caracteres como / : o parentesis
+	args = ft_split_mod_pipe(input);
 	ft_create_struct(args, data, quote);
 	if (data->cmd)
 		link_nodes(data);
@@ -125,60 +127,3 @@ int	ft_parse(char *input, t_data *data)
 	ft_free_char(args);
 	return (SUCCESS);
 }
-
-/*
-    current_node = data->cmd;
-    while (current_node)
-    {
-        int k = 0;
-        while (current_node->arg[k])
-            ft_printf("%s\n", current_node->arg[k++]);
-        current_node = current_node->next;
-        ft_printf("--------\n");
-    }
-		cmd->fds->infile = open(args[*i], O_RDONLY, 0644);
- && (i == 0 || (ft_strncmp(args[i - 1], "|", 1) == 0)
- && ft_strlen(args[i - 1]) == 1)
-
- 	if (ft_strcmp(command, "echo $USER"))
-	{
-		execve("/usr/bin/whoami", &"whoami" ,data->env);
-		exit(0);
-	}
-	int check_spaces(char *str)
-	{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == ' ' || str[i] == '\t')
-			i++;
-		else
-			return (1);
-	}
-	return (0);
-}
-void	ft_init_message(void)
-{
-	ft_putstr_fd("\n", 1);
-	ft_putstr_fd(YELLOW_TEXT "             ____WELCOME TO MINISHELL____\n", 1);
-	ft_putstr_fd(YELLOW_TEXT "				Made by ezhou and rauferna\n", 1);
-	ft_putstr_fd("\n", 1);
-}
-!!CURIOSO Caso= :
-
-1º arg = <infile or command
-2º arg = command or -X or <<here_doc or file
-3º arg = >> or > or -X or...
-|
-1º arg = <infile or command
-2º arg = command or -X or <<here_doc or file
-3º arg = >> or > or -X or...
-execve 1º ruta 2º argumento spliteado 3º env
-//considerar añadir j para no guardar los valores invalidos, que hacer con valores invalidos
-//si pongo cat test.c 232432 imprime test.c y error pero si hago cat test.c | 232432 solo muestra error
-//args = ft_split_mod(*args, '|'); s[i] == ';' || s[i] == '|'  && s[i + 1] != 'n'
-*/

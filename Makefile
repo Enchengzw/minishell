@@ -70,6 +70,9 @@ $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) -I./$(INCLUDE) -c -o $@ $<
 	@echo "$(COLOUR_BLUE)(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧ Compilando archivos .c$(COLOUR_END)"
 
+norm:
+	@norminette $(SRC) $(INCLUDE)*.h
+
 clean:
 	@$(RM) $(OBJ)
 	@echo "$(COLOUR_RED)¯\_(ツ)_/¯ Objectos removidos!$(COLOUR_RED)"
@@ -80,4 +83,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm

@@ -63,9 +63,10 @@ int	ft_here_doc(char **args, int i, t_cmd *cmd)
 	char		*line;
 	char		*limit;
 	int			fd[2];
-	//si sales con Ctrl + D al salir no sale con Ctrl + D a la primera
+
 	line = NULL;
-	if (!args[i + 1] && ft_strlen(args[i]) <= 2)
+	if ((!args[i + 1] && ft_strlen(args[i]) <= 2)
+		|| ft_strncmp(args[i], "<<<", 3) == 0)
 	{
 		error_syntax("newline");
 		return (1);

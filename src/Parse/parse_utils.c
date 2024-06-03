@@ -16,12 +16,10 @@ void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
 {
 	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
 		&& (!args[*j + 1] || !args[*j + 1][0]))
-		{
-			error_syntax(args[*j]);
-			cmd->cmd_flag = -1;
-		}
-	if (args[*j] && args[*j][0] == ';')
-		cmd->semicolon_flag = 1;
+	{
+		error_syntax(args[*j]);
+		cmd->cmd_flag = -1;
+	}
 }
 
 int	ft_is_builtin(char *command)
@@ -63,7 +61,7 @@ static char	*find_path_loop(char *path_line, char *path, char *command)
 		}
 		else
 			path = ft_strjoin(path, ft_strrchr(command, '/'));
-		if (access(path, F_OK | R_OK ) == 0)
+		if (access(path, F_OK | R_OK) == 0)
 			return (free(paths), path);
 		i++;
 	}

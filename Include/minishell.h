@@ -64,8 +64,8 @@ typedef struct s_cmd
 	int				outfile_flag;
 	int				cmd_flag;
 	int				file_flag;
-	int				semicolon_flag;
 	int				is_builtin;
+	int				two_points;
 	int				quote;
 }					t_cmd;
 
@@ -117,12 +117,12 @@ int					ft_openfile(char *file, int type);
 void				ft_create_struct(char **args, t_data *data, int quote);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_find_pathcmd(char **envp, char *command);
-char				**ft_split_mod(char const *s, char c);
+char				**ft_split_mod(char const *s);
+char				**ft_split_mod_pipe(char const *s);
 char				**ft_process_args(t_cmd *cmd, t_data *data, char **args);
 char				*ft_copy_char(char *str, t_cmd *cmd);
-char				**ft_split_mod_pipe(char const *s, char c, int a);
-int					repsc(char const *s, char c);
 int					ft_special_character(char c);
+char				*ft_strjoin_allocs1(char *s1, char *s2);
 
 // EXECUTOR
 int					ft_execute(t_data *data);
