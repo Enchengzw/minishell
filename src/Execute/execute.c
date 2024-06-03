@@ -71,7 +71,10 @@ int	ft_execute(t_data *data)
 
 	code = ft_check_data(data);
 	if (code != INT_MIN)
+	{
+		data->exit_code = code;
 		return (code);
+	}
 	code = ft_create_processes(data);
 	if (!code)
 		return (ERROR);
