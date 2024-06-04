@@ -6,11 +6,28 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:34:10 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:40:30 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static int	ft_is_valid_flag(char	*argument)
+{
+	int	i;
+
+	i=0;
+	if (argument[i] != '-')
+		return (0);
+	i++;
+	while (argument[i])
+	{
+		if (argument[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	ft_echo(char **args)
 {
@@ -21,7 +38,7 @@ int	ft_echo(char **args)
 	flag = 0;
 	if (ft_dpointer_size(args) < 1)
 		return (SUCCESS);
-	while (args[i] && ft_strcmp(args[i], "-n") == 0)
+	while (args[i] && ft_is_valid_flag(args[i]))
 	{
 		flag = 1;
 		i++;
