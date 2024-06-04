@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/04 13:40:30 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 17:32:47 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_is_valid_flag(char	*argument)
 {
 	int	i;
 
-	i=0;
+	i = 0;
 	if (argument[i] != '-')
 		return (0);
 	i++;
