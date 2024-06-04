@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:19:42 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:41:45 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:51:29 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,6 @@ int	ft_is_in_env_index(char **env, char *variable, int *index, int *flag)
 
 int	ft_print_export_error(char *variable)
 {
-	printf("export: `%s': not a valid identifier\n", variable);
+	printf("export: '%s': not a valid identifier\n", variable);
 	return (ERROR);
 }

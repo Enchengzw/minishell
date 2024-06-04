@@ -6,13 +6,13 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:33:57 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 16:21:06 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Include/minishell.h"
 
-static	char	*ft_current_path(void)
+static char	*ft_current_path(void)
 {
 	char	*cwd;
 
@@ -30,7 +30,7 @@ static	char	*ft_current_path(void)
 	}
 }
 
-static	int	ft_update_pwd(t_env *env)
+static int	ft_update_pwd(t_env *env)
 {
 	int		i;
 	char	*temp;
@@ -55,20 +55,7 @@ static	int	ft_update_pwd(t_env *env)
 	return (SUCCESS);
 }
 
-static int	ft_default_cd(t_cmd **cmd)
-{
-	if (!ft_getenv("HOME", (*cmd)->env->env[0]))
-	{
-		printf("bash: cd: HOME not set\n");
-		return (ERROR);
-	}
-	chdir(ft_getenv("HOME", (*cmd)->env->env[0]));
-	if (ft_update_pwd((*cmd)->env))
-		return (ERROR);
-	return (SUCCESS);
-}
-
-static	int	ft_update_oldpwd(t_env *env)
+static int	ft_update_oldpwd(t_env *env)
 {
 	int		i;
 	char	*temp;
@@ -93,6 +80,29 @@ static	int	ft_update_oldpwd(t_env *env)
 	return (SUCCESS);
 }
 
+static int	ft_specific_cd(t_cmd **cmd, char *arg)
+{
+	char	*directory;
+	char	*test;
+
+	if (!ft_strcmp(arg, "-"))
+		directory = "OLDPWD";
+	else
+		directory = "HOME";
+	test = ft_getenv(directory, (*cmd)->env->env[0]);
+	if (!test)
+	{
+		printf("bash: cd: %s not set\n", directory);
+		return (ERROR);
+	}
+	ft_update_oldpwd((*cmd)->env);
+	chdir(test);
+	if (ft_update_pwd((*cmd)->env))
+		return (ERROR);
+	free(test);
+	return (SUCCESS);
+}
+
 int	ft_cd(t_cmd **cmd)
 {
 	char	*temp;
@@ -101,13 +111,14 @@ int	ft_cd(t_cmd **cmd)
 	temp = ft_strdup((*cmd)->arg[1]);
 	if (!temp)
 		return (ft_putstr_fd("Malloc Error\n", 2), ERROR);
-	ft_update_oldpwd((*cmd)->env);
-	if ((*cmd)->num_arg == 1 || !ft_strcmp((*cmd)->arg[1], "~"))
+	if ((*cmd)->num_arg == 1 || !ft_strcmp((*cmd)->arg[1], "~")
+		|| !ft_strcmp((*cmd)->arg[1], "-"))
 	{
-		if (ft_default_cd(cmd))
+		if (ft_specific_cd(cmd, temp))
 			return (free(temp), ERROR);
 		return (free(temp), SUCCESS);
 	}
+	ft_update_oldpwd((*cmd)->env);
 	if (chdir(temp) == -1)
 		printf("bash: cd: %s: No such file or directory\n", temp);
 	else

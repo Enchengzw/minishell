@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/04 12:58:36 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 15:53:25 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,18 @@ char	*ft_make_export_line(char *label, char *value)
 		return (free(aux), NULL);
 	free(aux);
 	return (result);
+}
+
+int	ft_has_args(char **arg)
+{
+	int	i;
+
+	i = 1;
+	if (arg[i])
+	{
+		if (arg[i][0])
+			return (0);
+		i++;
+	}
+	return (1);
 }

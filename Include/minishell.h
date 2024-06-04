@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/04 12:56:19 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 15:54:33 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int					ft_print_export_error(char *variable);
 char				*ft_get_label(char *variable);
 char				*ft_get_value(char *variable);
 char				*ft_make_export_line(char *label, char *value);
+int					ft_has_args(char **arg);
 
 // SIGNALS
 void				ft_shell_handler(int signal);

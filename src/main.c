@@ -6,11 +6,30 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/27 12:26:22 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 15:45:28 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static int	ft_contains(char **to_check, char *to_find)
+{
+	int		i;
+	char	*label;
+
+	i =	0;
+	while (to_check[i])
+	{
+		label = ft_get_label(to_check[i]);
+		if (!label)
+			return (0);
+		if (ft_strcmp(label, to_find) == 0)
+			return (free(label), 1);
+		i++;	
+	}
+	free(label);
+	return (0);
+}
 
 t_data	*ft_init(char **env)
 {
@@ -23,6 +42,13 @@ t_data	*ft_init(char **env)
 	data->env = ft_dpointer_dupe(env);
 	if (!data->env)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
+	if (!ft_contains(data->env, "OLDPWD"))
+	{
+		data->env = ft_realloc_doublep_char(data->env, ft_dpointer_size(env) + 1 + 1);
+		if (!data->env)
+			return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
+	}
+	data->env[ft_dpointer_size(env)] = ft_strdup("OLDPWD");
 	data->exit_code = 0;
 	data->std_in = dup(STDIN_FILENO);
 	data->std_out = dup(STDOUT_FILENO);
@@ -34,7 +60,7 @@ void	ft_main_loop(t_data *data)
 	while (1)
 	{
 		ft_main_signals();
-		data->user_input = readline(GREEN_TEXT "Minishell$: " RESET_TEXT);
+		data->user_input = readline("Minishell$: ");
 		if (!data->user_input)
 			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);

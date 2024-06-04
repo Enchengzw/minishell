@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:44:03 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 15:52:37 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	ft_export(t_cmd **cmd)
 	arg = (*cmd)->arg;
 	(*cmd)->num_arg = ft_dpointer_size(arg);
 	i = 0;
-	if ((*cmd)->num_arg == 1)
+	if ((*cmd)->num_arg == 1 || ft_has_args(arg))
 		return (ft_print_sorted_env((*cmd)->env->env[0]));
 	while (arg && arg[++i])
 	{

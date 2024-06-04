@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 16:38:50 by ezhou             #+#    #+#              #
-#    Updated: 2024/05/27 12:12:38 by ezhou            ###   ########.fr        #
+#    Updated: 2024/06/04 16:17:09 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ norm:
 
 clean:
 	@$(RM) $(OBJ)
-	@echo "$(COLOUR_RED)¯\_(ツ)_/¯ Objectos removidos!$(COLOUR_RED)"
+	@echo "$(COLOUR_RED)¯\_(ツ)_/¯ Objectos removidos!$(COLOUR_END)"
 
 fclean: clean
 	@$(RM) $(NAME)
