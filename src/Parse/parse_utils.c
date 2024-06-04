@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 13:06:14 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:16:23 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
 	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
 		&& (!args[*j + 1] || !args[*j + 1][0]))
 	{
-		error_syntax(args[*j]);
+		ft_error_syntax(args[*j]);
 		cmd->cmd_flag = -1;
 	}
 }
@@ -61,11 +61,11 @@ static char	*find_path_loop(char *path_line, char *path, char *command)
 		}
 		else
 			path = ft_strjoin(path, ft_strrchr(command, '/'));
-		if (access(path, F_OK | R_OK) == 0)
+		if (access(path, F_OK | R_OK | X_OK) == 0)
 			return (free(paths), path);
 		i++;
 	}
-	error_cnf(command);
+	ft_error_cnf(command);
 	return (free(path), NULL);
 }
 
@@ -77,11 +77,13 @@ char	*ft_find_pathcmd(char **envp, char *command)
 
 	path = 0;
 	i = 0;
+	if (access(command, F_OK | R_OK | X_OK) == 0)
+		return (command);
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
 	{
-		error_fnf(command);
+		ft_error_fnf(command);
 		return (NULL);
 	}
 	path_line = envp[i] + 5;
@@ -96,21 +98,21 @@ int	ft_openfile(char *file, int type)
 	{
 		fd[0] = open(file, O_RDONLY, 0644);
 		if (fd[0] == -1)
-			error_fnf(file);
+			ft_error_fnf(file);
 		return (fd[0]);
 	}
 	else if (type == 2)
 	{
 		fd[1] = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd[1] == -1)
-			error_fnf(file);
+			ft_error_fnf(file);
 		return (fd[1]);
 	}
 	else if (type == 3)
 	{
 		fd[1] = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd[1] == -1)
-			error_fnf(file);
+			ft_error_fnf(file);
 		return (fd[1]);
 	}
 	return (-1);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                             :+:      :+:    :+:  */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42malaga.com>         +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 11:02:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/03/22 15:35:44 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:18:29 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_exit_error(char *str, int n, t_data *data)
 	exit(n);
 }
 
-int	error_cnf(char *command)
+int	ft_error_cnf(char *command)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(command, 2);
@@ -27,7 +27,7 @@ int	error_cnf(char *command)
 	return (1);
 }
 
-int	error_syntax(char *file)
+int	ft_error_syntax(char *file)
 {
 	ft_putstr_fd("Minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(file, 2);
@@ -35,7 +35,7 @@ int	error_syntax(char *file)
 	return (1);
 }
 
-int	error_fnf(char *file)
+int	ft_error_fnf(char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);

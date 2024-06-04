@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 13:04:40 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,23 @@ static int	ft_check_syntax_error(char *str)
 {
 	int	i;
 
+	if (str[0] == '|' || str[0] == ';' || str[0] == '&')
+		return (ft_error_syntax(str));
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '|' || str[i] == ';' || str[i] == '&')
 		{
 			if (str[i] == '&' && str[i + 1] == '\0')
-				return (error_syntax("&"));
+				return (ft_error_syntax("&"));
 			if (str[i] == ';' && str[i + 1] == '\0')
-				return (error_syntax(";"));
+				return (ft_error_syntax(";"));
 			if (str[i] == '|' && str[i + 1] == '\0')
-				return (error_syntax("|"));
-			if (str[i + 1] == '|' && str[i + 2] == '|')
-				return (error_syntax("|"));
-			if (str[i + 1] == ';' && str[i + 2] == ';')
-				return (error_syntax(";"));
+				return (ft_error_syntax("|"));
+			if (str[i + 1] == '|')
+				return (ft_error_syntax("|"));
+			if (str[i + 1] == ';')
+				return (ft_error_syntax(";"));
 		}
 		i++;
 	}
@@ -116,9 +118,15 @@ int	ft_parse(char *input, t_data *data)
 		return (ERROR);
 	input = ft_pre_check_quotes(input, &quote);
 	if (!input)
+	{
+		free(input);
 		return (write(2, "Unspected quote \n", 17), STDERR);
+	}
 	if (ft_check_syntax_error(input) == 1)
-		return (ERROR);
+	{
+		free(input);
+		return (STDERR);
+	}
 	args = ft_split_mod_pipe(input);
 	ft_create_struct(args, data, quote);
 	if (data->cmd)

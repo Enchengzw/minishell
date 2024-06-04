@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/04 15:54:33 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:28:51 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int					ft_check_redirections(char **args, int i, t_cmd *cmd,
 						t_data *data);
 int					ft_openfile(char *file, int type);
 void				ft_create_struct(char **args, t_data *data, int quote);
-int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s);
 char				**ft_split_mod_pipe(char const *s);
@@ -138,9 +137,9 @@ void				ft_set_redirections(t_cmd *cmd);
 
 // ERROR
 void				ft_exit_error(char *str, int n, t_data *data);
-int					error_cnf(char *command);
-int					error_fnf(char *file);
-int					error_syntax(char *file);
+int					ft_error_cnf(char *command);
+int					ft_error_fnf(char *file);
+int					ft_error_syntax(char *file);
 void				ft_print_node(t_cmd *cmd);
 void				ft_format_exit_code(int *exit_code);
 

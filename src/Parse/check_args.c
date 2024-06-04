@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 13:03:39 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:18:46 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_check_script_or_program(char **args, int *k, int *i, t_cmd *cmd)
 {
 	if (access(args[*k], F_OK) != 0)
 	{
-		error_fnf(args[*k]);
+		ft_error_fnf(args[*k]);
 		cmd->file_flag = -1;
 		return ;
 	}
@@ -86,7 +86,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 			cmd->arg[(*i)++] = ft_copy_char(args[*k], cmd);
 	}
 	else
-		error_syntax(args[*k]);
+		ft_error_syntax(args[*k]);
 }
 
 char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
@@ -99,7 +99,7 @@ char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	if (cmd->arg[k] == NULL)
 	{
 		if (args[k + 1] != NULL)
-			error_syntax("|");
+			ft_error_syntax("|");
 		cmd->cmd_flag = -1;
 	}
 	while (cmd->arg[k])

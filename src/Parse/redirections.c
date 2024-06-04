@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/27 12:32:23 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 		return (-1);
 	if (ft_check_errors(args, &i) == -1)
 	{
-		error_syntax(args[i]);
+		ft_error_syntax(args[i]);
 		return (-1);
 	}
 	else if (ft_strncmp(args[i], ">>", 2) == 0)

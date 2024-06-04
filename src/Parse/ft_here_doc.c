@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 13:05:57 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_here_doc(char **args, int i, t_cmd *cmd)
 	if ((!args[i + 1] && ft_strlen(args[i]) <= 2)
 		|| ft_strncmp(args[i], "<<<", 3) == 0)
 	{
-		error_syntax("newline");
+		ft_error_syntax("newline");
 		return (1);
 	}
 	if (ft_strlen(args[i]) > 2)

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/16 20:01:20 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:56:43 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,26 @@ static int	repsc(char const *s, char c)
 	return (j);
 }
 
-static char	*getarray(const char *s, char c, int n)
+static char	*getarray(const char *s, char c, int *n)
 {
 	int		i;
 	int		j;
 	char	*res;
 
+	i = 0;
+	j = 0;
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
-	i = 0;
-	j = 0;
-	if (s[i] == c && n == 1)
+	if (s[i] == c)
 		res[j++] = s[i++];
 	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')
 			|| (s[i] == c && s[i - 1] == '\\')))
-	{
 		res[j++] = s[i++];
-	}
-	if (s[i] == c && n == 1)
+	if (s[i] == c)
 		res[j++] = s[i];
-	res[j] = '\0';
+	res[j++] = '\0';
+	*n = j + *n;
 	return (res);
 }
 
@@ -68,12 +67,17 @@ static char	*check_quotes(const char *s)
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
-	while (s[i] && s[i] != '|')
+	while (s[i])
 	{
 		if ((s[i] == 39 || s[i] == 34))
-			res = ft_strjoin_allocs1(ft_substr(s, 0, i),
-					getarray(s + i, s[i], 1));
-		res[j++] = s[i++];
+			res = ft_strjoin_allocs1(res,
+					getarray(s + i, s[i], &i));
+		else
+		{
+			if (s[i] == '|')
+				break ;
+			res[j++] = s[i++];
+		}
 	}
 	res[i] = '\0';
 	return (res);
@@ -97,9 +101,10 @@ char	**ft_split_mod_pipe(char const *s)
 		while (*s && *s == c)
 			s++;
 		res[i] = check_quotes(s);
+		s += ft_strlen(res[i]);
 		if (!res[i])
 			return (ft_free_char(res), NULL);
-		s += ft_strlen(res[i++]);
+		i++;
 		while (*s && *s != c)
 			s++;
 	}

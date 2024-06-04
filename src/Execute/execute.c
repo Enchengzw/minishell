@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:46:21 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 19:50:09 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	ft_execute(t_data *data)
 {
 	int	code;
 
+	if (data->exit_code != 0)
+		return (data->exit_code);
 	code = ft_check_data(data);
 	if (code != INT_MIN)
 	{
