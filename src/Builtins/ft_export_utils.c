@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 12:31:10 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 12:58:36 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*ft_get_value(char *variable)
 		value = ft_strjoin_alt(value, aux[i], length);
 		if (!value)
 			return (ft_free_char(aux), NULL);
+		value = ft_strjoin_alt(value, "=", length + 1);
 		i++;
 	}
 	ft_free_char(aux);

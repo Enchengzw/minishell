@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:22:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 13:05:42 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:03:46 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	ft_printer(char *to_print)
 		printf("declare -x %s=\"%s\"\n", label, value);
 	}
 	else
-		printf("declare -x %s=\"\"", label);
+		printf("declare -x %s=\"\"\n", label);
 	ft_clean(label);
 	ft_clean(value);
 	return (SUCCESS);
