@@ -6,7 +6,7 @@
 #    By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 16:53:06 by ezhou             #+#    #+#              #
-#    Updated: 2024/05/23 17:17:48 by ezhou            ###   ########.fr        #
+#    Updated: 2024/06/04 16:44:26 by ezhou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ $(NAME) : $(OBJ)
 
 clean:
 	@$(RM) $(OBJ)
-	@echo "$(COLOUR_RED)¯\_(ツ)_/¯ Objectos del LIBFT removidos!$(COLOUR_RED)"
+	@echo "$(COLOUR_RED)¯\_(ツ)_/¯ Objectos del LIBFT removidos!$(COLOUR_END)"
 
 fclean: clean
 	@$(RM) $(NAME)

@@ -6,9 +6,10 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:01:12 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:11:21 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include <minishell.h>
 
@@ -17,7 +18,7 @@ static int	ft_contains(char **to_check, char *to_find)
 	int		i;
 	char	*label;
 
-	i =	0;
+	i = 0;
 	while (to_check[i])
 	{
 		label = ft_get_label(to_check[i]);
@@ -45,7 +46,9 @@ t_data	*ft_init(char **env)
 	if (!ft_contains(data->env, "OLDPWD"))
 	{
 		data->env = ft_realloc_doublep_char(data->env,
-			ft_dpointer_size(env) + 1 + 1);
+				ft_dpointer_size(env) + 1 + 1);
+		data->env = ft_realloc_doublep_char(data->env, ft_dpointer_size(env) + 1
+				+ 1);
 		if (!data->env)
 			return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
 	}

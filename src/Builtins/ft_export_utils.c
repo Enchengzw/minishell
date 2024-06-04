@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:12:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/04 15:53:25 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/04 17:33:01 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,18 @@ char	*ft_get_label(char *variable)
 
 char	*ft_get_value(char *variable)
 {
-	char	**aux;
 	char	*value;
-	int		length;
 	int		i;
 
 	value = NULL;
-	i = 1;
-	length = 0;
-	aux = ft_split(variable, '=');
-	if (!aux)
-		return (NULL);
-	while (aux[i])
-	{
-		length = ft_strlen(value) + ft_strlen(aux[i]) + 1;
-		value = ft_strjoin_alt(value, aux[i], length);
-		if (!value)
-			return (ft_free_char(aux), NULL);
-		value = ft_strjoin_alt(value, "=", length + 1);
+	i = 0;
+	while (variable[i] && variable[i] != '=')
 		i++;
-	}
-	ft_free_char(aux);
+	i++;
+	value = (char *)malloc(sizeof(char) * ft_strlen(variable + i) + 1);
+	if (!value)
+		return (NULL);
+	ft_strlcpy(value, variable + i, ft_strlen(variable + i) + 1);
 	return (value);
 }
 
