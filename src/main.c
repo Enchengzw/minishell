@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/12 20:37:45 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:38:45 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_data	*ft_init(char **env)
 				+ 1);
 		if (!data->env)
 			return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
+		data->env[ft_dpointer_size(data->env) - 1] = ft_strdup("OLDPWD");
 	}
 	data->exit_code = 0;
 	data->std_in = dup(STDIN_FILENO);
