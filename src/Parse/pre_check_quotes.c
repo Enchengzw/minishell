@@ -62,7 +62,8 @@ static int	ft_check_spaces(char *str, int i, char quote)
 {
 	while (str[i] && str[i] != quote)
 	{
-		if (str[i] == ' ')
+		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
+			|| str[i] == '>' || str[i] == '<' || str[i] == '>')
 			return (1);
 		i++;
 	}

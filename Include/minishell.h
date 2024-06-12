@@ -67,6 +67,7 @@ typedef struct s_cmd
 	int				is_builtin;
 	int				two_points;
 	int				quote;
+	int				redirect_then;
 }					t_cmd;
 
 typedef struct s_data
@@ -111,7 +112,7 @@ int					ft_parse(char *input, t_data *data);
 void				ft_check_exceptions(char **args, int *j, t_cmd *cmd);
 int					ft_is_builtin(char *command);
 char				*ft_pre_check_quotes(char *input, int *quote);
-int					ft_here_doc(char **args, int i, t_cmd *cmd);
+int					ft_here_doc(char **args, char *res, int i, t_cmd *cmd);
 int					ft_check_redirections(char **args, int i, t_cmd *cmd,
 						t_data *data);
 int					ft_openfile(char *file, int type);
@@ -123,6 +124,7 @@ char				**ft_process_args(t_cmd *cmd, t_data *data, char **args);
 char				*ft_copy_char(char *str, t_cmd *cmd);
 int					ft_special_character(char c);
 char				*ft_strjoin_allocs1(char *s1, char *s2);
+void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

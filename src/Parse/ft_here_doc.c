@@ -58,27 +58,38 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 	return (0);
 }
 
-int	ft_here_doc(char **args, int i, t_cmd *cmd)
+static int	check_start(char **args, char *res, int i)
 {
-	char		*line;
-	char		*limit;
-	int			fd[2];
-
-	line = NULL;
-	if ((!args[i + 1] && ft_strlen(args[i]) <= 2)
+	if ((!args[i + 1] && ft_strlen(res) <= 2)
 		|| ft_strncmp(args[i], "<<<", 3) == 0)
 	{
 		ft_error_syntax("newline");
 		return (1);
 	}
-	if (ft_strlen(args[i]) > 2)
-		limit = args[i] + 2;
-	else if (args[i + 1] && ft_strlen(args[i]) == 2)
+	return (0);
+}
+
+int	ft_here_doc(char **args, char *res, int i, t_cmd *cmd)
+{
+	char		*line;
+	char		*limit;
+	int			fd[2];
+
+	if (check_start(args, res, i) == 1)
+		return (1);
+	line = NULL;
+	if (ft_strlen(res) > 2)
+		limit = res + 2;
+	else if (args[i + 1] && ft_strlen(res) == 2)
 		limit = args[i + 1];
 	if (pipe(fd) == -1)
 		return (1);
 	if (ft_here_doc_2(fd, limit, line) == 1)
+	{
+		close(fd[0]);
+		close(fd[1]);
 		return (write(STDERR, "Here doc error\n", STDERR));
+	}
 	cmd->fds->infile = fd[0];
 	cmd->infile_flag = 1;
 	close(fd[1]);

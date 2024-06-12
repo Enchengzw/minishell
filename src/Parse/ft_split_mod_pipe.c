@@ -51,61 +51,63 @@ static char	*getarray(const char *s, char c, int *n)
 		res[j++] = s[i++];
 	if (s[i] == c)
 		res[j++] = s[i];
-	res[j++] = '\0';
+	res[j] = '\0';
 	*n = j + *n;
 	return (res);
 }
 
-static char	*check_quotes(const char *s)
+static char	*check_quotes(const char *s, int *k)
 {
-	int		i;
 	int		j;
 	char	*res;
 
-	i = 0;
 	j = 0;
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
-	while (s[i])
+	while (s[*k])
 	{
-		if ((s[i] == 39 || s[i] == 34))
+		if ((s[*k] == 39 || s[*k] == 34))
+		{
 			res = ft_strjoin_allocs1(res,
-					getarray(s + i, s[i], &i));
+					getarray(s + *k, s[*k], k));
+			j = ft_strlen(res);
+		}
 		else
 		{
-			if (s[i] == '|')
+			if (s[*k] == '|')
 				break ;
-			res[j++] = s[i++];
+			res[j++] = s[(*k)++];
 		}
 	}
-	res[i] = '\0';
+	if (s[*k] != '|')
+		res[*k] = '\0';
 	return (res);
 }
 
 char	**ft_split_mod_pipe(char const *s)
 {
 	int		i;
+	int		k;
 	int		len;
-	char	c;
 	char	**res;
 
 	i = 0;
-	c = '|';
-	len = repsc(s, c);
+	len = repsc(s, '|');
 	res = ft_calloc((len + 1), sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (*s && i < len)
 	{
-		while (*s && *s == c)
+		k = 0;
+		while (*s && *s == '|')
 			s++;
-		res[i] = check_quotes(s);
-		s += ft_strlen(res[i]);
+		res[i] = check_quotes(s, &k);
 		if (!res[i])
 			return (ft_free_char(res), NULL);
+		s += k;
 		i++;
-		while (*s && *s != c)
+		while (*s && *s != '|')
 			s++;
 	}
 	res[i] = 0;

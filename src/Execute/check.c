@@ -44,7 +44,9 @@ int	ft_check_data(t_data *data)
 			return (0);
 		if (temp->file_flag == -1)
 			return (1);
-		if (temp->cmd_flag == -1)
+		if (temp->cmd_flag == 0 && temp->file_flag == 2)
+			return (2);
+		if (temp->cmd_flag <= 0)
 			return (127);
 		if (temp->infile_flag == 0 || temp->outfile_flag == 0)
 			create_fds(temp, data);

@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:23 by rauferna         ###   ########.fr       */
+/*   Created: 2024/06/08 21:44:53 by rauferna          #+#    #+#             */
+/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
-{
-	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
-		&& (!args[*j + 1] || !args[*j + 1][0]))
-	{
-		ft_error_syntax(args[*j]);
-		cmd->cmd_flag = -1;
-	}
-}
-
-int	ft_is_builtin(char *command)
-{
-	if (ft_strcmp(command, "cd") == 0)
-		return (0);
-	else if (ft_strcmp(command, "echo") == 0)
-		return (0);
-	else if (ft_strcmp(command, "env") == 0)
-		return (0);
-	else if (ft_strcmp(command, "exit") == 0)
-		return (0);
-	else if (ft_strcmp(command, "export") == 0)
-		return (0);
-	else if (ft_strcmp(command, "pwd") == 0)
-		return (0);
-	else if (ft_strcmp(command, "unset") == 0)
-		return (0);
-	else
-		return (1);
-}
 
 static char	*find_path_loop(char *path_line, char *path, char *command)
 {
@@ -90,30 +60,36 @@ char	*ft_find_pathcmd(char **envp, char *command)
 	return (find_path_loop(path_line, path, command));
 }
 
-int	ft_openfile(char *file, int type)
+static int	pre_check(char **args, int *k)
 {
-	int	fd[2];
+	if (*k > 0 && (((strcmp(args[*k - 1], "<") == 0
+					|| strcmp(args[*k - 1], "<<") == 0))
+			|| (strcmp(args[*k - 1], "<") == 0
+				|| strcmp(args[*k - 1], "<<") == 0)))
+		return (1);
+	return (0);
+}
 
-	if (type == 1)
+void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
+{
+	if (pre_check(args, k) == 1)
+		return ;
+	if (ft_is_builtin(args[*k]) == 0)
+		cmd->is_builtin = 1;
+	else
 	{
-		fd[0] = open(file, O_RDONLY, 0644);
-		if (fd[0] == -1)
-			ft_error_fnf(file);
-		return (fd[0]);
+		cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*k]);
+		if (cmd->cmd_path == NULL)
+			cmd->cmd_flag = -1;
 	}
-	else if (type == 2)
+	if (cmd->is_builtin == 1)
 	{
-		fd[1] = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd[1] == -1)
-			ft_error_fnf(file);
-		return (fd[1]);
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+		cmd->cmd_flag = 1;
 	}
-	else if (type == 3)
+	else if (cmd->cmd_path)
 	{
-		fd[1] = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd[1] == -1)
-			ft_error_fnf(file);
-		return (fd[1]);
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+		cmd->cmd_flag = 1;
 	}
-	return (-1);
 }

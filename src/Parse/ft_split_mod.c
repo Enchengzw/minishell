@@ -58,7 +58,7 @@ static char	*getarray_spaces(const char *s, char c)
 			res[j] = s[i++];
 		j++;
 	}
-	res[i] = '\0';
+	res[j] = '\0';
 	return (res);
 }
 
@@ -75,35 +75,35 @@ static void	check_backslash(char *res, const char *s, int *i, int *j)
 	(*j)++;
 }
 
-static char	*check_quotes_spaces(const char *s)
+static char	*check_quotes_spaces(const char *s, int *k)
 {
-	int		i;
 	int		j;
 	char	*res;
 
-	i = 0;
 	j = 0;
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
-	while (s[i] && (s[i] != ' ' && s[i] != '\t' && s[i] != '\n'))
+	while (s[*k] && (s[*k] != ' ' && s[*k] != '\t' && s[*k] != '\n'))
 	{
-		if ((s[i] == 39 || s[i] == 34))
+		if ((s[*k] == 39 || s[*k] == 34))
 		{
+
 			res = ft_strjoin_allocs1(res,
-					getarray_spaces(s + i + 1, s[i]));
-			i = ft_strlen(res) + 2;
+					getarray_spaces(s + *k + 1, s[*k]));
+			*k = ft_strlen(res) + 2;
+			j = ft_strlen(res);
 		}
 		else
-			check_backslash(res, s, &i, &j);
+			check_backslash(res, s, k, &j);
 	}
-	res[i] = '\0';
 	return (res);
 }
 
 char	**ft_split_mod(char const *s)
 {
 	int		i;
+	int		k;
 	int		len;
 	char	**res;
 
@@ -114,12 +114,14 @@ char	**ft_split_mod(char const *s)
 		return (NULL);
 	while (*s && i < len)
 	{
+		k = 0;
 		while (*s && (*s == ' ' || *s == '\t' || *s == '\n'))
 			s++;
-		res[i] = check_quotes_spaces(s);
+		res[i] = check_quotes_spaces(s, &k);
 		if (!res[i])
 			return (ft_free_char(res), NULL);
-		s += ft_strlen(res[i++]);
+		s += k;
+		i++;
 		while (*s && (*s != ' ' && *s != '\t' && *s != '\n'))
 			s++;
 	}

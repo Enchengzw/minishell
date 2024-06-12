@@ -68,7 +68,7 @@ void	ft_main_loop(t_data *data)
 		if (!data->user_input)
 			ft_exit_error("exit\n", ERROR, data);
 		add_history(data->user_input);
-		ft_parse(data->user_input, data);
+		data->exit_code = ft_parse(data->user_input, data);
 		ft_child_signals();
 		ft_execute(data);
 		if (data->cmd)

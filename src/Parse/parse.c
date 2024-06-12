@@ -40,6 +40,7 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int *j)
 	cmd->num_arg = 0;
 	cmd->is_builtin = 0;
 	cmd->two_points = 0;
+	cmd->redirect_then = 0;
 	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!cmd->env)
 		return (NULL);
