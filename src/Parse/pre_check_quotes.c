@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_check_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 10:33:31 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/23 17:19:54 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/12 20:09:56 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,6 @@
 
 //39 simple quotes
 //34 Double quotes
-
-static int	ft_count_quotes(char *input)
-{
-	int	i;
-	int	quotes;
-
-	i = 0;
-	quotes = 0;
-	while (input[i])
-	{
-		if (input[i] == 34)
-			quotes++;
-		i++;
-	}
-	if (!(quotes % 2 == 0))
-		return (1);
-	i = 0;
-	quotes = 0;
-	while (input[i])
-	{
-		if (input[i] == 39)
-			quotes++;
-		i++;
-	}
-	if (!(quotes % 2 == 0))
-		return (1);
-	else
-		return (0);
-}
 
 static int	check_dollar_simple(char *str)
 {
@@ -63,7 +34,7 @@ static int	ft_check_spaces(char *str, int i, char quote)
 	while (str[i] && str[i] != quote)
 	{
 		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
-			|| str[i] == '>' || str[i] == '<' || str[i] == '>')
+			|| str[i] == '$' || str[i] == '<' || str[i] == '>')
 			return (1);
 		i++;
 	}
@@ -106,8 +77,6 @@ char	*ft_pre_check_quotes(char *input, int *quote)
 
 	i = 0;
 	j = 0;
-	if (ft_count_quotes(input) == 1)
-		return (NULL);
 	res = ft_calloc(ft_strlen(input) + 1, sizeof(char));
 	if (!res)
 		return (NULL);

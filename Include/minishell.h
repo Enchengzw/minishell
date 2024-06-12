@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/04 20:28:51 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:43:16 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_cmd
 	t_fds			*fds;
 	char			*cmd_path;
 	char			**arg;
+	char			*type;
 	t_env			*env;
 	int				*exit_code;
 	int				num_arg;
@@ -118,13 +119,15 @@ int					ft_check_redirections(char **args, int i, t_cmd *cmd,
 int					ft_openfile(char *file, int type);
 void				ft_create_struct(char **args, t_data *data, int quote);
 char				*ft_find_pathcmd(char **envp, char *command);
-char				**ft_split_mod(char const *s);
+char				**ft_split_mod(char const *s, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s);
 char				**ft_process_args(t_cmd *cmd, t_data *data, char **args);
-char				*ft_copy_char(char *str, t_cmd *cmd);
+char				*ft_copy_char(char *str, int *k, t_cmd *cmd);
 int					ft_special_character(char c);
 char				*ft_strjoin_allocs1(char *s1, char *s2);
 void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
+void				ft_check_type(const char *s, t_cmd *cmd, int *i, int *k);
+int					ft_len_type(char *str);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

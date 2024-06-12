@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:05:46 by ezhou             #+#    #+#             */
-/*   Updated: 2024/05/27 13:04:22 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/12 16:38:33 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 			free(node->cmd_path);
 		if (node->arg)
 			ft_free_char(node->arg);
+		if (node->type)
+			free(node->type);
 		next = node->next;
 		free(node);
 		node = NULL;

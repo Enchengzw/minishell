@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:04:00 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/22 19:45:11 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:12:38 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 	}
 }
 
-char	*ft_copy_char(char *str, t_cmd *cmd)
+char	*ft_copy_char(char *str, int *k, t_cmd *cmd)
 {
 	int		i;
 	int		j;
@@ -106,7 +106,7 @@ char	*ft_copy_char(char *str, t_cmd *cmd)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '$' && (str[i + 1] && cmd->quote != 2))
+		if (str[i] == '$' && (str[i + 1] && cmd->type[*k] != 's'))
 			return (ft_copy_char_env(&res, str, &i, cmd), res);
 		else
 			res[j++] = str[i++];

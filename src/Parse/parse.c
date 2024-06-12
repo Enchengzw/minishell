@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:33:58 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,13 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int *j)
 		return (NULL);
 	cmd->env->env = &(data->env);
 	cmd->env->env_size = ft_dpointer_size(data->env);
-	cmd->arg = ft_split_mod(args[*j]);
+	cmd->type = ft_calloc(ft_len_type(args[*j]) + 1, sizeof(char));
+	if (!cmd->type)
+		return (NULL);
+	cmd->arg = ft_split_mod(args[*j], cmd);
 	if (!cmd->arg)
 		return (free(cmd->arg), NULL);
+	cmd->type = ft_strdup(cmd->type);
 	cmd->exit_code = &(data->exit_code);
 	return (cmd);
 }
@@ -66,11 +70,11 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 	while (args[i])
 	{
 		node = node_new(node, args, data, &i);
-		node->quote = quote;
 		if (!node)
 			return ;
 		node->next = NULL;
 		node->arg = ft_process_args(node, data, args);
+		node->quote = quote;
 		if (args[i])
 			i++;
 		if (last)

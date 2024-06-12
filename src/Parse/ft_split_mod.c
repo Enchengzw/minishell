@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/05/16 17:20:12 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:33:40 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	check_backslash(char *res, const char *s, int *i, int *j)
 	(*j)++;
 }
 
-static char	*check_quotes_spaces(const char *s, int *k)
+static char	*check_quotes_spaces(const char *s, int *k, int *i, t_cmd *cmd)
 {
 	int		j;
 	char	*res;
@@ -84,11 +84,11 @@ static char	*check_quotes_spaces(const char *s, int *k)
 	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!res)
 		return (NULL);
+	ft_check_type(s, cmd, i, k);
 	while (s[*k] && (s[*k] != ' ' && s[*k] != '\t' && s[*k] != '\n'))
 	{
 		if ((s[*k] == 39 || s[*k] == 34))
 		{
-
 			res = ft_strjoin_allocs1(res,
 					getarray_spaces(s + *k + 1, s[*k]));
 			*k = ft_strlen(res) + 2;
@@ -97,10 +97,11 @@ static char	*check_quotes_spaces(const char *s, int *k)
 		else
 			check_backslash(res, s, k, &j);
 	}
+	res[j] = '\0';
 	return (res);
 }
 
-char	**ft_split_mod(char const *s)
+char	**ft_split_mod(char const *s, t_cmd *cmd)
 {
 	int		i;
 	int		k;
@@ -117,7 +118,7 @@ char	**ft_split_mod(char const *s)
 		k = 0;
 		while (*s && (*s == ' ' || *s == '\t' || *s == '\n'))
 			s++;
-		res[i] = check_quotes_spaces(s, &k);
+		res[i] = check_quotes_spaces(s, &k, &i, cmd);
 		if (!res[i])
 			return (ft_free_char(res), NULL);
 		s += k;

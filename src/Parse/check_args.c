@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:18:46 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:05:26 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
 			return ;
 		else
-			cmd->arg[(*i)++] = ft_copy_char(args[*k], cmd);
+			cmd->arg[(*i)++] = ft_copy_char(args[*k], k, cmd);
 	}
 	else
 		ft_error_syntax(args[*k]);
@@ -67,6 +67,16 @@ static	void	check_first(char **args, int *k, t_cmd *cmd)
 	{
 		if (args[*k + 1] != NULL)
 			ft_error_syntax("|");
+		cmd->cmd_flag = -1;
+	}
+}
+
+void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
+{
+	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
+		&& (!args[*j + 1] || !args[*j + 1][0]))
+	{
+		ft_error_syntax(args[*j]);
 		cmd->cmd_flag = -1;
 	}
 }
@@ -83,8 +93,9 @@ char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1 || cmd->two_points == 1)
 			break ;
-		if (ft_strchr(cmd->arg[k], '<') != NULL
-			|| ft_strchr(cmd->arg[k], '>') != NULL)
+		if ((ft_strchr(cmd->arg[k], '<') != NULL
+				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'
+			&& cmd->type[k] != 's')
 			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
 		if (cmd->redirect_then >= 0)
 			ft_check_rest(cmd->arg, &i, &k, cmd);

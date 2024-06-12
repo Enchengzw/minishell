@@ -6,20 +6,69 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:31:05 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:23 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:05:02 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
+// d = doubquotes, s = singlequotes, r = redir, n = normal, m = dollar
+
+int	ft_len_type(char *str)
 {
-	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
-		&& (!args[*j + 1] || !args[*j + 1][0]))
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
 	{
-		ft_error_syntax(args[*j]);
-		cmd->cmd_flag = -1;
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+		{
+			if (str[i] == 34 || str[i] == 39)
+			{
+				i++;
+				while (str[i] && str[i] != 34 && str[i] != 39)
+					i++;
+			}
+			i++;
+		}
+		if (str[i])
+			j++;
+		while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			i++;
+		i++;
 	}
+	return (j);
+}
+
+static int	ft_check_type2(const char *s, char type)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && (s[i] != ' ' && s[i] != '\t' && s[i] != '\n'))
+	{
+		if (s[i] == type)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	ft_check_type(const char *s, t_cmd *cmd, int *i, int *k)
+{
+	if (ft_check_type2(s + *k, 34) == 1)
+		cmd->type[*i] = 'd';
+	else if (ft_check_type2(s + *k, 39) == 1)
+		cmd->type[*i] = 's';
+	else if (ft_check_type2(s + *k, '>') == 1
+		|| ft_check_type2(s + *k, '<') == 1)
+		cmd->type[*i] = 'r';
+	else if (ft_check_type2(s + *k, '$') == 1)
+		cmd->type[*i] = 'm';
+	else
+		cmd->type[*i] = 'n';
 }
 
 int	ft_is_builtin(char *command)
