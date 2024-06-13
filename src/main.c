@@ -27,6 +27,7 @@ static int	ft_contains(char **to_check, char *to_find)
 		if (ft_strcmp(label, to_find) == 0)
 			return (free(label), 1);
 		i++;
+		free(label);
 	}
 	free(label);
 	return (0);
