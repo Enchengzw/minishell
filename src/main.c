@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include <minishell.h>
 
 static int	ft_contains(char **to_check, char *to_find)

@@ -62,10 +62,10 @@ char	*ft_find_pathcmd(char **envp, char *command)
 
 static int	pre_check(char **args, int *k)
 {
-	if (*k > 0 && (((strcmp(args[*k - 1], "<") == 0
-					|| strcmp(args[*k - 1], "<<") == 0))
-			|| (strcmp(args[*k - 1], "<") == 0
-				|| strcmp(args[*k - 1], "<<") == 0)))
+	if (*k > 0 && (((ft_strcmp(args[*k - 1], "<") == 0
+					|| ft_strcmp(args[*k - 1], "<<") == 0))
+			|| (ft_strcmp(args[*k - 1], "<") == 0
+				|| ft_strcmp(args[*k - 1], "<<") == 0)))
 		return (1);
 	return (0);
 }

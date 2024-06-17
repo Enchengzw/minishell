@@ -20,7 +20,7 @@ static int	ft_redirections_init(t_cmd *cmd, char **args, int *i, t_data *data)
 {
 	if (cmd->fds)
 	{
-		if (cmd->infile_flag == 1 && ft_strchr(args[*i], '<') == NULL)
+		if (cmd->infile_flag == 1 && ft_strchr(args[*i], '<') != NULL)
 			close(cmd->fds->infile);
 		if (cmd->outfile_flag == 1 && ft_strchr(args[*i], '>') != NULL)
 			close(cmd->fds->outfile);

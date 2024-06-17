@@ -55,7 +55,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
 			return ;
 		else
-			cmd->arg[(*i)++] = ft_copy_char(args[*k], k, cmd);
+			cmd->arg[(*i)++] = ft_strdup(args[*k]);
 	}
 	else
 		ft_error_syntax(args[*k]);
@@ -93,11 +93,13 @@ char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1 || cmd->two_points == 1)
 			break ;
+		if (ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
+			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
 		if ((ft_strchr(cmd->arg[k], '<') != NULL
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'
 			&& cmd->type[k] != 's')
 			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
-		if (cmd->redirect_then >= 0)
+		if (cmd->redirect_then >= 0 && cmd->file_flag >= 0)
 			ft_check_rest(cmd->arg, &i, &k, cmd);
 		if (cmd->arg[k] != NULL)
 			k++;
