@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/20 18:40:59 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static int	ft_check_errors(char **args, int *i)
 static char	*check_redirection_nospaces(char **args, int *i, t_cmd *cmd)
 {
 	int		k;
+	char	*tmp;
 	char	*res;
 
 	k = 0;
@@ -95,11 +96,19 @@ static char	*check_redirection_nospaces(char **args, int *i, t_cmd *cmd)
 	cmd->redirect_then = -1;
 	if (args[*i][0] == '<' || args[*i][0] == '>')
 		return (args[*i]);
-	while (args[*i][k] && args[*i][k] != '<' && args[*i][k] != '>')
-		k++;
-	res = ft_strdup(args[*i] + k);
-	args[*i] = ft_substr(args[*i], 0, k);
-	cmd->redirect_then = 1;
+	while (args[*i][k])
+	{
+		while (args[*i][k] && args[*i][k] != '<' && args[*i][k] != '>')
+			k++;
+		if (args[*i][k] == '<' || args[*i][k] == '>')
+		{
+			res = ft_strdup(args[*i] + k);
+			tmp = args[*i];
+			args[*i] = ft_substr(args[*i], 0, k);
+			free(tmp);
+			cmd->redirect_then = 1;
+		}
+	}
 	return (res);
 }
 
