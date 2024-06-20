@@ -12,41 +12,39 @@
 
 #include <minishell.h>
 
-static char	*find_path_loop(char *path_line, char *path, char *command)
+static char	*find_path_loop(char *path_line, char *command)
 {
 	int		i;
 	char	**paths;
+	char	*path;
+	char	*tmp;
 
 	i = 0;
-	while (path_line[i])
+	paths = ft_split(path_line, ':');
+	while (paths && paths[i])
 	{
-		paths = ft_split(path_line, ':');
-		if (!paths || !paths[i])
-			break ;
-		path = paths[i];
-		if (ft_strchr(command, '/') == NULL)
-		{
-			path = ft_strjoin(path, "/");
-			path = ft_strjoin(path, command);
-		}
-		else
-			path = ft_strjoin(path, ft_strrchr(command, '/'));
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, command);
+		free(tmp);
 		if (access(path, F_OK | R_OK | X_OK) == 0)
-			return (free(paths), path);
+		{
+			ft_free_char(paths);
+			return (path);
+		}
+		free(path);
 		i++;
 	}
+	ft_free_char(paths);
 	ft_error_cnf(command);
-	return (free(path), NULL);
+	return (NULL);
 }
 
 char	*ft_find_pathcmd(char **envp, char *command)
 {
 	int		i;
-	char	*path;
 	char	*path_line;
 
 	i = 0;
-	path = 0;
 	if (access(command, F_OK | R_OK | X_OK) == 0)
 		return (command);
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
@@ -57,7 +55,7 @@ char	*ft_find_pathcmd(char **envp, char *command)
 		return (NULL);
 	}
 	path_line = envp[i] + 5;
-	return (find_path_loop(path_line, path, command));
+	return (find_path_loop(path_line, command));
 }
 
 static int	pre_check(char **args, int *k)
@@ -72,6 +70,8 @@ static int	pre_check(char **args, int *k)
 
 void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 {
+	char	*tmp;
+
 	if (pre_check(args, k) == 1)
 		return ;
 	if (ft_is_builtin(args[*k]) == 0)
@@ -82,14 +82,11 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 		if (cmd->cmd_path == NULL)
 			cmd->cmd_flag = -1;
 	}
-	if (cmd->is_builtin == 1)
+	if (cmd->is_builtin == 1 || cmd->cmd_path)
 	{
+		tmp = cmd->arg[*i];
 		cmd->arg[(*i)++] = ft_strdup(args[*k]);
-		cmd->cmd_flag = 1;
-	}
-	else if (cmd->cmd_path)
-	{
-		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+		free(tmp);
 		cmd->cmd_flag = 1;
 	}
 }

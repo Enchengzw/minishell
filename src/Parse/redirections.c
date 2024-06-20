@@ -29,7 +29,10 @@ static int	ft_redirections_init(t_cmd *cmd, char **args, int *i, t_data *data)
 	{
 		cmd->fds = ft_calloc(1, sizeof(t_fds));
 		if (!cmd->fds)
+		{
+			ft_putstr_fd("Malloc Error\n", STDERR);
 			return (ERROR);
+		}
 	}
 	cmd->fds->std_in = data->std_in;
 	cmd->fds->std_out = data->std_out;
@@ -47,6 +50,8 @@ static void	continue_redirections(char **args, int *i, char *res, t_cmd *cmd)
 				cmd->fds->infile = ft_openfile(args[*i + 1], 1);
 			else
 				cmd->fds->infile = ft_openfile(res + 1, 1);
+			if (ft_strlen(res) == 1)
+				free(args[*i + 1]);
 			cmd->infile_flag = 1;
 		}
 		else if (ft_strncmp(res, ">", 1) == 0)
@@ -55,6 +60,8 @@ static void	continue_redirections(char **args, int *i, char *res, t_cmd *cmd)
 				cmd->fds->outfile = ft_openfile(args[*i + 1], 2);
 			else
 				cmd->fds->outfile = ft_openfile(res + 1, 2);
+			if (ft_strlen(res) == 1)
+				free(args[*i + 1]);
 			cmd->outfile_flag = 1;
 		}
 	}
@@ -105,17 +112,13 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 		return (-1);
 	res = check_redirection_nospaces(args, &i, cmd);
 	if (ft_strncmp(res, ">>", 2) == 0)
-	{
-		if (ft_strlen(res) == 2)
-			cmd->fds->outfile = ft_openfile(args[i + 1], 3);
-		else
-			cmd->fds->outfile = ft_openfile(res + 2, 3);
-		cmd->outfile_flag = 1;
-	}
+		ft_check_double_greather(args, res, i, cmd);
 	else if (ft_strncmp(res, "<<", 2) == 0)
 	{
 		if (ft_here_doc(args, res, i, cmd) == 1)
 			return (free(res), -1);
+		if (ft_strlen(res) == 2)
+			free(args[i + 1]);
 		return (free(res), 2);
 	}
 	continue_redirections(args, &i, res, cmd);

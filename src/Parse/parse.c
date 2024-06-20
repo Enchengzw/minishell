@@ -48,16 +48,15 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int *j)
 	cmd->env->env_size = ft_dpointer_size(data->env);
 	cmd->type = ft_calloc(ft_len_type(args[*j]) + 1, sizeof(char));
 	if (!cmd->type)
-		return (NULL);
+		return (ft_putstr_fd("Error: Malloc failed\n", 2), NULL);
 	cmd->arg = ft_split_mod(args[*j], cmd);
 	if (!cmd->arg)
-		return (free(cmd->arg), NULL);
-	cmd->type = ft_strdup(cmd->type);
+		return (ft_putstr_fd("Error: Split failed\n", 2), free(cmd->arg), NULL);
 	cmd->exit_code = &(data->exit_code);
 	return (cmd);
 }
 
-void	ft_create_struct(char **args, t_data *data, int quote)
+void	ft_create_struct(char **args, t_data *data)
 {
 	int		i;
 	t_cmd	*node;
@@ -73,8 +72,7 @@ void	ft_create_struct(char **args, t_data *data, int quote)
 		if (!node)
 			return ;
 		node->next = NULL;
-		node->arg = ft_process_args(node, data, args);
-		node->quote = quote;
+		ft_process_args(node, data);
 		if (args[i])
 			i++;
 		if (last)
@@ -133,7 +131,7 @@ int	ft_parse(char *input, t_data *data)
 		return (STDERR);
 	}
 	args = ft_split_mod_pipe(input);
-	ft_create_struct(args, data, quote);
+	ft_create_struct(args, data);
 	if (data->cmd)
 		link_nodes(data);
 	free(input);

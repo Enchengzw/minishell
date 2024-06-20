@@ -67,7 +67,6 @@ typedef struct s_cmd
 	int				file_flag;
 	int				is_builtin;
 	int				two_points;
-	int				quote;
 	int				redirect_then;
 }					t_cmd;
 
@@ -117,17 +116,19 @@ int					ft_here_doc(char **args, char *res, int i, t_cmd *cmd);
 int					ft_check_redirections(char **args, int i, t_cmd *cmd,
 						t_data *data);
 int					ft_openfile(char *file, int type);
-void				ft_create_struct(char **args, t_data *data, int quote);
+void				ft_create_struct(char **args, t_data *data);
 char				*ft_find_pathcmd(char **envp, char *command);
 char				**ft_split_mod(char const *s, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s);
-char				**ft_process_args(t_cmd *cmd, t_data *data, char **args);
+void				ft_process_args(t_cmd *cmd, t_data *data);
 char				*ft_copy_char(char *str, int *k, t_cmd *cmd);
 int					ft_special_character(char c);
 char				*ft_strjoin_allocs1(char *s1, char *s2);
 void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
 void				ft_check_type(const char *s, t_cmd *cmd, int *i, int *k);
 int					ft_len_type(char *str);
+void				ft_check_double_greather(char **args,
+						char *res, int i, t_cmd *cmd);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

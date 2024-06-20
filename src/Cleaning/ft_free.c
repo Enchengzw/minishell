@@ -39,6 +39,26 @@ void	ft_format_exit_code(int *exit_code)
 		*exit_code = *exit_code % 255;
 }
 
+void	ft_continue_free_cmd(t_cmd *cmd)
+{
+	if (cmd->arg)
+	{
+		ft_free_char(cmd->arg);
+		cmd->arg = NULL;
+	}
+	if (cmd->type)
+	{
+		free(cmd->type);
+		cmd->type = NULL;
+	}
+	if (cmd->env)
+	{
+		if (cmd->env)
+			free(cmd->env);
+		cmd->env = NULL;
+	}
+}
+
 void	ft_free_cmd_struct(t_cmd *cmd)
 {
 	t_cmd	*node;
@@ -49,18 +69,16 @@ void	ft_free_cmd_struct(t_cmd *cmd)
 		return ;
 	while (node)
 	{
-		if (node->file_flag == 1)
+		if (node->file_flag != 0)
 		{
 			ft_close(&(node->fds->infile));
 			ft_close(&(node->fds->outfile));
 			free(node->fds);
+			node->fds = NULL;
 		}
 		if (node->cmd_path)
 			free(node->cmd_path);
-		if (node->arg)
-			ft_free_char(node->arg);
-		if (node->type)
-			free(node->type);
+		ft_continue_free_cmd(node);
 		next = node->next;
 		free(node);
 		node = NULL;

@@ -26,8 +26,6 @@ int	ft_special_character(char c)
 
 char	*ft_strjoin_allocs1(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	j;
 	char	*str;
 
 	if (!s1)
@@ -36,17 +34,7 @@ char	*ft_strjoin_allocs1(char *s1, char *s2)
 		s2 = ft_strdup("");
 	if (!s1 || !s2)
 		return (NULL);
-	str = ft_calloc(sizeof(char), (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		return (NULL);
-	i = -1;
-	j = 0;
-	if (s1)
-		while (s1[++i] != '\0')
-			str[i] = s1[i];
-	while (s2[j] != '\0')
-		str[i++] = s2[j++];
-	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	str = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);
 	return (str);
@@ -61,8 +49,9 @@ static char	*ft_copy_special_no_dollar(char *str, int *i, char **res)
 	tmp = ft_strdup(str + *i);
 	while (tmp[j] && ft_special_character(tmp[j]) == 0)
 		j++;
+	(*res) = ft_strjoin_allocs1(*res, ft_substr(tmp, 0, j));
 	free(tmp);
-	return (ft_strjoin(*res, ft_substr(str, *i, j)));
+	return (*res);
 }
 
 static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
@@ -107,10 +96,11 @@ char	*ft_copy_char(char *str, int *k, t_cmd *cmd)
 	while (str[i])
 	{
 		if (str[i] == '$' && (str[i + 1] && cmd->type[*k] != 's'))
-			return (ft_copy_char_env(&res, str, &i, cmd), res);
+			return (ft_copy_char_env(&res, str, &i, cmd), free(str), res);
 		else
 			res[j++] = str[i++];
 	}
 	res[j] = '\0';
+	free(str);
 	return (res);
 }

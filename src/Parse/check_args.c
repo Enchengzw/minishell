@@ -14,6 +14,8 @@
 
 static void	ft_check_program(char **args, int *k, int *i, t_cmd *cmd)
 {
+	char	*tmp;
+
 	if (access(args[*k], F_OK) != 0)
 	{
 		ft_error_fnf(args[*k]);
@@ -29,15 +31,28 @@ static void	ft_check_program(char **args, int *k, int *i, t_cmd *cmd)
 		return ;
 	}
 	cmd->cmd_path = ft_strdup(args[*k]);
+	tmp = cmd->arg[*i];
 	cmd->arg[(*i)++] = ft_strdup(args[*k]);
+	free(tmp);
 	cmd->cmd_flag = 1;
+}
+
+static void	check_rest_args(char **args, int *i, int *k, t_cmd *cmd)
+{
+	char	*tmp;
+
+	if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
+		return ;
+	else
+	{
+		tmp = cmd->arg[*i];
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+		free(tmp);
+	}
 }
 
 static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 {
-	int	start;
-
-	start = 0;
 	if ((args[*k][0] == ':' || args[*k][0] == '!')
 		&& !args[*k][1] && cmd->cmd_flag == 0)
 	{
@@ -49,46 +64,32 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 	else if (cmd->cmd_flag == 0)
 		ft_check_cmd(args, i, k, cmd);
 	else if (cmd->cmd_flag == 1)
-	{
-		while (args[*k] && args[*k][start] == ' ')
-			start++;
-		if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
-			return ;
-		else
-			cmd->arg[(*i)++] = ft_strdup(args[*k]);
-	}
+		check_rest_args(args, i, k, cmd);
 	else
+	{
 		ft_error_syntax(args[*k]);
+		cmd->cmd_flag = -1;
+	}
 }
 
-static	void	check_first(char **args, int *k, t_cmd *cmd)
+static	void	check_first(int *k, t_cmd *cmd)
 {
 	if (cmd->arg[*k] == NULL)
 	{
-		if (args[*k + 1] != NULL)
+		if (cmd->arg[*k + 1] != NULL)
 			ft_error_syntax("|");
 		cmd->cmd_flag = -1;
 	}
 }
 
-void	ft_check_exceptions(char **args, int *j, t_cmd *cmd)
-{
-	if (args[*j] && (args[*j][0] == '|' || args[*j][0] == ';')
-		&& (!args[*j + 1] || !args[*j + 1][0]))
-	{
-		ft_error_syntax(args[*j]);
-		cmd->cmd_flag = -1;
-	}
-}
-
-char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
+void	ft_process_args(t_cmd *cmd, t_data *data)
 {
 	int		i;
 	int		k;
 
 	i = 0;
 	k = 0;
-	check_first(args, &k, cmd);
+	check_first(&k, cmd);
 	while (cmd->arg[k])
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1 || cmd->two_points == 1)
@@ -105,5 +106,4 @@ char	**ft_process_args(t_cmd *cmd, t_data *data, char **args)
 			k++;
 	}
 	cmd->arg[i] = NULL;
-	return (cmd->arg);
 }

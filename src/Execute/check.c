@@ -27,6 +27,8 @@ void	create_fds(t_cmd *cmd, t_data *data)
 		cmd->fds->outfile = -1;
 	if (cmd->infile_flag == 0)
 		cmd->fds->infile = -1;
+	if (cmd->file_flag == 0)
+		cmd->file_flag = 1;
 	cmd->fds->std_in = data->std_in;
 	cmd->fds->std_out = data->std_out;
 }
