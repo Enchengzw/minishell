@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/12 20:38:45 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/21 12:50:42 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	ft_contains(char **to_check, char *to_find)
 			return (free(label), 1);
 		i++;
 		free(label);
+		label = NULL;
 	}
 	free(label);
 	return (0);
@@ -47,8 +48,6 @@ t_data	*ft_init(char **env)
 	{
 		data->env = ft_realloc_doublep_char(data->env,
 				ft_dpointer_size(env) + 1 + 1);
-		data->env = ft_realloc_doublep_char(data->env, ft_dpointer_size(env) + 1
-				+ 1);
 		if (!data->env)
 			return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
 		data->env[ft_dpointer_size(data->env) - 1] = ft_strdup("OLDPWD");
