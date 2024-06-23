@@ -27,7 +27,7 @@ static void	ft_here_doc_loop(char *line, char *limit, int fd)
 {
 	write(2, "> ", 2);
 	line = get_next_line(0);
-	while (1)
+	while (line)
 	{
 		if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
 			&& (ft_strlen(line) - 1) == ft_strlen(limit))
@@ -39,10 +39,18 @@ static void	ft_here_doc_loop(char *line, char *limit, int fd)
 	}
 	if (line)
 		free(line);
+	else
+	{
+		ft_putstr_fd("bash: warning: here-document at line 4 delimited by ", 2);
+		ft_putstr_fd("end-of-file (wanted `", 2);
+		ft_putstr_fd(limit, 2);
+		ft_putstr_fd("')\n", 2);
+	}
 }
 
 static int	ft_here_doc_2(int *fd, char *limit, char *line)
 {
+	int				status;
 	pid_t			pid;
 	struct termios	old_termios;
 	struct termios	new_termios;
@@ -51,6 +59,7 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 	new_termios = old_termios;
 	new_termios.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(0, TCSANOW, &new_termios);
+	signal(SIGQUIT, SIG_IGN);
 	if (pipe(fd) == -1)
 		return (1);
 	pid = fork();
@@ -64,8 +73,7 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 		exit(0);
 	}
 	tcsetattr(0, TCSANOW, &old_termios);
-	kill(pid, SIGTERM);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
 	return (0);
 }
 
@@ -106,15 +114,3 @@ int	ft_here_doc(char **args, char *res, int i, t_cmd *cmd)
 	close(fd[1]);
 	return (0);
 }
-
-/*
-#include <termios.h>
-#include <unistd.h>
-
-void set_non_canonical_mode() {
-    struct termios term;
-
-    // get the current terminal settings
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-*/

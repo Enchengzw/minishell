@@ -72,29 +72,30 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 	}
 }
 
-static	void	check_first(int *k, t_cmd *cmd)
+static	void	check_first(char **args, int *k, t_cmd *cmd)
 {
 	if (cmd->arg[*k] == NULL)
 	{
-		if (cmd->arg[*k + 1] != NULL)
+		if (args[*k + 1] != NULL)
 			ft_error_syntax("|");
 		cmd->cmd_flag = -1;
 	}
 }
 
-void	ft_process_args(t_cmd *cmd, t_data *data)
+void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 {
 	int		i;
 	int		k;
 
 	i = 0;
 	k = 0;
-	check_first(&k, cmd);
+	check_first(args, &k, cmd);
 	while (cmd->arg[k])
 	{
 		if (cmd->cmd_flag == -1 || cmd->file_flag == -1 || cmd->two_points == 1)
 			break ;
-		if (ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
+		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
+			|| cmd->type[k] == 'h')
 			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
 		if ((ft_strchr(cmd->arg[k], '<') != NULL
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'

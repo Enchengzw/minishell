@@ -39,14 +39,17 @@ static char	*find_path_loop(char *path_line, char *command)
 	return (NULL);
 }
 
-char	*ft_find_pathcmd(char **envp, char *command)
+char	*ft_find_pathcmd(char **envp, char *command, int *absolute)
 {
 	int		i;
 	char	*path_line;
 
 	i = 0;
 	if (access(command, F_OK | R_OK | X_OK) == 0)
+	{
+		*absolute = 1;
 		return (command);
+	}
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
@@ -71,14 +74,16 @@ static int	pre_check(char **args, int *k)
 void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
+	int		absolute;
 
+	absolute = 0;
 	if (pre_check(args, k) == 1)
 		return ;
 	if (ft_is_builtin(args[*k]) == 0)
 		cmd->is_builtin = 1;
 	else
 	{
-		cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*k]);
+		cmd->cmd_path = ft_find_pathcmd(*(cmd->env->env), args[*k], &absolute);
 		if (cmd->cmd_path == NULL)
 			cmd->cmd_flag = -1;
 	}
@@ -86,7 +91,8 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 	{
 		tmp = cmd->arg[*i];
 		cmd->arg[(*i)++] = ft_strdup(args[*k]);
-		free(tmp);
+		if (absolute == 0 && tmp)
+			free(tmp);
 		cmd->cmd_flag = 1;
 	}
 }

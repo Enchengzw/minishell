@@ -87,6 +87,7 @@ char	*ft_copy_char(char *str, int *k, t_cmd *cmd)
 	int		i;
 	int		j;
 	char	*res;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
@@ -95,12 +96,17 @@ char	*ft_copy_char(char *str, int *k, t_cmd *cmd)
 		return (NULL);
 	while (str[i])
 	{
+		tmp = str;
+		if (str[i] == '~' && cmd->type[*k] == 'h')
+		{
+			str = ft_strjoin("$HOME\0", str + 1);
+			free(tmp);
+		}
 		if (str[i] == '$' && (str[i + 1] && cmd->type[*k] != 's'))
 			return (ft_copy_char_env(&res, str, &i, cmd), free(str), res);
 		else
 			res[j++] = str[i++];
 	}
 	res[j] = '\0';
-	free(str);
-	return (res);
+	return (free(tmp), res);
 }

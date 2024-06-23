@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-// d = doubquotes, s = singlequotes, r = redir, n = normal, m = dollar
+// d = doubquotes, s = singlequotes, r = redir, n = normal, m = dollar ~ = home
 
 int	ft_len_type(char *str)
 {
@@ -67,6 +67,8 @@ void	ft_check_type(const char *s, t_cmd *cmd, int *i, int *k)
 		cmd->type[*i] = 'r';
 	else if (ft_check_type2(s + *k, '$') == 1)
 		cmd->type[*i] = 'm';
+	else if (ft_check_type2(s + *k, '~') == 1)
+		cmd->type[*i] = 'h';
 	else
 		cmd->type[*i] = 'n';
 }
