@@ -6,7 +6,7 @@
 /*   By: encheng <encheng@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:07:01 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/24 15:54:39 by encheng          ###   ########.fr       */
+/*   Updated: 2024/06/24 15:56:09 by encheng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int	ft_pwd(void)
 		free(cwd);
 		return (SUCCESS);
 	}
+	free(cwd);
 	return (ERROR);
 }
