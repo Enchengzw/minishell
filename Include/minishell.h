@@ -6,7 +6,7 @@
 /*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/25 11:59:47 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/25 12:19:15 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void				ft_check_type(const char *s, t_cmd *cmd, int *i, int *k);
 int					ft_len_type(char *str);
 void				ft_check_double_greather(char **args,
 						char *res, int i, t_cmd *cmd);
-void    			ft_get_exit_code(int pid, int *status);
+void				ft_get_exit_code(int pid, int *status);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

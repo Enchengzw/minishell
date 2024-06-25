@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_mod_pipe.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 18:56:43 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:17:54 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*check_quotes(const char *s, int *k)
 	char	*res;
 
 	j = 0;
-	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
+	res = ft_calloc(ft_strlen(s) + 1 + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	while (s[*k])
