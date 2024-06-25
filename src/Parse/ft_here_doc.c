@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/25 11:58:58 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/25 21:10:49 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
 
 static void	ft_here_doc_loop(char *line, char *limit, int fd)
 {
+	signal(SIGINT, SIG_DFL);
 	write(2, "> ", 2);
 	line = get_next_line(0);
 	while (line)
@@ -41,14 +42,14 @@ static void	ft_here_doc_loop(char *line, char *limit, int fd)
 		free(line);
 	else
 	{
-		ft_putstr_fd("bash: warning: here-document at line 4 delimited by ", 2);
+		ft_putstr_fd("bash: warning: here-document delimited by ", 2);
 		ft_putstr_fd("end-of-file (wanted `", 2);
 		ft_putstr_fd(limit, 2);
 		ft_putstr_fd("')\n", 2);
 	}
 }
 
-static int	ft_here_doc_2(int fd[2], char *limit, char *line)
+static int	ft_here_doc_2(int fd[2], char *limit, char *line, t_data *data)
 {
 	int				status;
 	pid_t			pid;
@@ -68,6 +69,7 @@ static int	ft_here_doc_2(int fd[2], char *limit, char *line)
 		close(fd[0]);
 		ft_here_doc_loop(line, limit, fd[1]);
 		close(fd[1]);
+		ft_free_all(data);
 		exit(0);
 	}
 	tcsetattr(0, TCSANOW, &old_termios);
@@ -75,33 +77,17 @@ static int	ft_here_doc_2(int fd[2], char *limit, char *line)
 	return (0);
 }
 
-static int	check_start(char **args, char *res, int i)
-{
-	if ((!args[i + 1] && ft_strlen(res) <= 2)
-		|| ft_strncmp(args[i], "<<<", 3) == 0)
-	{
-		ft_error_syntax("newline");
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_here_doc(char **args, char *res, int i, t_cmd *cmd)
+int	ft_here_doc(char *limit, t_cmd *cmd, t_data *data)
 {
 	char		*line;
-	char		*limit;
 	int			fd[2];
 
-	if (check_start(args, res, i) == 1)
-		return (1);
 	line = NULL;
-	if (ft_strlen(res) > 2)
-		limit = res + 2;
-	else if (args[i + 1] && ft_strlen(res) == 2)
-		limit = args[i + 1];
+	if (!limit)
+		return (1);
 	if (pipe(fd) == -1)
 		return (1);
-	if (ft_here_doc_2(fd, limit, line) == 1)
+	if (ft_here_doc_2(fd, limit, line, data) == 1)
 	{
 		close(fd[0]);
 		close(fd[1]);

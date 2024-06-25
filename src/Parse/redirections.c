@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/20 18:40:59 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:01:24 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 //return 1 OK
 //0 only initialized
 //return -1 ERROR
+//return -2 Bad < or >
 //return 2 HERE_DOC
 static int	ft_redirections_init(t_cmd *cmd, char **args, int *i, t_data *data)
 {
@@ -67,18 +68,22 @@ static void	continue_redirections(char **args, int *i, char *res, t_cmd *cmd)
 	}
 }
 
-static int	ft_check_errors(char **args, int *i)
+static int	ft_check_errors(char **args, char *res, int *i)
 {
-	if (!args[*i + 1] && ((ft_strlen(args[*i]) == 2 && (args[*i][1] == '<'
-				|| args[*i][1] == '>')) || ft_strlen(args[*i]) == 1))
+	if (!args[*i + 1] && ((ft_strlen(res) == 2 && (res[1] == '<'
+					|| res[1] == '>')) || ft_strlen(res) == 1))
 	{
-		ft_error_syntax(args[*i]);
+		ft_error_syntax(res);
+		free(args[*i]);
+		free(res);
 		return (-1);
 	}
-	else if (ft_strncmp(args[*i], ">>>", 3) == 0
-		|| ft_strncmp(args[*i], "<<<<", 4) == 0)
+	else if (ft_strncmp(res, ">>>", 3) == 0
+		|| ft_strncmp(res, "<<<<", 4) == 0)
 	{
-		ft_error_syntax(args[*i]);
+		ft_error_syntax(res);
+		free(args[*i]);
+		free(res);
 		return (-1);
 	}
 	else
@@ -96,19 +101,13 @@ static char	*check_redirection_nospaces(char **args, int *i, t_cmd *cmd)
 	cmd->redirect_then = -1;
 	if (args[*i][0] == '<' || args[*i][0] == '>')
 		return (args[*i]);
-	while (args[*i][k])
-	{
-		while (args[*i][k] && args[*i][k] != '<' && args[*i][k] != '>')
-			k++;
-		if (args[*i][k] == '<' || args[*i][k] == '>')
-		{
-			res = ft_strdup(args[*i] + k);
-			tmp = args[*i];
-			args[*i] = ft_substr(args[*i], 0, k);
-			free(tmp);
-			cmd->redirect_then = 1;
-		}
-	}
+	while (args[*i][k] && args[*i][k] != '<' && args[*i][k] != '>')
+		k++;
+	res = ft_strdup(args[*i] + k);
+	tmp = args[*i];
+	args[*i] = ft_substr(args[*i], 0, k);
+	free(tmp);
+	cmd->redirect_then = 1;
 	return (res);
 }
 
@@ -116,15 +115,16 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 {
 	char	*res;
 
-	if (ft_redirections_init(cmd, args, &i, data) == 1
-		|| ft_check_errors(args, &i) == -1)
-		return (-1);
 	res = check_redirection_nospaces(args, &i, cmd);
+	if (ft_check_errors(args, res, &i) == -1)
+		return (-2);
+	if (ft_redirections_init(cmd, args, &i, data) == 1)
+		return (-1);
 	if (ft_strncmp(res, ">>", 2) == 0)
 		ft_check_double_greather(args, res, i, cmd);
 	else if (ft_strncmp(res, "<<", 2) == 0)
 	{
-		if (ft_here_doc(args, res, i, cmd) == 1)
+		if (ft_here_doc(ft_here_doc_check(args, res, i), cmd, data) == 1)
 			return (free(res), -1);
 		if (ft_strlen(res) == 2)
 			free(args[i + 1]);

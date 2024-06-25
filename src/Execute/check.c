@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:17:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/20 18:48:30 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:15:29 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_check_data(t_data *data)
 	{
 		if (temp->two_points == 1 && temp->cmd_flag == 0)
 			return (0);
-		if (temp->file_flag == -1)
+		if (temp->file_flag <= -1)
 			return (1);
 		if (temp->cmd_flag == 0 && temp->file_flag == 2)
 			return (2);

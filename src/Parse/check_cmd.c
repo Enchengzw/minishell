@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 21:44:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:35:23 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 	int		absolute;
 
 	absolute = 0;
+	tmp = cmd->arg[*i];
 	if (pre_check(args, k) == 1)
 		return ;
 	if (ft_is_builtin(args[*k]) == 0)
@@ -89,10 +90,9 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 	}
 	if (cmd->is_builtin == 1 || cmd->cmd_path)
 	{
-		tmp = cmd->arg[*i];
 		cmd->arg[(*i)++] = ft_strdup(args[*k]);
-		if (absolute == 0 && tmp)
-			free(tmp);
 		cmd->cmd_flag = 1;
 	}
+	if (absolute == 0 && tmp)
+		free(tmp);
 }
