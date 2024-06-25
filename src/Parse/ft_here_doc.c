@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/04 20:16:07 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:58:58 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	ft_here_doc_loop(char *line, char *limit, int fd)
 	}
 }
 
-static int	ft_here_doc_2(int *fd, char *limit, char *line)
+static int	ft_here_doc_2(int fd[2], char *limit, char *line)
 {
 	int				status;
 	pid_t			pid;
@@ -60,8 +60,6 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 	new_termios.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(0, TCSANOW, &new_termios);
 	signal(SIGQUIT, SIG_IGN);
-	if (pipe(fd) == -1)
-		return (1);
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -73,7 +71,7 @@ static int	ft_here_doc_2(int *fd, char *limit, char *line)
 		exit(0);
 	}
 	tcsetattr(0, TCSANOW, &old_termios);
-	waitpid(pid, &status, 0);
+	ft_get_exit_code(pid, &status);
 	return (0);
 }
 
