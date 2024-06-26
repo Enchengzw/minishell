@@ -6,11 +6,14 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/25 21:10:49 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/26 21:16:10 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+//SIGINT Cntr + C
+//SIGQUIT Cntr + '\'
 
 void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
 {
@@ -25,11 +28,12 @@ void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
 
 static void	ft_here_doc_loop(char *line, char *limit, int fd)
 {
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, SIG_IGN);
 	write(2, "> ", 2);
 	line = get_next_line(0);
 	while (line)
 	{
+		signal(SIGINT, ft_here_doc_signal);
 		if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
 			&& (ft_strlen(line) - 1) == ft_strlen(limit))
 			break ;
@@ -98,3 +102,86 @@ int	ft_here_doc(char *limit, t_cmd *cmd, t_data *data)
 	close(fd[1]);
 	return (0);
 }
+/*
+void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
+{
+	if (ft_strlen(res) == 2)
+		cmd->fds->outfile = ft_openfile(args[i + 1], 3);
+	else
+		cmd->fds->outfile = ft_openfile(res + 2, 3);
+	if (ft_strlen(res) == 2)
+		free(args[i + 1]);
+	cmd->outfile_flag = 1;
+}
+
+static int	check_start(char **args, char *res, int i)
+{
+	if ((!args[i + 1] && ft_strlen(res) <= 2)
+		|| ft_strncmp(args[i], "<<<", 3) == 0)
+	{
+		ft_error_syntax("newline");
+		return (1);
+	}
+	return (0);
+}
+
+char	*ft_here_doc_check(char **args, char *res, int i)
+{
+	char	*limit;
+
+	if (check_start(args, res, i) == 1)
+		return (NULL);
+	if (ft_strlen(res) > 2)
+		limit = res + 2;
+	else if (args[i + 1] && ft_strlen(res) == 2)
+		limit = args[i + 1];
+	return (limit);
+}
+
+void	do_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		exit(0);
+	}
+}
+
+static void	ft_here_doc_loop(int fd, char *limit, char *line, t_cmd *cmd)
+{
+	write(2, "> ", 2);
+	line = get_next_line(0);
+	while (line)
+	{
+		if (ft_strncmp(line, limit, (ft_strlen(line) - 1)) == 0
+			&& (ft_strlen(line) - 1) == ft_strlen(limit))
+			break ;
+		write(2, "> ", 2);
+		write(fd, line, ft_strlen(line));
+		free(line);
+		line = get_next_line(0);
+	}
+	if (line)
+		free(line);
+	close(fd);
+	fd = open(".temp", O_RDONLY);
+	cmd->fds->infile = fd;
+	unlink(".temp");
+}
+
+int	ft_here_doc(char *limit, t_cmd *cmd)
+{
+	char		*line;
+	int			fd;
+
+	line = NULL;
+	if (!limit)
+		return (ERROR);
+	signal(SIGINT, do_signal);
+	fd = open(".temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		return (STDERR);
+	ft_here_doc_loop(fd, limit, line, cmd);
+	cmd->infile_flag = 1;
+	return (0);
+}
+*/

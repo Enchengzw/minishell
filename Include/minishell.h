@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/25 18:00:35 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/26 21:08:49 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int					ft_has_args(char **arg);
 void				ft_shell_handler(int signal);
 void				ft_child_signals(void);
 void				ft_main_signals(void);
+void				ft_here_doc_signal(int signal);
 
 //PARSE
 char				*ft_copy_char(char *str, int *k, t_cmd *cmd);

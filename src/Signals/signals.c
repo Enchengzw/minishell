@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:14:54 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/25 20:12:12 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/26 21:17:39 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,19 @@ void	ft_main_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
+}
+
+void	ft_here_doc_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putstr_fd("  \n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		exit(1);
+	}
+	return ;
 }
