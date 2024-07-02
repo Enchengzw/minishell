@@ -6,7 +6,7 @@
 /*   By: encheng <encheng@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/07/02 13:09:20 by encheng          ###   ########.fr       */
+/*   Updated: 2024/07/02 14:02:00 by encheng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **env)
 	data = ft_init(env);
 	if (!data)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), ERROR);
-/*  	ft_main_loop(data); */
+	ft_main_loop(data);
 	ft_free_all(data);
 	return (0);
 }
