@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/26 21:00:27 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:44:52 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_data	*ft_init(char **env)
 	t_data	*data;
 
 	data = ft_calloc(1, sizeof(t_data));
+	data->is_interrupted = 0;
 	if (!data)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), NULL);
 	data->user_input = 0;

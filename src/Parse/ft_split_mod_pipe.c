@@ -70,7 +70,7 @@ static char	*check_quotes(const char *s, int *k)
 		if ((s[*k] == 39 || s[*k] == 34))
 		{
 			res = ft_strjoin_allocs1(res,
-					getarray(s + *k, s[*k], k));
+					getarray(s + *k, s[*k], k), 0);
 			j = ft_strlen(res);
 		}
 		else

@@ -53,7 +53,7 @@ SRC	=	./src/main.c \
 		./src/Parse/parse.c \
 		./src/Parse/redirections.c \
 		./src/Parse/ft_here_doc.c \
-		./src/Parse/ft_here_doc_utils.c \
+		./src/Parse/redirections_utils.c \
 		./src/Parse/parse_utils.c \
 		./src/Parse/pre_check_quotes.c \
 		./src/Parse/expand_env.c \

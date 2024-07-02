@@ -18,25 +18,34 @@ int	ft_special_character(char c)
 		|| c == '{' || c == '}' || c == '[' || c == ']' || c == '"'
 		|| c == '\'' || c == '\\' || c == '#' || c == '&' || c == '*'
 		|| c == '?' || c == '/' || c == ':' || c == '@' || c == '='
-		|| c == '$' || c == '%' || c == '-')
+		|| c == '$' || c == '%' || c == '-' || c == '~')
 		return (1);
 	else
 		return (0);
 }
 
-char	*ft_strjoin_allocs1(char *s1, char *s2)
+char	*ft_strjoin_allocs1(char *s1, char *s2, int num)
 {
 	char	*str;
 
 	if (!s1)
-		s1 = ft_strdup("");
+	{
+		s1 = ft_calloc(1, sizeof(char));
+		if (!s1)
+			return (NULL);
+	}
 	if (!s2)
-		s2 = ft_strdup("");
+	{
+		s2 = ft_calloc(1, sizeof(char));
+		if (!s2)
+			return (NULL);
+	}
 	if (!s1 || !s2)
 		return (NULL);
 	str = ft_strjoin(s1, s2);
 	free(s1);
-	free(s2);
+	if (num == 0)
+		free(s2);
 	return (str);
 }
 
@@ -49,7 +58,7 @@ static char	*ft_copy_special_no_dollar(char *str, int *i, char **res)
 	tmp = ft_strdup(str + *i);
 	while (tmp[j] && ft_special_character(tmp[j]) == 0)
 		j++;
-	(*res) = ft_strjoin_allocs1(*res, ft_substr(tmp, 0, j));
+	(*res) = ft_strjoin_allocs1(*res, ft_substr(tmp, 0, j), 0);
 	free(tmp);
 	return (*res);
 }
@@ -62,14 +71,15 @@ static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 		{
 			if (str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
 			{
-				(*res) = ft_strjoin_allocs1(*res, ft_itoa(*(cmd->exit_code)));
+				(*res) = ft_strjoin_allocs1(*res,
+						ft_itoa(*(cmd->exit_code)), 0);
 				(*i)++;
 			}
 			else if (str[*i] == '$' && str[*i + 1]
 				&& ft_special_character(str[*i + 1]) == 0)
 			{
 				(*res) = ft_strjoin_allocs1(*res, ft_getenv(str + *i + 1,
-							*(cmd->env->env)));
+							*(cmd->env->env)), 0);
 				if ((*res) == NULL)
 					(*res) = ft_strdup("");
 			}

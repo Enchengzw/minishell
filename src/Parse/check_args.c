@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/25 19:15:04 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:22:04 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ static void	check_rest_args(char **args, int *i, int *k, t_cmd *cmd)
 
 static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 {
+	if ((cmd->cmd_flag <= -1 || cmd->file_flag == -1 || cmd->two_points == 1))
+	{
+		free(cmd->arg[*k]);
+		cmd->arg[*i] = NULL;
+	}
 	if ((args[*k][0] == ':' || args[*k][0] == '!')
 		&& !args[*k][1] && cmd->cmd_flag == 0)
 	{
@@ -92,8 +97,6 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	check_first(args, &k, cmd);
 	while (cmd->arg[k])
 	{
-		if (cmd->cmd_flag == -1 || cmd->file_flag == -1 || cmd->two_points == 1)
-			break ;
 		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
 			|| cmd->type[k] == 'h')
 			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
@@ -101,7 +104,7 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'
 			&& cmd->type[k] != 's')
 			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
-		if (cmd->redirect_then >= 0 && cmd->file_flag >= 0)
+		if (cmd->redirect_then >= 0)
 			ft_check_rest(cmd->arg, &i, &k, cmd);
 		if (cmd->arg[k] != NULL)
 			k++;

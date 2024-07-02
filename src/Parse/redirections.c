@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:46:53 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/26 20:38:31 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:45:37 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ static void	continue_redirections(char **args, int *i, char *res, t_cmd *cmd)
 				cmd->fds->infile = ft_openfile(args[*i + 1], 1);
 			else
 				cmd->fds->infile = ft_openfile(res + 1, 1);
-			if (ft_strlen(res) == 1)
-				free(args[*i + 1]);
 			cmd->infile_flag = 1;
 		}
 		else if (ft_strncmp(res, ">", 1) == 0)
@@ -61,20 +59,17 @@ static void	continue_redirections(char **args, int *i, char *res, t_cmd *cmd)
 				cmd->fds->outfile = ft_openfile(args[*i + 1], 2);
 			else
 				cmd->fds->outfile = ft_openfile(res + 1, 2);
-			if (ft_strlen(res) == 1)
-				free(args[*i + 1]);
 			cmd->outfile_flag = 1;
 		}
 	}
 }
 
-static int	ft_check_errors(char **args, char *res, int *i)
+static int	ft_check_errors(char *res, t_cmd *cmd, int *i)
 {
-	if (!args[*i + 1] && ((ft_strlen(res) == 2 && (res[1] == '<'
+	if (!cmd->arg[*i + 1] && ((ft_strlen(res) == 2 && (res[1] == '<'
 					|| res[1] == '>')) || ft_strlen(res) == 1))
 	{
 		ft_error_syntax(res);
-		free(args[*i]);
 		free(res);
 		return (-1);
 	}
@@ -82,7 +77,7 @@ static int	ft_check_errors(char **args, char *res, int *i)
 		|| ft_strncmp(res, "<<<<", 4) == 0)
 	{
 		ft_error_syntax(res);
-		free(args[*i]);
+		ft_free_redirection_space(cmd->arg[*i], &(cmd->arg[*i + 1]));
 		free(res);
 		return (-1);
 	}
@@ -116,7 +111,7 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 	char	*res;
 
 	res = check_redirection_nospaces(args, &i, cmd);
-	if (ft_check_errors(args, res, &i) == -1)
+	if (ft_check_errors(res, cmd, &i) == -1)
 		return (-2);
 	if (ft_redirections_init(cmd, args, &i, data) == 1)
 		return (-1);
@@ -124,13 +119,14 @@ int	ft_check_redirections(char **args, int i, t_cmd *cmd, t_data *data)
 		ft_check_double_greather(args, res, i, cmd);
 	else if (ft_strncmp(res, "<<", 2) == 0)
 	{
-		if (ft_here_doc(ft_here_doc_check(args, res, i), cmd, data) == 1)
-			return (free(res), -1);
-		if (ft_strlen(res) == 2)
-			free(args[i + 1]);
+		if (ft_here_doc(ft_here_doc_check(args, res, i, cmd), cmd, data) == 1)
+			return (ft_free_redirection_space(cmd->arg[i],
+					&(cmd->arg[i + 1])), free(res), -1);
+		ft_free_redirection_space(cmd->arg[i], &(cmd->arg[i + 1]));
 		return (free(res), 2);
 	}
 	continue_redirections(args, &i, res, cmd);
+	ft_free_redirection_space(cmd->arg[i], &(cmd->arg[i + 1]));
 	if (cmd->fds->outfile == -1 || cmd->fds->infile == -1)
 		return (free(res), -1);
 	return (free(res), 1);

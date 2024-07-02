@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/21 11:30:17 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/06/27 17:46:35 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	ft_parse(char *input, t_data *data)
 	int		quote;
 	char	**args;
 
+	data->is_interrupted = 0;
 	quote = 0;
 	if (!input)
 		return (ERROR);

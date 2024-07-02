@@ -6,13 +6,22 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 11:52:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/26 21:16:20 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:55:54 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_get_exit_code(int pid, int *status)
+void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
+{
+	if (ft_strlen(res) == 2)
+		cmd->fds->outfile = ft_openfile(args[i + 1], 3);
+	else
+		cmd->fds->outfile = ft_openfile(res + 2, 3);
+	cmd->outfile_flag = 1;
+}
+
+void	ft_get_exit_code(int pid, int *status, t_data *data)
 {
 	int	pid_check;
 
@@ -21,29 +30,21 @@ void	ft_get_exit_code(int pid, int *status)
 		pid_check = waitpid(pid, status, 0);
 		if (pid_check > 0)
 			break ;
+		data->is_interrupted = 1;
 	}
 }
 
-static int	check_start(char **args, char *res, int i)
+void	ft_free_redirection_space(char *arg, char **arg2)
 {
-	if ((!args[i + 1] && ft_strlen(res) <= 2)
-		|| ft_strncmp(args[i], "<<<", 3) == 0)
+	if (ft_strcmp(arg, ">>") == 0 || ft_strcmp(arg, "<<") == 0
+		|| ft_strncmp(arg, ">", 2) == 0 || ft_strcmp(arg, "<") == 0)
 	{
-		ft_error_syntax("newline");
-		return (1);
+		free(*arg2);
+		(*arg2) = NULL;
 	}
-	return (0);
-}
-
-char	*ft_here_doc_check(char **args, char *res, int i)
-{
-	char	*limit;
-
-	if (check_start(args, res, i) == 1)
-		return (NULL);
-	if (ft_strlen(res) > 2)
-		limit = res + 2;
-	else if (args[i + 1] && ft_strlen(res) == 2)
-		limit = args[i + 1];
-	return (limit);
+	else if (ft_strncmp(arg, ">>>", 3) == 0 || ft_strncmp(arg, "<<<", 3) == 0)
+	{
+		free(*arg2);
+		(*arg2) = NULL;
+	}
 }

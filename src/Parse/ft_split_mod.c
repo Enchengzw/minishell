@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/12 20:33:40 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:51:29 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char	*check_quotes_spaces(const char *s, int *k, int *i, t_cmd *cmd)
 		if ((s[*k] == 39 || s[*k] == 34))
 		{
 			res = ft_strjoin_allocs1(res,
-					getarray_spaces(s + *k + 1, s[*k]));
+					getarray_spaces(s + *k + 1, s[*k]), 0);
 			*k = ft_strlen(res) + 2;
 			j = ft_strlen(res);
 		}

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:27:08 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/25 18:55:38 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:54:44 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_execute(t_data *data)
 {
 	int	code;
 
-	if (data->exit_code != 0)
+	if (data->exit_code != 0 || data->is_interrupted == 1)
 		return (data->exit_code);
 	code = ft_check_data(data);
 	if (code != INT_MIN)
