@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 10:15:09 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/27 17:46:35 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:30:40 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static	t_cmd	*node_new(t_cmd *cmd, char **args, t_data *data, int *j)
 	cmd->num_arg = 0;
 	cmd->is_builtin = 0;
 	cmd->two_points = 0;
-	cmd->redirect_then = 0;
+	cmd->num_i = 0;
 	cmd->env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!cmd->env)
 		return (NULL);

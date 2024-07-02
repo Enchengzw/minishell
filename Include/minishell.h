@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:42:47 by rguerrer          #+#    #+#             */
-/*   Updated: 2024/06/27 17:54:26 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:38:55 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_cmd
 	int				file_flag;
 	int				is_builtin;
 	int				two_points;
-	int				redirect_then;
+	int				num_i;
 }					t_cmd;
 
 typedef struct s_data
@@ -115,17 +115,16 @@ void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
 void				ft_check_double_greather(char **args,
 						char *res, int i, t_cmd *cmd);
 void				ft_check_exceptions(char **args, int *j, t_cmd *cmd);
-int					ft_check_redirections(char **args, int i, t_cmd *cmd,
-						t_data *data);
+int					ft_check_redirections(int *i, t_cmd *cmd, t_data *data,
+						int *redirect);
 void				ft_check_type(const char *s, t_cmd *cmd, int *i, int *k);
 void				ft_create_struct(char **args, t_data *data);
 char				*ft_find_pathcmd(char **envp, char *command, int *absolute);
+void				ft_free_redirection_space(char *arg, char **arg2, int *i);
 void				ft_get_exit_code(int pid, int *status, t_data *data);
 int					ft_here_doc(char *limit, t_cmd *cmd, t_data *data);
-char				*ft_here_doc_check(char **args, char *res, int i,
-						t_cmd *cmd);
+char				*ft_here_doc_check(char *res, int *i, t_cmd *cmd);
 int					ft_is_builtin(char *command);
-void				ft_free_redirection_space(char *arg, char **arg2);
 int					ft_len_type(char *str);
 int					ft_openfile(char *file, int type);
 int					ft_parse(char *input, t_data *data);
@@ -135,6 +134,7 @@ int					ft_special_character(char c);
 char				**ft_split_mod(char const *s, t_cmd *cmd);
 char				**ft_split_mod_pipe(char const *s);
 char				*ft_strjoin_allocs1(char *s1, char *s2, int nun);
+int					ft_strlen_nospaces_noredirections(char const *s);
 
 // EXECUTOR
 int					ft_execute(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:43:52 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/27 20:51:29 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:30:00 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	**ft_split_mod(char const *s, t_cmd *cmd)
 		if (!res[i])
 			return (ft_free_char(res), NULL);
 		s += k;
-		i++;
+		cmd->num_i = i++;
 		while (*s && (*s != ' ' && *s != '\t' && *s != '\n'))
 			s++;
 	}

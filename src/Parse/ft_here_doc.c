@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:27 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/27 19:26:16 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:37:08 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 //SIGINT Cntr + C
 //SIGQUIT Cntr + '\'
 
-static int	check_start(char **args, char *res, int i, t_cmd *cmd)
+static int	check_start(char **args, char *res, int *i, t_cmd *cmd)
 {
-	if ((!args[i + 1] && ft_strlen(res) <= 2)
-		|| ft_strncmp(args[i], "<<<", 3) == 0)
+	if ((!args[*i + 1] && ft_strlen(res) <= 2)
+		|| ft_strncmp(args[*i], "<<<", 3) == 0)
 	{
 		ft_error_syntax("newline");
-		ft_free_redirection_space(cmd->arg[i], &(cmd->arg[i + 1]));
+		ft_free_redirection_space(cmd->arg[*i], &(cmd->arg[*i + 1]), i);
 		return (1);
 	}
 	return (0);
 }
 
-char	*ft_here_doc_check(char **args, char *res, int i, t_cmd *cmd)
+char	*ft_here_doc_check(char *res, int *i, t_cmd *cmd)
 {
 	char	*limit;
 
-	if (check_start(args, res, i, cmd) == 1)
+	if (check_start(cmd->arg, res, i, cmd) == 1)
 		return (NULL);
 	if (ft_strlen(res) > 2)
 		limit = res + 2;
-	else if (args[i + 1] && ft_strlen(res) == 2)
-		limit = args[i + 1];
+	else if (cmd->arg[*i + 1] && ft_strlen(res) == 2)
+		limit = cmd->arg[*i + 1];
 	return (limit);
 }
 

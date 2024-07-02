@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_here_doc_utils.c                                :+:      :+:    :+:   */
+/*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 11:52:20 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/27 20:55:54 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:38:20 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ void	ft_get_exit_code(int pid, int *status, t_data *data)
 	}
 }
 
-void	ft_free_redirection_space(char *arg, char **arg2)
+void	ft_free_redirection_space(char *arg, char **arg2, int *i)
 {
 	if (ft_strcmp(arg, ">>") == 0 || ft_strcmp(arg, "<<") == 0
 		|| ft_strncmp(arg, ">", 2) == 0 || ft_strcmp(arg, "<") == 0)
 	{
 		free(*arg2);
 		(*arg2) = NULL;
+		(*i)++;
 	}
 	else if (ft_strncmp(arg, ">>>", 3) == 0 || ft_strncmp(arg, "<<<", 3) == 0)
 	{
 		free(*arg2);
 		(*arg2) = NULL;
+		(*i)++;
 	}
 }

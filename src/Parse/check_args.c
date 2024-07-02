@@ -6,7 +6,7 @@
 /*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:54:54 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/27 21:22:04 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:34:08 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,20 @@ static void	check_rest_args(char **args, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
 
-	if ((*k > 0 && args[*k - 1][0] == '>') || args[*k - 1][0] == '<')
-		return ;
+	tmp = NULL;
+	if (cmd->file_flag != 0)
+	{
+		tmp = args[*k];
+		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+		free(tmp);
+		tmp = NULL;
+	}
 	else
 	{
 		tmp = cmd->arg[*i];
 		cmd->arg[(*i)++] = ft_strdup(args[*k]);
 		free(tmp);
+		tmp = NULL;
 	}
 }
 
@@ -58,13 +65,10 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		free(cmd->arg[*k]);
 		cmd->arg[*i] = NULL;
 	}
-	if ((args[*k][0] == ':' || args[*k][0] == '!')
+	else if ((args[*k][0] == ':' || args[*k][0] == '!')
 		&& !args[*k][1] && cmd->cmd_flag == 0)
-	{
 		cmd->two_points = 1;
-		return ;
-	}
-	if (ft_strncmp(args[*k], "./", 2) == 0)
+	else if (ft_strncmp(args[*k], "./", 2) == 0)
 		ft_check_program(args, k, i, cmd);
 	else if (cmd->cmd_flag == 0)
 		ft_check_cmd(args, i, k, cmd);
@@ -91,23 +95,24 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 {
 	int		i;
 	int		k;
+	int		redirect;
 
 	i = 0;
 	k = 0;
 	check_first(args, &k, cmd);
-	while (cmd->arg[k])
+	while (k <= cmd->num_i)
 	{
+		redirect = 0;
 		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
 			|| cmd->type[k] == 'h')
 			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
 		if ((ft_strchr(cmd->arg[k], '<') != NULL
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'
 			&& cmd->type[k] != 's')
-			cmd->file_flag = ft_check_redirections(cmd->arg, k, cmd, data);
-		if (cmd->redirect_then >= 0)
+			cmd->file_flag = ft_check_redirections(&k, cmd, data, &redirect);
+		if (redirect >= 0)
 			ft_check_rest(cmd->arg, &i, &k, cmd);
-		if (cmd->arg[k] != NULL)
-			k++;
+		k++;
 	}
 	cmd->arg[i] = NULL;
 }
