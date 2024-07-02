@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: encheng <encheng@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 12:17:49 by rauferna          #+#    #+#             */
-/*   Updated: 2024/06/27 17:44:52 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/02 13:09:20 by encheng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_data	*ft_init(char **env)
 				ft_dpointer_size(env) + 1 + 1);
 		if (!data->env)
 			return (ft_putstr_fd("Malloc Error\n", STDERR), free(data), NULL);
-		data->env[ft_dpointer_size(data->env) - 1] = ft_strdup("OLDPWD");
+		data->env[ft_dpointer_size(data->env)] = ft_strdup("OLDPWD");
+		data->env[ft_dpointer_size(data->env)] = NULL;
 	}
 	data->exit_code = 0;
 	data->std_in = dup(STDIN_FILENO);
@@ -91,7 +92,7 @@ int	main(int argc, char **argv, char **env)
 	data = ft_init(env);
 	if (!data)
 		return (ft_putstr_fd("Malloc Error\n", STDERR), ERROR);
-	ft_main_loop(data);
+/*  	ft_main_loop(data); */
 	ft_free_all(data);
 	return (0);
 }
