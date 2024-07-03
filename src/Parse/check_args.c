@@ -100,6 +100,8 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	i = 0;
 	k = 0;
 	check_first(args, &k, cmd);
+	if (cmd->cmd_flag == -1)
+		return ;
 	while (k <= cmd->num_i)
 	{
 		redirect = 0;
