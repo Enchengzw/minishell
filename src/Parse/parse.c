@@ -113,15 +113,12 @@ static int	ft_check_syntax_error(char *str)
 
 int	ft_parse(char *input, t_data *data)
 {
-	int		quote;
 	char	**args;
 
 	data->is_interrupted = 0;
-	quote = 0;
 	if (!input)
 		return (ERROR);
-	input = ft_pre_check_quotes(input, &quote);
-	if (!input)
+	if (!input || ft_pre_check_quotes(input) != 0)
 	{
 		free(input);
 		return (write(2, "Unspected quote \n", 17), STDERR);
@@ -135,7 +132,6 @@ int	ft_parse(char *input, t_data *data)
 	ft_create_struct(args, data);
 	if (data->cmd)
 		link_nodes(data);
-	free(input);
 	ft_free_char(args);
 	return (SUCCESS);
 }

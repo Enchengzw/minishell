@@ -37,7 +37,7 @@ static void	ft_check_program(char **args, int *k, int *i, t_cmd *cmd)
 	cmd->cmd_flag = 1;
 }
 
-static void	check_rest_args(char **args, int *i, int *k, t_cmd *cmd)
+static void	fill_and_free_args(char **args, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
 
@@ -67,13 +67,17 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 	}
 	else if ((args[*k][0] == ':' || args[*k][0] == '!')
 		&& !args[*k][1] && cmd->cmd_flag == 0)
+	{
+		free(cmd->arg[*k]);
+		cmd->arg[*i] = NULL;
 		cmd->two_points = 1;
+	}
 	else if (ft_strncmp(args[*k], "./", 2) == 0)
 		ft_check_program(args, k, i, cmd);
 	else if (cmd->cmd_flag == 0)
 		ft_check_cmd(args, i, k, cmd);
 	else if (cmd->cmd_flag == 1)
-		check_rest_args(args, i, k, cmd);
+		fill_and_free_args(args, i, k, cmd);
 	else
 	{
 		ft_error_syntax(args[*k]);
@@ -105,8 +109,8 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 	while (k <= cmd->num_i)
 	{
 		redirect = 0;
-		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's')
-			|| cmd->type[k] == 'h')
+		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's'
+				&& cmd->type[k] != 'h') || cmd->type[k] == 'v')
 			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
 		if ((ft_strchr(cmd->arg[k], '<') != NULL
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'

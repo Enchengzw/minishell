@@ -33,33 +33,27 @@ static int	ft_strlen_nospaces(char const *s)
 	return (j);
 }
 
-static char	*getarray_spaces(const char *s, char c)
+int	getarray_spaces(const char *s, char **res, int *j, int *k)
 {
-	int		i;
-	int		j;
-	char	*res;
+	char	c;
 
-	i = 0;
-	if (!*s || *s == c)
-		return (ft_strdup(" "));
-	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
-	if (!res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')))
+	if (s == NULL || res == NULL || *res == NULL)
+		return (1);
+	c = s[*k];
+	(*k)++;
+	while (s[*k] && (s[*k] != c || (s[*k + 1] == c && s[*k] == '\\')))
 	{
-		if (s[i] == '\\' && (s[i + 1] == c || s[i + 1] == ' '))
+		if (s[*k] == '\\' && (s[*k + 1] == c || s[*k + 1] == ' '))
 		{
-			res[j] = s[i + 1];
-			i += 2;
+			(*res)[*j] = s[*k + 1];
+			*k += 2;
 		}
 		else
-			res[j] = s[i++];
-		j++;
+			(*res)[*j] = s[(*k)++];
+		(*j)++;
 	}
-	res[j] = '\0';
-	return (res);
+	(*k)++;
+	return (0);
 }
 
 static void	check_backslash(char *res, const char *s, int *i, int *j)
@@ -89,10 +83,8 @@ static char	*check_quotes_spaces(const char *s, int *k, int *i, t_cmd *cmd)
 	{
 		if ((s[*k] == 39 || s[*k] == 34))
 		{
-			res = ft_strjoin_allocs1(res,
-					getarray_spaces(s + *k + 1, s[*k]), 0);
-			*k = ft_strlen(res) + 2;
-			j = ft_strlen(res);
+			if (getarray_spaces(s, &res, &j, k) == 1)
+				return (free(res), NULL);
 		}
 		else
 			check_backslash(res, s, k, &j);

@@ -119,16 +119,19 @@ int					ft_check_redirections(int *i, t_cmd *cmd, t_data *data,
 						int *redirect);
 void				ft_check_type(const char *s, t_cmd *cmd, int *i, int *k);
 void				ft_create_struct(char **args, t_data *data);
+void				ft_fill_and_free_args(char **args, int *i, int *k,
+						t_cmd *cmd);
 char				*ft_find_pathcmd(char **envp, char *command, int *absolute);
 void				ft_free_redirection_space(char *arg, char **arg2, int *i);
 void				ft_get_exit_code(int pid, int *status, t_data *data);
 int					ft_here_doc(char *limit, t_cmd *cmd, t_data *data);
 char				*ft_here_doc_check(char *res, int *i, t_cmd *cmd);
 int					ft_is_builtin(char *command);
+int					ft_len_quote(const char *s, int i);
 int					ft_len_type(char *str);
 int					ft_openfile(char *file, int type);
 int					ft_parse(char *input, t_data *data);
-char				*ft_pre_check_quotes(char *input, int *quote);
+int					ft_pre_check_quotes(char *input);
 void				ft_process_args(t_cmd *cmd, t_data *data, char **args);
 int					ft_special_character(char c);
 char				**ft_split_mod(char const *s, t_cmd *cmd);

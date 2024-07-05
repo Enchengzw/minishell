@@ -45,6 +45,11 @@ char	*ft_find_pathcmd(char **envp, char *command, int *absolute)
 	char	*path_line;
 
 	i = 0;
+	if (command[0] == '\0')
+	{
+		ft_error_cnf(command);
+		return (NULL);
+	}
 	if (access(command, F_OK | R_OK | X_OK) == 0)
 	{
 		*absolute = 1;
@@ -61,25 +66,13 @@ char	*ft_find_pathcmd(char **envp, char *command, int *absolute)
 	return (find_path_loop(path_line, command));
 }
 
-static int	pre_check(char **args, int *k)
-{
-	if (*k > 0 && (((ft_strcmp(args[*k - 1], "<") == 0
-					|| ft_strcmp(args[*k - 1], "<<") == 0))
-			|| (ft_strcmp(args[*k - 1], "<") == 0
-				|| ft_strcmp(args[*k - 1], "<<") == 0)))
-		return (1);
-	return (0);
-}
-
 void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
 	int		absolute;
 
 	absolute = 0;
-	tmp = cmd->arg[*i];
-	if (pre_check(args, k) == 1)
-		return ;
+	tmp = NULL;
 	if (ft_is_builtin(args[*k]) == 0)
 		cmd->is_builtin = 1;
 	else
@@ -88,11 +81,14 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 		if (cmd->cmd_path == NULL)
 			cmd->cmd_flag = -1;
 	}
-	if (cmd->is_builtin == 1 || cmd->cmd_path)
-	{
-		cmd->arg[(*i)++] = ft_strdup(args[*k]);
+	if (cmd->cmd_path != NULL || cmd->is_builtin == 1)
 		cmd->cmd_flag = 1;
-	}
+	if (cmd->file_flag != 0)
+		tmp = cmd->arg[*k];
+	else
+		tmp = cmd->arg[*i];
+	cmd->arg[(*i)++] = ft_strdup(args[*k]);
 	if (absolute == 0 && tmp)
 		free(tmp);
+	tmp = NULL;
 }

@@ -12,7 +12,8 @@
 
 #include <minishell.h>
 
-// d = doubquotes, s = singlequotes, r = redir, n = normal, m = dollar ~ = home
+// d = doubquotes, s = singlequotes, r = redir, n = normal, m = dollar v = ~
+// h = heredoc
 
 int	ft_len_type(char *str)
 {
@@ -45,30 +46,42 @@ int	ft_len_type(char *str)
 static int	ft_check_type2(const char *s, char type)
 {
 	int	i;
+	int	num;
 
 	i = 0;
+	num = 0;
+	if (!s[i])
+		return (0);
 	while (s[i] && (s[i] != ' ' && s[i] != '\t' && s[i] != '\n'))
 	{
 		if (s[i] == type)
-			return (1);
+			num = 1;
+		if ((type == 34 || type == 39) && num == 0)
+		{
+			if (s[i] == '>' || s[i] == '<' || s[i] == '|')
+				return (0);
+		}
 		i++;
 	}
-	return (0);
+	return (num);
 }
 
 void	ft_check_type(const char *s, t_cmd *cmd, int *i, int *k)
 {
-	if (ft_check_type2(s + *k, 34) == 1)
-		cmd->type[*i] = 'd';
-	else if (ft_check_type2(s + *k, 39) == 1)
+	if (ft_check_type2(s + *k, 39) == 1)
 		cmd->type[*i] = 's';
+	else if (ft_check_type2(s + *k, 34) == 1)
+		cmd->type[*i] = 'd';
+	else if (ft_check_type2(s + *k, '>') == 1
+		|| ft_check_type2(s + *k + 1, '<') == 1)
+		cmd->type[*i] = 'h';
 	else if (ft_check_type2(s + *k, '>') == 1
 		|| ft_check_type2(s + *k, '<') == 1)
 		cmd->type[*i] = 'r';
 	else if (ft_check_type2(s + *k, '$') == 1)
 		cmd->type[*i] = 'm';
 	else if (ft_check_type2(s + *k, '~') == 1)
-		cmd->type[*i] = 'h';
+		cmd->type[*i] = 'v';
 	else
 		cmd->type[*i] = 'n';
 }

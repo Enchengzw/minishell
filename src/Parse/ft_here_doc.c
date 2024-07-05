@@ -40,8 +40,19 @@ char	*ft_here_doc_check(char *res, int *i, t_cmd *cmd)
 	return (limit);
 }
 
-static void	ft_here_doc_loop(char *line, char *limit, int fd)
+void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
 {
+	if (ft_strlen(res) == 2)
+		cmd->fds->outfile = ft_openfile(args[i + 1], 3);
+	else
+		cmd->fds->outfile = ft_openfile(res + 2, 3);
+	cmd->outfile_flag = 1;
+}
+
+static void	ft_here_doc_loop(char *limit, int fd)
+{
+	char	*line;
+
 	line = readline("> ");
 	while (line)
 	{
@@ -62,7 +73,7 @@ static void	ft_here_doc_loop(char *line, char *limit, int fd)
 	}
 }
 
-static int	ft_here_doc_2(int fd[2], char *limit, char *line, t_data *data)
+static int	ft_here_doc_2(int fd[2], char *limit, t_data *data)
 {
 	int				status;
 	pid_t			pid;
@@ -75,7 +86,7 @@ static int	ft_here_doc_2(int fd[2], char *limit, char *line, t_data *data)
 	{
 		close(fd[0]);
 		signal(SIGINT, ft_here_doc_signal);
-		ft_here_doc_loop(line, limit, fd[1]);
+		ft_here_doc_loop(limit, fd[1]);
 		ft_free_all(data);
 		data = NULL;
 		close(fd[1]);
@@ -87,10 +98,8 @@ static int	ft_here_doc_2(int fd[2], char *limit, char *line, t_data *data)
 
 int	ft_here_doc(char *limit, t_cmd *cmd, t_data *data)
 {
-	char		*line;
 	int			fd[2];
 
-	line = NULL;
 	fd[0] = open(".temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd[0] == -1)
 		return (1);
@@ -98,7 +107,7 @@ int	ft_here_doc(char *limit, t_cmd *cmd, t_data *data)
 		return (1);
 	if (pipe(fd) == -1)
 		return (1);
-	if (ft_here_doc_2(fd, limit, line, data) == 1)
+	if (ft_here_doc_2(fd, limit, data) == 1)
 	{
 		close(fd[0]);
 		close(fd[1]);
@@ -110,3 +119,45 @@ int	ft_here_doc(char *limit, t_cmd *cmd, t_data *data)
 	close(fd[1]);
 	return (0);
 }
+
+/*
+int until_special_char(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && ft_special_character(str[i]) == 0)
+		i++;
+	return (i);
+}
+
+static char *copy_line_heredoc(char *line, t_cmd *cmd)
+{
+    int i;
+    int j;
+    char *res;
+    char *tmp;
+
+	tmp = line;
+    res = calloc(ft_strlen(line) + 1, sizeof(char));
+    if (!res)
+        return (NULL);
+    i = 0;
+    j = 0;
+    while (line[i])
+    {
+        if (line[i] != '$')
+            res[j++] = line[i++];
+        else
+        {
+            res = ft_strjoin_allocs1(res,
+					ft_getenv(line + i + 1, *(cmd->env->env)), 0);
+            j = ft_strlen(res);
+            i += until_special_char(line + i + 1) + 1;
+        }
+    }
+    res = ft_strjoin_allocs1(res, "\n", 1);
+	free(tmp);
+	tmp = NULL;
+    return (res);
+}*/

@@ -33,27 +33,27 @@ static int	repsc(char const *s, char c)
 	return (j);
 }
 
-static char	*getarray(const char *s, char c, int *n)
+static int	getarray(const char *s, char **res, int *k, int *j)
 {
-	int		i;
-	int		j;
-	char	*res;
+	char	c;
 
-	i = 0;
-	j = 0;
-	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
-	if (!res)
-		return (NULL);
-	if (s[i] == c)
-		res[j++] = s[i++];
-	while (s[i] && (s[i] != c || (s[i + 1] == c && s[i] == '\\')
-			|| (s[i] == c && s[i - 1] == '\\')))
-		res[j++] = s[i++];
-	if (s[i] == c)
-		res[j++] = s[i];
-	res[j] = '\0';
-	*n = j + *n;
-	return (res);
+	if (s == NULL || res == NULL || *res == NULL)
+		return (1);
+	c = s[*k];
+	(*res)[(*j)++] = s[(*k)++];
+	while (s[*k] && (s[*k] != c || (s[*k + 1] == c && s[*k] == '\\')))
+	{
+		if (s[*k] == '\\' && (s[*k + 1] == c || s[*k + 1] == ' '))
+		{
+			(*res)[*j] = s[*k + 1];
+			(*k) += 2;
+		}
+		else
+			(*res)[*j] = s[(*k)++];
+		(*j)++;
+	}
+	(*res)[(*j)++] = s[(*k)++];
+	return (0);
 }
 
 static char	*check_quotes(const char *s, int *k)
@@ -69,9 +69,7 @@ static char	*check_quotes(const char *s, int *k)
 	{
 		if ((s[*k] == 39 || s[*k] == 34))
 		{
-			res = ft_strjoin_allocs1(res,
-					getarray(s + *k, s[*k], k), 0);
-			j = ft_strlen(res);
+			getarray(s, &res, k, &j);
 		}
 		else
 		{
@@ -80,8 +78,7 @@ static char	*check_quotes(const char *s, int *k)
 			res[j++] = s[(*k)++];
 		}
 	}
-	if (s[*k] != '|')
-		res[*k] = '\0';
+	res[*k] = '\0';
 	return (res);
 }
 
