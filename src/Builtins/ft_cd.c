@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: encheng <encheng@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:06:35 by ezhou             #+#    #+#             */
-/*   Updated: 2024/06/04 16:21:06 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/07/05 11:07:57 by encheng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	ft_update_pwd(t_env *env)
 		}
 		i++;
 	}
+	free(cwd);
 	return (SUCCESS);
 }
 
@@ -77,6 +78,7 @@ static int	ft_update_oldpwd(t_env *env)
 		}
 		i++;
 	}
+	free(cwd);
 	return (SUCCESS);
 }
 
