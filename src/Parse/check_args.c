@@ -24,15 +24,17 @@ static void	ft_check_program(char **args, int *k, int *i, t_cmd *cmd)
 	}
 	if (access(args[*k], R_OK) != 0)
 	{
-		write(2, "minishell: ", 11);
-		write(2, args[*k], ft_strlen(args[*k]));
-		write(2, ": Permission denied\n", 20);
+		ft_error_perm(args[*k]);
 		cmd->file_flag = -1;
 		return ;
 	}
 	cmd->cmd_path = ft_strdup(args[*k]);
+	if (cmd->cmd_path == NULL)
+		ft_exit_error("Malloc Error\n", 1, NULL);
 	tmp = cmd->arg[*i];
 	cmd->arg[(*i)++] = ft_strdup(args[*k]);
+	if (cmd->arg[(*i) - 1] == NULL)
+		ft_exit_error("Malloc Error\n", 1, NULL);
 	free(tmp);
 	cmd->cmd_flag = 1;
 }
@@ -111,7 +113,7 @@ void	ft_process_args(t_cmd *cmd, t_data *data, char **args)
 		redirect = 0;
 		if ((ft_strchr(cmd->arg[k], '$') != NULL && cmd->type[k] != 's'
 				&& cmd->type[k] != 'h') || cmd->type[k] == 'v')
-			cmd->arg[k] = ft_copy_char(cmd->arg[k], &k, cmd);
+			cmd->arg[k] = ft_copy_env(cmd->arg[k], &k, cmd);
 		if ((ft_strchr(cmd->arg[k], '<') != NULL
 				|| ft_strchr(cmd->arg[k], '>') != NULL) && cmd->type[k] != 'd'
 			&& cmd->type[k] != 's')

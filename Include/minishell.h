@@ -110,7 +110,7 @@ void				ft_main_signals(void);
 void				ft_here_doc_signal(int signal);
 
 //PARSE
-char				*ft_copy_char(char *str, int *k, t_cmd *cmd);
+char				*ft_copy_env(char *str, int *k, t_cmd *cmd);
 void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
 void				ft_check_double_greather(char **args,
 						char *res, int i, t_cmd *cmd);
@@ -155,6 +155,7 @@ void				ft_exit_error(char *str, int n, t_data *data);
 int					ft_error_cnf(char *command);
 int					ft_error_fnf(char *file);
 int					ft_error_syntax(char *file);
+int					ft_error_perm(char *file);
 void				ft_print_node(t_cmd *cmd);
 void				ft_format_exit_code(int *exit_code);
 

@@ -57,6 +57,7 @@ SRC	=	./src/main.c \
 		./src/Parse/parse_utils.c \
 		./src/Parse/pre_check_quotes.c \
 		./src/Parse/expand_env.c \
+		./src/Parse/expand_env_utils.c \
 		./src/debug.c \
 
 OBJ = $(SRC:.c=.o)

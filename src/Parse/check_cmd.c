@@ -88,6 +88,8 @@ void	ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd)
 	else
 		tmp = cmd->arg[*i];
 	cmd->arg[(*i)++] = ft_strdup(args[*k]);
+	if (!cmd->arg[*i - 1])
+		ft_putstr_fd("Malloc Error\n", STDERR);
 	if (absolute == 0 && tmp)
 		free(tmp);
 	tmp = NULL;

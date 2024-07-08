@@ -21,7 +21,7 @@ void	ft_exit_error(char *str, int n, t_data *data)
 
 int	ft_error_cnf(char *command)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	return (1);
@@ -37,8 +37,16 @@ int	ft_error_syntax(char *file)
 
 int	ft_error_fnf(char *file)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	return (1);
+}
+
+int	ft_error_perm(char *file)
+{
+	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
 	return (1);
 }

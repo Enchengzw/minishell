@@ -40,15 +40,6 @@ char	*ft_here_doc_check(char *res, int *i, t_cmd *cmd)
 	return (limit);
 }
 
-void	ft_check_double_greather(char **args, char *res, int i, t_cmd *cmd)
-{
-	if (ft_strlen(res) == 2)
-		cmd->fds->outfile = ft_openfile(args[i + 1], 3);
-	else
-		cmd->fds->outfile = ft_openfile(res + 2, 3);
-	cmd->outfile_flag = 1;
-}
-
 static void	ft_here_doc_loop(char *limit, int fd)
 {
 	char	*line;
@@ -60,6 +51,11 @@ static void	ft_here_doc_loop(char *limit, int fd)
 			&& (ft_strlen(line)) == ft_strlen(limit))
 			break ;
 		line = ft_strjoin_allocs1(line, "\n", 1);
+		if (!line)
+		{
+			ft_putstr_fd("Malloc Error\n", STDERR);
+			return ;
+		}
 		write(fd, line, ft_strlen(line));
 		free(line);
 		line = readline("> ");

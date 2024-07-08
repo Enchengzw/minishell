@@ -99,6 +99,11 @@ static char	*check_redirection_nospaces(char **args, int *i, int *redirect)
 	while (args[*i][k] && args[*i][k] != '<' && args[*i][k] != '>')
 		k++;
 	res = ft_strdup(args[*i] + k);
+	if (!res)
+	{
+		ft_putstr_fd("Malloc Error\n", STDERR);
+		return (NULL);
+	}
 	tmp = args[*i];
 	args[*i] = ft_substr(args[*i], 0, k);
 	free(tmp);
