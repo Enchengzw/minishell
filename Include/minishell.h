@@ -111,6 +111,7 @@ void				ft_here_doc_signal(int signal);
 
 //PARSE
 char				*ft_copy_env(char *str, int *k, t_cmd *cmd);
+int					ft_copy_tilde(char **str, int *i, int *k, t_cmd *cmd);
 void				ft_check_cmd(char **args, int *i, int *k, t_cmd *cmd);
 void				ft_check_double_greather(char **args,
 						char *res, int i, t_cmd *cmd);

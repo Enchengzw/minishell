@@ -19,13 +19,15 @@ static void	ft_check_program(char **args, int *k, int *i, t_cmd *cmd)
 	if (access(args[*k], F_OK) != 0)
 	{
 		ft_error_fnf(args[*k]);
-		cmd->file_flag = -1;
+		cmd->cmd_flag = -1;
+		free(cmd->arg[*i]);
 		return ;
 	}
 	if (access(args[*k], R_OK) != 0)
 	{
 		ft_error_perm(args[*k]);
-		cmd->file_flag = -1;
+		cmd->cmd_flag = -1;
+		free(cmd->arg[*i]);
 		return ;
 	}
 	cmd->cmd_path = ft_strdup(args[*k]);
@@ -74,7 +76,7 @@ static void	ft_check_rest(char **args, int *i, int *k, t_cmd *cmd)
 		cmd->arg[*i] = NULL;
 		cmd->two_points = 1;
 	}
-	else if (ft_strncmp(args[*k], "./", 2) == 0)
+	else if (ft_strncmp(args[*k], "./", 2) == 0 && cmd->cmd_flag == 0)
 		ft_check_program(args, k, i, cmd);
 	else if (cmd->cmd_flag == 0)
 		ft_check_cmd(args, i, k, cmd);

@@ -47,6 +47,16 @@ static void	ft_join_and_free(char **res, char *str, int *i, t_cmd *cmd)
 	free(str);
 }
 
+static void	ft_join_and_free_itoa(char **res, char *str, int *i, t_cmd *cmd)
+{
+	char	*getitoa;
+
+	getitoa = ft_itoa(*(cmd->exit_code));
+	(*res) = ft_strjoin_allocs1(*res, getitoa, 0);
+	free(str);
+	(*i)++;
+}
+
 static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 {
 	while (str[*i])
@@ -55,9 +65,7 @@ static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 		{
 			if (str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
 			{
-				(*res) = ft_strjoin_allocs1(*res,
-						ft_itoa(*(cmd->exit_code)), 0);
-				(*i)++;
+				ft_join_and_free_itoa(res, str, i, cmd);
 			}
 			else if (str[*i] == '$' && (str[*i + 1]
 					&& ft_special_character(str[*i + 1]) == 0
@@ -72,31 +80,6 @@ static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 		while (str[*i] && ft_special_character(str[*i]) == 0)
 			(*i)++;
 	}
-}
-
-static int	copy_tilde(char **str, int *i, int *k, t_cmd *cmd)
-{
-	char	*tmp;
-	char	*home;
-
-	home = NULL;
-	if (str[0][*i] == '~' && cmd->type[*k] == 'v')
-	{
-		tmp = *str;
-		*str = ft_strdup(*str + 1);
-		if (!*str)
-			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
-		home = ft_getenv("HOME", *(cmd->env->env));
-		if (!home)
-			return (ft_putstr_fd("Error: HOME not set\n", 2), 1);
-		*str = ft_strjoin_allocs1(home, *str, 0);
-		if (!*str)
-			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
-		home = NULL;
-		free(tmp);
-		tmp = NULL;
-	}
-	return (0);
 }
 
 char	*ft_copy_env(char *str, int *k, t_cmd *cmd)
@@ -114,7 +97,7 @@ char	*ft_copy_env(char *str, int *k, t_cmd *cmd)
 	while (str[i])
 	{
 		tmp = str;
-		if (copy_tilde(&str, &i, k, cmd) == 1)
+		if (ft_copy_tilde(&str, &i, k, cmd) == 1)
 			return (free(tmp), tmp = NULL, NULL);
 		if (str[i] == '$' && (str[i + 1] && cmd->type[*k] != 's'))
 			return (ft_copy_char_env(&res, str, &i, cmd), res);

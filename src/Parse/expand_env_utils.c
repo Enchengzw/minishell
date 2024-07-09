@@ -51,3 +51,28 @@ char	*ft_strjoin_allocs1(char *s1, char *s2, int num)
 	s2 = NULL;
 	return (str);
 }
+int	ft_copy_tilde(char **str, int *i, int *k, t_cmd *cmd)
+{
+	char	*tmp;
+	char	*home;
+
+	home = NULL;
+	if (str[0][*i] == '~' && cmd->type[*k] == 'v')
+	{
+		tmp = *str;
+		*str = ft_strdup(*str + 1);
+		if (!*str)
+			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
+		home = ft_getenv("HOME", *(cmd->env->env));
+		if (!home)
+			return (ft_putstr_fd("Error: HOME not set\n", 2), 1);
+		*str = ft_strjoin_allocs1(home, *str, 0);
+		if (!*str)
+			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
+		home = NULL;
+		free(tmp);
+		tmp = NULL;
+	}
+	return (0);
+}
+
