@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:35:00 by rauferna          #+#    #+#             */
-/*   Updated: 2024/07/09 12:39:43 by ezhou            ###   ########.fr       */
+/*   Updated: 2024/07/09 18:14:36 by rauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,8 @@ char	*ft_strjoin_allocs1(char *s1, char *s2, int num)
 		return (NULL);
 	if (num == 1 || num == 0)
 		free(s1);
-	s1 = NULL;
 	if (num == 0 || num == 2)
 		free(s2);
-	s2 = NULL;
 	return (str);
 }
 
