@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_env.c                                       :+:      :+:    :+:   */
+/*   expand_env_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rauferna <rauferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ezhou <ezhou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:35:00 by rauferna          #+#    #+#             */
-/*   Updated: 2024/07/07 18:45:00 by rauferna         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:39:43 by ezhou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*ft_strjoin_allocs1(char *s1, char *s2, int num)
 	s2 = NULL;
 	return (str);
 }
+
 int	ft_copy_tilde(char **str, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
@@ -75,4 +76,3 @@ int	ft_copy_tilde(char **str, int *i, int *k, t_cmd *cmd)
 	}
 	return (0);
 }
-
