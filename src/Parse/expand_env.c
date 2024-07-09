@@ -74,7 +74,7 @@ static void	ft_copy_char_env(char **res, char *str, int *i, t_cmd *cmd)
 	}
 }
 
-static void	vergulilla(char **str, int *i, int *k, t_cmd *cmd)
+static int	copy_tilde(char **str, int *i, int *k, t_cmd *cmd)
 {
 	char	*tmp;
 	char	*home;
@@ -84,12 +84,19 @@ static void	vergulilla(char **str, int *i, int *k, t_cmd *cmd)
 	{
 		tmp = *str;
 		*str = ft_strdup(*str + 1);
+		if (!*str)
+			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
 		home = ft_getenv("HOME", *(cmd->env->env));
+		if (!home)
+			return (ft_putstr_fd("Error: HOME not set\n", 2), 1);
 		*str = ft_strjoin_allocs1(home, *str, 0);
+		if (!*str)
+			return (ft_putstr_fd("Error: Malloc error\n", 2), 1);
 		home = NULL;
 		free(tmp);
 		tmp = NULL;
 	}
+	return (0);
 }
 
 char	*ft_copy_env(char *str, int *k, t_cmd *cmd)
@@ -107,7 +114,8 @@ char	*ft_copy_env(char *str, int *k, t_cmd *cmd)
 	while (str[i])
 	{
 		tmp = str;
-		vergulilla(&str, &i, k, cmd);
+		if (copy_tilde(&str, &i, k, cmd) == 1)
+			return (free(tmp), tmp = NULL, NULL);
 		if (str[i] == '$' && (str[i + 1] && cmd->type[*k] != 's'))
 			return (ft_copy_char_env(&res, str, &i, cmd), res);
 		else

@@ -19,7 +19,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = Libft/
 INCLUDE = Include/
