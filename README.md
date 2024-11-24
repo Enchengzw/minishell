@@ -30,3 +30,84 @@
   - `unset` to remove environment variables.
   - `env` to display environment variables.
   - `exit` to close the shell.
+
+# **Allowed functions**
+
+You are allowed to use any functions that you have written from scratch. 
+You may also use all of these external functions: 
+
+### Functions Overview
+
+#### Command Line and History Management
+- `rl_replace_line`
+- `rl_redisplay`
+- `add_history`
+
+#### Memory Management
+- `malloc`
+- `free`
+
+#### Input/Output (I/O)
+- `printf`
+- `write`
+- `read`
+- `close`
+- `open`
+- `access`
+
+#### Process Management
+- `fork`
+- `wait`
+- `waitpid`
+- `wait3`
+- `wait4`
+
+#### Signal Handling
+- `signal`
+- `sigaction`
+- `sigemptyset`
+- `sigaddset`
+- `kill`
+
+#### Program Termination
+- `exit`
+
+#### File System and Directory Management
+- `getcwd`
+- `chdir`
+- `stat`
+- `lstat`
+- `fstat`
+- `unlink`
+
+#### Execution
+- `execve`
+
+#### File Descriptor Management
+- `dup`
+- `dup2`
+- `pipe`
+
+#### Directory Management
+- `opendir`
+- `readdir`
+- `closedir`
+
+#### Error Handling
+- `strerror`
+- `perror`
+
+#### Terminal Management
+- `isatty`
+- `ttyname`
+- `ttyslot`
+- `ioctl`
+- `getenv`
+- `tcsetattr`
+- `tcgetattr`
+- `tgetent`
+- `tgetflag`
+- `tgetnum`
+- `tgetstr`
+- `tgoto`
+- `tputs`
